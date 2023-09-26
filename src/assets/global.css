@@ -116,3 +116,23 @@ header .mainContainer .searchForm {
     border-bottom-right-radius: 15px;
 }
 /* END OF BUTTON GROUP */
+
+/* LOGIN PAGE */
+.loginContainer {
+    width: 30vw;
+    height: 60vh;
+
+    margin: auto;
+    margin-bottom: 10%;
+    margin-top: 10%;
+
+    padding: 5%;
+
+    background: rgb(223, 102, 102);
+}
+.loginContainer .buttonContainer {
+    display: block;
+    width: 100%;
+}
+
+/* END OF LOGIN PAGE */
