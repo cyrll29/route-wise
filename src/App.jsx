@@ -1,19 +1,23 @@
-import './App.css';
-import Header from './components/header';
-import Footer from './components/footer';
-import ButtonGroup from './components/ui/buttonGroup';
-import Login from './pages/Login';
+import { 
+    Routes, 
+    Route
+} from 'react-router-dom'
+import LandingPage from "./pages/LandingPage"
+import LoginPage from "./pages/LoginPage"
 
 function App() {
-  return (
-    <>
-      <Header />
-      <h1>HELLO WORLD</h1>
-      <ButtonGroup />
-      <Footer />
-      <Login />
-    </>
-  );
+    return (
+        <>
+            <header>
+                <Routes>
+                    <Route path='/' element={<LandingPage />}></Route>
+                    <Route path='/LoginPage' element={<LoginPage />}></Route>
+                </Routes>
+
+
+            </header>
+        </>
+    );
 }
 
 export default App;
