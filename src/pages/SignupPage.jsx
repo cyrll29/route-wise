@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/img/logo.png'
-import '../assets/signup.css'
+import '../assets/styles/signup.css'
 
 const SignupPage = () => {
     const navigate = useNavigate();
