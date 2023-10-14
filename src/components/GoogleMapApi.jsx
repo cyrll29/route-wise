@@ -19,7 +19,9 @@ export default GoogleMapApi
 function Map() {
     return (
         <GoogleMap 
-            zoom={15} 
+            // maxZoom={11}
+            // mapTypeId={cf8af2361b08851}
+            zoom={13} 
             center={{lat: 14.676208, lng: 121.043861}} 
             mapContainerClassName="map-container">
         </GoogleMap>
