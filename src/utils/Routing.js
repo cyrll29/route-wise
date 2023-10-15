@@ -3,10 +3,10 @@ import {
     Routes, 
     Route
 } from 'react-router-dom'
-import LandingPage from "./pages/LandingPage"
-import LoginPage from "./pages/LoginPage"
-import SignupPage from "./pages/SignupPage"
-import HomePage from "./pages/HomePage"
+import LandingPage from "../views/LandingPage"
+import LoginPage from "../views/LoginPage"
+import SignupPage from "../views/SignupPage"
+import HomePage from "../views/HomePage"
 
 const Routing = () => {
     return (
