@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import '../assets/styles/home.css'
 import GoogleMapApi from '../components/GoogleMapApi'
-import HomeButtons from '../components/HomeButtons'
-import HomeModals from '../components/HomeModals' 
+import HomeButtons from '../utils/HomeButtons'
+import HomeModals from '../utils/HomeModals' 
 
 const HomePage = () => {
 
