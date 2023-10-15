@@ -25,9 +25,7 @@ const HomePage = () => {
                 />
             </div>
 
-
             <GoogleMapApi />  
-
 
             <div className="home-buttons">
                 <HomeButtons 
@@ -41,10 +39,6 @@ const HomePage = () => {
                     btnModalClick={btnModalClick}
                 />
             </div>
-            <div className='home-Component'>
-
-            </div>
-
         </>
     )
 }
