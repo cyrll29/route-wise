@@ -14,18 +14,17 @@ const GoogleMapApi = ({mapStyle}) => {
     const mapOptions = {
         zoom: 13,
         center: { lat: 14.676208, lng: 121.043861 },
-        mapTypeControlOptions: {
-            mapTypeIds: ["roadmap", "hybrid"],
-        },
-        disableDefaultUI: true,
-        mapTypeControl: true,
-        scaleControl: true,
-        zoomControl: true,
-        zoomControlOptions: {
-            style: "large",
-        },
+        mapTypeId: "roadmap",
         styles: GoogleMapStyle.mapStyle,
-        mapTypeId: "roadmap",     
+
+        // UI Controls
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,  
+        disableDefaultUI: true,
     }
 
 
