@@ -1,40 +1,55 @@
 import '../assets/styles/home.css'
 import GoogleMapApi from '../components/GoogleMapApi'
-import HomeBtns from '../components/HomeBtns'
-import ProfileIcon from '../assets/img/profile-icon.png'
+import HomeButtons from '../components/HomeButtons'
 
 const HomePage = () => {
 
-    const aboutBtn = () => {
+    const aboutClick = () => {
         alert("About Us Clicked")
     }
 
-    const reportBtn = () => {
+    const reportClick = () => {
         alert("Report Clicked")
     }
 
-    const notifBtn = () => {
+    const notifClick = () => {
         alert("Notification Clicked")
     }
 
-    const condBtn = () => {
+    const routeClick = () => {
+        alert("Search Routes Clicked")
+    }
+
+    const condClick = () => {
         alert("Road Condition Clicked")
     }
 
-    const routeBtn = () => {
-        alert("Search Routes Clicked")
+    const hindranceClick = () => {
+        alert("Hindrance Clicked")
     }
     
     return (
         <>
+            <div className='home-modal'>
+
+            </div>
             <GoogleMapApi />  
             <div className="home-buttons">
-                <HomeBtns title='ABOUT US' onClickFunction={() => aboutBtn()}/>
-                <HomeBtns title='REPORT' onClickFunction={() => reportBtn()}/>
-                <HomeBtns title='NOTIFICATION' onClickFunction={() => notifBtn()}/>
-                <HomeBtns title='ROAD CONDITION' onClickFunction={() => condBtn()}/>
-                <HomeBtns title='SEARCH ROUTES' onClickFunction={() => routeBtn()}/>
-                <img className='profile-icon' src={ProfileIcon} alt="prof-icon" />
+                <HomeButtons 
+                    about = {true}
+                    report = {true}
+                    notif = {true}
+                    route = {true}
+                    road = {true}
+                    hindrance = {true}
+
+                    aboutClick = {e => aboutClick()}
+                    reportClick = {e => reportClick()}
+                    notifClick = {e => notifClick()}
+                    routeClick = {e => routeClick()}
+                    condClick = {e => condClick()}
+                    hindranceClick = {e => hindranceClick()}
+                />
             </div>
             <div className='home-Component'>
 
