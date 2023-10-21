@@ -7,6 +7,7 @@ import HomeModals from '../utils/HomeModals'
 const HomePage = () => {
 
     const [activeModal, setActiveModal] = useState("route");
+    console.log("homepage")
 
     const btnModalClick = (modal) => {
         setActiveModal(modal);
@@ -20,7 +21,7 @@ const HomePage = () => {
                     reportModal={activeModal === "report"}
                     notifModal={activeModal === "notif"}
                     routeModal={activeModal === "route"}
-                    roadModal={activeModal === "road"}
+                    // roadModal={activeModal === "road"}
                     hindranceModal={activeModal === "hindrance"}
                 />
             </div>
@@ -33,7 +34,7 @@ const HomePage = () => {
                     report = {true}
                     notif = {true}
                     route = {true}
-                    road = {true}
+                    // road = {true}
                     hindrance = {true}
 
                     btnModalClick={btnModalClick}

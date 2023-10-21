@@ -1,10 +1,11 @@
-import React from 'react'
+import ModalHeader from '../../components/ModalHeader'
 
 const NotifModal = () => {
     return (
-        <div>
+        <>
+            <ModalHeader />
             <h1>Notification Modal</h1>
-        </div>
+        </>
     )
 }
 

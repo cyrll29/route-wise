@@ -1,10 +1,11 @@
-import React from 'react'
+import ModalHeader from '../../components/ModalHeader'
 
 const RouteModal = () => {
     return (
-        <div>
+        <>
+            <ModalHeader />
             <h1>Route Modal</h1>
-        </div>
+        </>
     )
 }
 

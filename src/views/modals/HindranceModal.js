@@ -1,10 +1,11 @@
-import React from 'react'
+import ModalHeader from '../../components/ModalHeader'
 
 const HindranceModal = () => {
     return (
-        <div>
+        <>
+            <ModalHeader />
             <h1>Hindrance Modal</h1>
-        </div>
+        </>
     )
 }
 
