@@ -6,42 +6,42 @@ import HomeModals from '../utils/HomeModals'
 
 const HomePage = () => {
 
-    const [activeModal, setActiveModal] = useState("route");
-    console.log("homepage")
+  const [activeModal, setActiveModal] = useState("route");
+  console.log("homepage")
 
-    const btnModalClick = (modal) => {
-        setActiveModal(modal);
-      };
+  const btnModalClick = (modal) => {
+    setActiveModal(modal);
+  };
     
-    return (
-        <>
-            <div className='home-modal'>
-                <HomeModals 
-                    aboutModal={activeModal === "about"}
-                    reportModal={activeModal === "report"}
-                    notifModal={activeModal === "notif"}
-                    routeModal={activeModal === "route"}
-                    // roadModal={activeModal === "road"}
-                    hindranceModal={activeModal === "hindrance"}
-                />
-            </div>
+  return (
+    <>
+      <div className='home-modal'>
+        <HomeModals 
+          aboutModal={activeModal === "about"}
+          reportModal={activeModal === "report"}
+          notifModal={activeModal === "notif"}
+          routeModal={activeModal === "route"}
+          // roadModal={activeModal === "road"}
+          hindranceModal={activeModal === "hindrance"}
+        />
+      </div>
 
-            <GoogleMapApi />  
+      <GoogleMapApi />  
 
-            <div className="home-buttons">
-                <HomeButtons 
-                    about = {true}
-                    report = {true}
-                    notif = {true}
-                    route = {true}
-                    // road = {true}
-                    hindrance = {true}
+      <div className="home-buttons">
+        <HomeButtons 
+          about = {true}
+          report = {true}
+          notif = {true}
+          route = {true}
+          // road = {true}
+          hindrance = {true}
 
-                    btnModalClick={btnModalClick}
-                />
-            </div>
-        </>
-    )
+          btnModalClick={btnModalClick}
+        />
+      </div>
+    </>
+  )
 }
 
 export default HomePage

@@ -1,12 +1,11 @@
 import Routing from "./utils/Routing"
 
 function App() {
-    return (
-        <>
-            <Routing />
-
-        </>
-    );
+  return (
+    <>
+      <Routing />
+    </>
+  );
 }
 
 export default App;

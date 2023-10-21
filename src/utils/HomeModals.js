@@ -7,16 +7,16 @@ import RoadModal from '../views/modals/RoadModal'
 import RouteModal from '../views/modals/RouteModal'
 
 const HomeModals = (props) => {
-    return (
-        <>
-            {props.aboutModal ? <AboutModal /> : <></>}
-            {props.reportModal ? <ReportModal /> : <></>}
-            {props.notifModal ? <NotifModal /> : <></>}
-            {props.routeModal ? <RouteModal /> : <></>}
-            {props.roadModal ? <RoadModal /> : <></>}
-            {props.hindranceModal ? <HindranceModal /> : <></>}
-        </>
-    )
+  return (
+    <>
+      {props.aboutModal ? <AboutModal /> : <></>}
+      {props.reportModal ? <ReportModal /> : <></>}
+      {props.notifModal ? <NotifModal /> : <></>}
+      {props.routeModal ? <RouteModal /> : <></>}
+      {props.roadModal ? <RoadModal /> : <></>}
+      {props.hindranceModal ? <HindranceModal /> : <></>}
+    </>
+  )
 }
 
 export default HomeModals
