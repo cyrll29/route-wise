@@ -5,6 +5,7 @@ import logo from '../assets/img/logo.png'
 const LandingPage = () => {
 
     const navigate = useNavigate();
+    console.log("landing page")
 
     const navigateToLoginPage = () => {
         navigate('/LoginPage')

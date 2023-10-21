@@ -1,10 +1,11 @@
-import React from 'react'
+import ModalHeader from '../../components/ModalHeader'
 
 const AboutModal = () => {
     return (
-        <div>
+        <>
+            <ModalHeader />
             <h1>About Modal</h1>
-        </div>
+        </>
     )
 }
 

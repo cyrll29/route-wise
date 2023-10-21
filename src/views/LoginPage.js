@@ -7,6 +7,7 @@ import logo from '../assets/img/logo.png'
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    console.log("login page")
 
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')

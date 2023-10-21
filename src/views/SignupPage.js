@@ -5,6 +5,7 @@ import '../assets/styles/signup.css'
 
 const SignupPage = () => {
     const navigate = useNavigate();
+    console.log("signup page")
 
     const [userName, setUserName] = useState('')
     const [userEmail, setUserEmail] = useState('')
