@@ -3,7 +3,9 @@ import ModalHeader from '../../components/ModalHeader'
 const HindranceModal = () => {
   return (
     <>
-      <ModalHeader />
+      <ModalHeader 
+        title='Hindrance'
+      />
       <h1>Hindrance Modal</h1>
     </>
   )

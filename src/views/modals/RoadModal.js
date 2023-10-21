@@ -3,7 +3,9 @@ import ModalHeader from '../../components/ModalHeader'
 const RoadModal = () => {
   return (
     <>
-      <ModalHeader />
+      <ModalHeader 
+        title='Condition'
+      />
       <h1>Road Modal</h1>
     </>
   )

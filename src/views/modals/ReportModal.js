@@ -3,7 +3,9 @@ import ModalHeader from '../../components/ModalHeader'
 const ReportModal = () => {
   return (
     <>
-      <ModalHeader />
+      <ModalHeader 
+        title='Report'
+      />
       <h1>Report Modal</h1>
     </>
   )
