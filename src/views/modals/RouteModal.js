@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
+import routePlaceholder from '../../assets/img/placeholder.png'
 import Select from 'react-select'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -26,6 +27,7 @@ const RouteModal = () => {
     ]
 
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [routeList, setRouteList] = useState([]);
 
     const handleSelectChange = (selectedValues) => {
         setSelectedOptions(selectedValues);
@@ -77,7 +79,14 @@ const RouteModal = () => {
             </div>
 
             <div className='route-modal-bottom'>
-
+                {routeList.length === 0 ? (
+                    <div className='route-modal-bottom-nonexist'>
+                        <img className='route-modal-bottom-placeholder' src={ routePlaceholder } alt='route'></img>
+                        <p>Please enter both origin and destination.</p>
+                    </div>
+                ) : 
+                    <p>Waiting for data</p> 
+                }
             </div>
         </>
     )
