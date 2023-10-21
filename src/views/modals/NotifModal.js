@@ -3,7 +3,9 @@ import ModalHeader from '../../components/ModalHeader'
 const NotifModal = () => {
   return (
     <>
-      <ModalHeader />
+      <ModalHeader 
+        title='Notification'
+      />
       <h1>Notification Modal</h1>
     </>
   )

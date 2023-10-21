@@ -19,6 +19,7 @@ const GoogleMapApi = ({mapStyle}) => {
     zoom: 13,
     center: { lat: 14.676208, lng: 121.043861 },
     mapTypeId: "roadmap",
+    mapId: "cf8af2361b08851",
     styles: GoogleMapStyle.mapStyle,
 
     // UI Controls
@@ -29,6 +30,7 @@ const GoogleMapApi = ({mapStyle}) => {
     rotateControl: false,
     fullscreenControl: false,  
     disableDefaultUI: true,
+    clickableIcons: false,
   }
 
   return <Map options={mapOptions} />

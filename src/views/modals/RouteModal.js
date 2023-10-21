@@ -39,7 +39,9 @@ const RouteModal = () => {
   
   return (
     <>
-      <ModalHeader />
+      <ModalHeader 
+        isRoute = {true}
+      />
       <div className='route-modal-top'>
         <div className='route-modal-top-title'>
           <p>Find your Public Transportation Route</p>
@@ -51,47 +53,47 @@ const RouteModal = () => {
             <img className='route-modal-icon' src={ routeIcon } alt="route-icon" />
             <div className='route-modal-search-box'>
               <input 
-                  className='route-modal-combo-box' 
-                  type="text" 
-                  placeholder='Origin'
+                className='route-modal-combo-box' 
+                type="text" 
+                placeholder='Origin'
               />
               <input 
-                  className='route-modal-combo-box' 
-                  type="text" 
-                  placeholder='Destination'
+                className='route-modal-combo-box' 
+                type="text" 
+                placeholder='Destination'
               />
             </div>
           </div>
           <div className='route-modal-top-right'>
-              <FontAwesomeIcon icon="rotate" className="route-modal-reset-icon"/>
+            <FontAwesomeIcon icon="rotate" className="route-modal-reset-icon"/>
           </div>
         </div>
 
 
         <div className='route-modal-top-options'>
-            <FontAwesomeIcon icon="car" className="route-modal-reset-icon"/>
-            <Select
-                options={transportationOptions}
-                isSearchable={true}
-                isMulti
-                placeholder="Select a transportation option"
-                onChange={handleSelectChange}
-                value={selectedOptions}
-                styles={customStyles}
-            />
+          <FontAwesomeIcon icon="car" className="route-modal-reset-icon"/>
+          <Select
+              options={transportationOptions}
+              isSearchable={true}
+              isMulti
+              placeholder="Select a transportation option"
+              onChange={handleSelectChange}
+              value={selectedOptions}
+              styles={customStyles}
+          />
         </div>
 
 
         <div className='route-modal-button'>
-            <button className='route-modal-btn'>Find Route</button>
+          <button className='route-modal-btn'>Find Route</button>
         </div>
       </div>
 
       <div className='route-modal-bottom'>
         {routeList.length === 0 ? (
           <div className='route-modal-bottom-nonexist'>
-              <img className='route-modal-bottom-placeholder' src={ routePlaceholder } alt='route'></img>
-              <p>Please enter both origin and destination.</p>
+            <img className='route-modal-bottom-placeholder' src={ routePlaceholder } alt='route'></img>
+            <p>Please enter both origin and destination.</p>
           </div>
         ) : 
           <p>Waiting for data</p> 
