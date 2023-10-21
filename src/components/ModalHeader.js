@@ -10,7 +10,7 @@ const ModalHeader = () => {
                         <img className='header-logo' src={logoBG} alt="logo" />
                     </div>
                     <div>
-                        <h2>RouteWise</h2>
+                        <h2><span>Route</span>Wise</h2>
                     </div>
                 </div>
                 <div className='header-modal-col2'>
