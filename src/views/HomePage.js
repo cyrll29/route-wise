@@ -32,7 +32,7 @@ const HomePage = () => {
         <HomeButtons 
           about = {true}
           report = {true}
-          notif = {true}
+          notif = {false}
           route = {true}
           // road = {true}
           hindrance = {true}
