@@ -30,7 +30,7 @@ const HomePage = () => {
 
       <div className="home-buttons">
         <HomeButtons 
-          about = {true}
+          about = {false}
           report = {true}
           notif = {false}
           route = {true}
