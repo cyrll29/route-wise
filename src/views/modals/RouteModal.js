@@ -44,7 +44,7 @@ const RouteModal = () => {
       />
       <div className='route-modal-top'>
         <div className='route-modal-top-title'>
-          <p>Find your Public Transportation Route</p>
+          <h4>Find your Public Transportation Route</h4>
         </div>
 
 
