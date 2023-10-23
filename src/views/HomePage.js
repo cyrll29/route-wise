@@ -6,7 +6,7 @@ import HomeModals from '../utils/HomeModals'
 
 const HomePage = () => {
 
-  const [activeModal, setActiveModal] = useState("route");
+  const [activeModal, setActiveModal] = useState("planner");
   console.log("homepage")
 
   const btnModalClick = (modal) => {
@@ -18,11 +18,10 @@ const HomePage = () => {
       <div className='home-modal'>
         <HomeModals 
           aboutModal={activeModal === "about"}
-          reportModal={activeModal === "report"}
+          routeReportModal={activeModal === "report"}
           notifModal={activeModal === "notif"}
-          routeModal={activeModal === "route"}
-          // roadModal={activeModal === "road"}
-          hindranceModal={activeModal === "hindrance"}
+          routePlannerModal={activeModal === "planner"}
+          routeUpdateModal={activeModal === "updates"}
         />
       </div>
 
@@ -30,12 +29,11 @@ const HomePage = () => {
 
       <div className="home-buttons">
         <HomeButtons 
-          about = {false}
-          report = {true}
+          about = {true}
+          routeReport = {true}
+          routePlanner = {true}
+          routeUpdate = {true}
           notif = {false}
-          route = {true}
-          // road = {true}
-          hindrance = {true}
 
           btnModalClick={btnModalClick}
         />

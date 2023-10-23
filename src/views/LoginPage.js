@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/login.css'
-import googleLogo from '../assets/img/google-logo.png'
-import facebookLogo from '../assets/img/facebook-logo.png'
+// import googleLogo from '../assets/img/google-logo.png'
+// import facebookLogo from '../assets/img/facebook-logo.png'
 import logo from '../assets/img/logo.png'
 
 const LoginPage = () => {
@@ -28,6 +28,10 @@ const LoginPage = () => {
     }
   }
 
+  const navigateToLandingPage = () => {
+    navigate('/')
+  }
+
   return (
     <div className="login-page">
       <div className='login-container'>
@@ -44,7 +48,7 @@ const LoginPage = () => {
             <input 
               type="text"
               value={userEmail}
-              onChange={handleEmailChange} 
+              onChange={() => handleEmailChange()} 
             />
           </div>
 
@@ -53,30 +57,34 @@ const LoginPage = () => {
             <input 
               type="password"
               value={userPassword}
-              onChange={handlePasswordChange} 
+              onChange={() => handlePasswordChange()} 
             />
           </div>
 
           <div className='form-button mb20'>
-            <button onClick={navigateToHomePage}>Login</button>
+            <button onClick={() => navigateToHomePage()}>Login</button>
           </div>
         </div>
 
+        {/* Back Button */}
+        <div className='back-button-div'>
+          <button className='back-btn' onClick={() => navigateToLandingPage()}>Back</button>
+        </div>
 
-        <div className='login-or mb10'>
+        {/* <div className='login-or mb10'>
           <hr />
           <p>or</p>
           <hr />
-        </div>
+        </div> */}
 
 
-        <div className='login-btn'>
+        {/* <div className='login-btn'>
           <button><img className='login-btn-logo' src={googleLogo} alt="" />Sign in With Google</button>
           <button><img className='login-btn-logo' src={facebookLogo} alt="" />Sign in With Facebook</button>
           <div>
               
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

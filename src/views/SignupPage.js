@@ -28,6 +28,10 @@ const SignupPage = () => {
     setUserConfirmPassword(event.target.value)
   }
 
+  const signUpClick = () => {
+    navigate('/')
+  }
+
   const navigateToLandingPage = () => {
     navigate('/')
   }
@@ -49,7 +53,7 @@ const SignupPage = () => {
             <input 
               type="text"
               value={userName}
-              onChange={handleNameChange} 
+              onChange={() => handleNameChange()} 
             />
           </div>
 
@@ -58,7 +62,7 @@ const SignupPage = () => {
             <input 
               type="text"
               value={userEmail}
-              onChange={handleEmailChange} 
+              onChange={() => handleEmailChange()} 
             />
           </div>
 
@@ -67,7 +71,7 @@ const SignupPage = () => {
             <input 
               type="password"
               value={userPassword}
-              onChange={handlePasswordChange} 
+              onChange={() => handlePasswordChange()} 
             />
           </div>
 
@@ -76,14 +80,17 @@ const SignupPage = () => {
             <input 
               type="password"
               value={userConfirmPassword}
-              onChange={handleConfirmPasswordChange} 
+              onChange={() => handleConfirmPasswordChange()} 
             />
           </div>
 
           <div className='form-button mb20'>
-            <button onClick={navigateToLandingPage}>Sign Up</button>
+            <button onClick={() => signUpClick()}>Sign Up</button>
           </div>
         </div>
+      </div>
+      <div className='back-button-div'>
+        <button className='back-btn' onClick={() => navigateToLandingPage()}>Back</button>
       </div>
     </div>
   )

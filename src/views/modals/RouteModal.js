@@ -40,7 +40,7 @@ const RouteModal = () => {
   return (
     <>
       <ModalHeader 
-        isRoute = {true}
+        title='Planner'
       />
       <div className='route-modal-top'>
         <div className='route-modal-top-title'>
