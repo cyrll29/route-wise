@@ -1,7 +1,7 @@
 import '../assets/styles/modals.css'
 import logoBG from '../assets/img/logo-test.png'
 
-const ModalHeader = ({ title, isRoute = false }) => {
+const ModalHeader = ({ title, isRoute = true }) => {
   return (
     <>
       <div className="header-modal">
@@ -15,7 +15,7 @@ const ModalHeader = ({ title, isRoute = false }) => {
         </div>
         <div className='header-modal-col2'>
           <div>
-            {isRoute ? (<h4>Route<span>Planner</span></h4>)
+            {isRoute ? (<h4>Route<span>{ title }</span></h4>)
             : <h4><span>{ title }</span></h4>
             }
           </div>

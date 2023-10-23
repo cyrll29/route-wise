@@ -5,8 +5,12 @@ const AboutModal = () => {
     <>
       <ModalHeader 
         title='About'
+        isRoute={false}
       />
-      <h1>About Modal</h1>
+      <h1>RouteWise Developers</h1>
+      <p>We are a group of four passionate individuals hailing from the Polytechnic University of the Philippines, Sta. Mesa. 
+        Currently, we are all fourth-year students pursuing a Bachelor of Science in Computer Engineering. 
+        Our journey through this program has equipped us with the knowledge and skills necessary to create this website and bring our vision to life.</p>
     </>
   )
 }
