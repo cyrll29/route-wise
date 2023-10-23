@@ -11,7 +11,8 @@ const GoogleMapApi = ({mapStyle}) => {
     
   const { isLoaded } = useLoadScript({ 
     // googleMapsApiKey: "AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM",
-    googleMapsApiKey: "AIzaSy3WkL7V9XzNrR9T07SrV_z0B7WlJsG5U4s"
+    libraries: ["places"],
+    // googleMapsApiKey: "AIzaSy3WkL7V9XzNrR9T07SrV_z0B7WlJsG5U4s"
   });
 
   if (!isLoaded) return <div>Loading...</div>
@@ -43,7 +44,8 @@ function Map({ options }) {
   return (
     // <GoogleMap 
     //   options={options}
-    //   mapContainerClassName="map-container">
+    //   mapContainerClassName="map-container"
+    // >
     // </GoogleMap>
     <iframe
       width="100%"

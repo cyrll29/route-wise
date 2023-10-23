@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
+import SearchComboBox from '../../components/SearchComboBox'
 import Select from 'react-select'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -52,16 +53,23 @@ const RouteModal = () => {
           <div className='route-modal-top-left'>
             <img className='route-modal-icon' src={ routeIcon } alt="route-icon" />
             <div className='route-modal-search-box'>
-              <input 
+              {/* <input 
                 className='route-modal-combo-box' 
                 type="text" 
                 placeholder='Origin'
-              />
-              <input 
+              /> */}
+              {/* <input 
                 className='route-modal-combo-box' 
                 type="text" 
                 placeholder='Destination'
-              />
+              /> */}
+              <div className='route-modal-combo-box'>
+                <SearchComboBox />
+              </div>
+              <div className='route-modal-combo-box'>
+                <SearchComboBox />
+              </div>
+
             </div>
           </div>
           <div className='route-modal-top-right'>
@@ -96,7 +104,9 @@ const RouteModal = () => {
             <p>Please enter both origin and destination.</p>
           </div>
         ) : 
-          <p>Waiting for data</p> 
+          <div>
+            <p>Waiting for data</p> 
+          </div>
         }
       </div>
     </>
