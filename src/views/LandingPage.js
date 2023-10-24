@@ -2,26 +2,31 @@ import { useNavigate } from 'react-router-dom'
 import '../assets/styles/landing.css'
 import logo from '../assets/img/logo.png'
 
+
 const LandingPage = () => {
 
+  // Declarations
   const navigate = useNavigate();
-  console.log("landing page")
+  // End
 
-  const navigateToLoginPage = () => {
-    navigate('/LoginPage')
-  }
 
+  // Guest Access
   const navigateToGuestPage = () => {
-    navigate('/HomePage')
+    navigate('/HomePage');
   }
+  // End
 
-  const navigateToSignupPage = () => {
-    navigate('/SignupPage')
-  }
+
+  // Others
+  const navigateToLoginPage = () => navigate('/LoginPage');
+  const navigateToSignupPage = () => navigate('/SignupPage');
+  // End
+  
     
   return (
     <div className='landing-page'>
       <div className='landing-container'>
+        
         <div className='landing-logo'>
           <img src= {logo} alt="logo" />
         </div>

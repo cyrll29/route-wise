@@ -1,5 +1,6 @@
 import ModalHeader from '../../components/ModalHeader'
 
+
 const NotifModal = () => {
   return (
     <>

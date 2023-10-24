@@ -4,6 +4,7 @@ import NotifIcon from '../assets/img/notification-icon.png'
 import RouteIcon from '../assets/img/route-icon.png'
 import HindranceIcon from '../assets/img/hindrance-icon.png'
 
+
 const HomeButtons = (props) => {
   return (
     <>
