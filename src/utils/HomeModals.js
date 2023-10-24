@@ -5,6 +5,7 @@ import NotifModal from '../views/modals/NotifModal'
 import RouteUpdateModal from '../views/modals/HindranceModal'
 import RoutePlannerModal from '../views/modals/RouteModal'
 
+
 const HomeModals = (props) => {
   return (
     <>

@@ -4,14 +4,18 @@ import GoogleMapApi from '../components/GoogleMapApi'
 import HomeButtons from '../utils/HomeButtons'
 import HomeModals from '../utils/HomeModals' 
 
+
 const HomePage = () => {
 
+  // Declarations
   const [activeModal, setActiveModal] = useState("planner");
-  console.log("homepage")
+  // End
 
-  const btnModalClick = (modal) => {
-    setActiveModal(modal);
-  };
+
+  // onClick function for buttons
+  const btnModalClick = (modal) => setActiveModal(modal);
+  // End
+
     
   return (
     <>
@@ -34,7 +38,6 @@ const HomePage = () => {
           routePlanner = {true}
           routeUpdate = {true}
           notif = {false}
-
           btnModalClick={btnModalClick}
         />
       </div>
