@@ -1,32 +1,39 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/login.css'
-import googleLogo from '../assets/img/google-logo.png'
-import facebookLogo from '../assets/img/facebook-logo.png'
 import logo from '../assets/img/logo.png'
 
+
 const LoginPage = () => {
+
+  // Declarations
   const navigate = useNavigate();
-  console.log("login page")
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  // End 
 
-  const [userEmail, setUserEmail] = useState('')
-  const [userPassword, setUserPassword] = useState('')
 
-  const handleEmailChange = (event) => {
-    setUserEmail(event.target.value)
-  }
+  // onChange input functions
+  const handleEmailChange = (event) => setUserEmail(event.target.value);
+  const handlePasswordChange = (event) => setUserPassword(event.target.value);
+  // End
 
-  const handlePasswordChange = (event) => {
-    setUserPassword(event.target.value)
-  }
 
-  const navigateToHomePage = () => {
+  // onClick function of the Login Button
+  const loginClick = () => {
     if (userEmail === "admin" && userPassword === "admin") {
-      navigate('/HomePage')
+      navigate('/HomePage');
     } else {
-      alert("Wrong Email/Password")
+      alert("Wrong Email/Password");
     }
   }
+  // End
+
+
+  // Others
+  const navigateToLandingPage = () => navigate('/');
+  // End
+
 
   return (
     <div className="login-page">
@@ -58,24 +65,12 @@ const LoginPage = () => {
           </div>
 
           <div className='form-button mb20'>
-            <button onClick={navigateToHomePage}>Login</button>
+            <button onClick={() => loginClick()}>Login</button>
           </div>
         </div>
 
-
-        <div className='login-or mb10'>
-          <hr />
-          <p>or</p>
-          <hr />
-        </div>
-
-
-        <div className='login-btn'>
-          <button><img className='login-btn-logo' src={googleLogo} alt="" />Sign in With Google</button>
-          <button><img className='login-btn-logo' src={facebookLogo} alt="" />Sign in With Facebook</button>
-          <div>
-              
-          </div>
+        <div className='back-button-div'>
+          <button className='back-btn' onClick={() => navigateToLandingPage()}>Back</button>
         </div>
       </div>
     </div>

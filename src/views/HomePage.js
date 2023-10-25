@@ -4,25 +4,28 @@ import GoogleMapApi from '../components/GoogleMapApi'
 import HomeButtons from '../utils/HomeButtons'
 import HomeModals from '../utils/HomeModals' 
 
+
 const HomePage = () => {
 
-  const [activeModal, setActiveModal] = useState("route");
-  console.log("homepage")
+  // Declarations
+  const [activeModal, setActiveModal] = useState("planner");
+  // End
 
-  const btnModalClick = (modal) => {
-    setActiveModal(modal);
-  };
+
+  // onClick function for buttons
+  const btnModalClick = (modal) => setActiveModal(modal);
+  // End
+
     
   return (
     <>
       <div className='home-modal'>
         <HomeModals 
           aboutModal={activeModal === "about"}
-          reportModal={activeModal === "report"}
+          routeReportModal={activeModal === "report"}
           notifModal={activeModal === "notif"}
-          routeModal={activeModal === "route"}
-          // roadModal={activeModal === "road"}
-          hindranceModal={activeModal === "hindrance"}
+          routePlannerModal={activeModal === "planner"}
+          routeUpdateModal={activeModal === "updates"}
         />
       </div>
 
@@ -31,12 +34,10 @@ const HomePage = () => {
       <div className="home-buttons">
         <HomeButtons 
           about = {true}
-          report = {true}
-          notif = {true}
-          route = {true}
-          // road = {true}
-          hindrance = {true}
-
+          routeReport = {true}
+          routePlanner = {true}
+          routeUpdate = {true}
+          notif = {false}
           btnModalClick={btnModalClick}
         />
       </div>
