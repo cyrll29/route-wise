@@ -178,3 +178,111 @@ input {
 }
 
 /* --------------------REPORT MODAL-------------------- */
+
+.report-modal-main {
+  position: relative;
+  top: 12.75%;
+  padding: 15px;
+}
+.report-modal-instruction {
+  text-align: justify;
+  font-size: 20px;
+}
+
+.report-modal-mark {
+  display: flex;
+  padding: 20px 0 0 0;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.report-modal-mark-button {
+  background-color: #272b39;
+  color: #f8c107;
+  border: none;
+  border-radius: 10px;
+  height: 38px;
+  width: 100px;
+  padding: 5px;
+  transition: opacity 0.3s;
+}
+.report-modal-mark-location {
+  height: 38px;
+  width: 200px;
+  border-color: black;
+  border-width: 1px;
+}
+.report-modal-title {
+  display: flex;
+  padding: 20px 0 0 0;
+}
+.report-modal-title-input {
+  height: 38px;
+  width: 100%;
+  display: flex;
+  padding: 3px;
+  border-color: black;
+  border-width: 1px;
+  font-size: 15px;
+  resize: none;
+}
+
+.report-modal-category-div {
+  display: flex;
+  padding: 20px 0 0 0;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.report-modal-category {
+  background-color: #272b39;
+  color: #f8c107;
+  border: none;
+  border-radius: 10px;
+  height: 38px;
+  width: 100px;
+  padding: 10px;
+  transition: opacity 0.3s;
+}
+.report-modal-select {
+  width: 200px;
+  border-color: black;
+}
+.report-modal-body {
+  display: flex;
+  padding: 20px 0 0 0;
+}
+.report-modal-body-input {
+  height: 200px;
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  border-color: black;
+  border-width: 1px;
+  font-size: 15px;
+  resize: none;
+}
+.report-modal-button {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 0 0;
+}
+.report-modal-submit {
+  background-color: #272b39;
+  color: #f8c107;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+  width: 75%;
+  padding: 7px 40px;
+  transition: opacity 0.3s;
+}
+
+.report-modal-submit:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+.report-modal-mark-button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
