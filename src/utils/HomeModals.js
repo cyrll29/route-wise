@@ -1,4 +1,3 @@
-import React from 'react'
 import AboutModal from '../views/modals/AboutModal'
 import RouteReportModal from '../views/modals/ReportModal'
 import NotifModal from '../views/modals/NotifModal'
