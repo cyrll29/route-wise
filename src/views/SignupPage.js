@@ -3,39 +3,39 @@ import { useNavigate } from 'react-router-dom'
 import logo from '../assets/img/logo.png'
 import '../assets/styles/signup.css'
 
+
 const SignupPage = () => {
+
+  // Declarations
   const navigate = useNavigate();
-  console.log("signup page")
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [userConfirmPassword, setUserConfirmPassword] = useState('');
+  // End
 
-  const [userName, setUserName] = useState('')
-  const [userEmail, setUserEmail] = useState('')
-  const [userPassword, setUserPassword] = useState('')
-  const [userConfirmPassword, setUserConfirmPassword] = useState('')
 
-  const handleNameChange = (event) => {
-    setUserName(event.target.value)
-  }
+  // onChange input functions
+  const handleNameChange = (event) => setUserName(event.target.value)
+  const handleEmailChange = (event) => setUserEmail(event.target.value)
+  const handlePasswordChange = (event) => setUserPassword(event.target.value)
+  const handleConfirmPasswordChange = (event) => setUserConfirmPassword(event.target.value)
+  // End
 
-  const handleEmailChange = (event) => {
-    setUserEmail(event.target.value)
-  }
 
-  const handlePasswordChange = (event) => {
-    setUserPassword(event.target.value)
-  }
+  // onClick function of the Signup Button
+  const signupClick = () => navigate('/')
+  // End
 
-  const handleConfirmPasswordChange = (event) => {
-    setUserConfirmPassword(event.target.value)
-  }
 
-  const navigateToLandingPage = () => {
-    navigate('/')
-  }
+  // Others
+  const navigateToLandingPage = () => navigate('/')
+  // End
+
 
   return (
     <div className="signup-page">
       <div className='signup-container'>
-
         <div className='signup-logo'>
             <img src= {logo} alt="logo" />
             <h1><span>R</span>oute<span>W</span>ise</h1>
@@ -81,9 +81,13 @@ const SignupPage = () => {
           </div>
 
           <div className='form-button mb20'>
-            <button onClick={navigateToLandingPage}>Sign Up</button>
+            <button onClick={() => signupClick()}>Sign Up</button>
           </div>
         </div>
+      </div>
+      
+      <div className='back-button-div'>
+        <button className='back-btn' onClick={() => navigateToLandingPage()}>Back</button>
       </div>
     </div>
   )
