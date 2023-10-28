@@ -2,7 +2,6 @@ import { useState } from 'react'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
-import SearchComboBox from '../../components/SearchComboBox'
 import Select from 'react-select'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -33,6 +32,7 @@ const RouteModal = () => {
   ]
   const routeTestData = [
     { value: '0', title: "Going to SM North Edsa", way: "Ride jeep" },
+    { value: '1', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
     { value: '1', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
   ]
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -73,12 +73,6 @@ const RouteModal = () => {
                 type="text" 
                 placeholder='Destination'
               />
-              {/* <div className='route-modal-combo-box'>
-                <SearchComboBox />
-              </div>
-              <div className='route-modal-combo-box'>
-                <SearchComboBox />
-              </div> */}
             </div>
           </div>
           <div className='route-modal-top-right'>
