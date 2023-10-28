@@ -1,4 +1,5 @@
 import ModalHeader from "../../components/ModalHeader";
+import "../../assets/styles/modals.css";
 
 const ReportModal = () => {
   return (
@@ -14,7 +15,7 @@ const ReportModal = () => {
 
         <div className="report-modal-mark">
           <button className="report-modal-mark-button">
-            Mark the location
+            Mark the Location
           </button>
           <input
             className="report-modal-mark-location"
