@@ -10,6 +10,7 @@ import * as Icons from '@fortawesome/free-solid-svg-icons';
 import '../../assets/styles/modals.css'
 
 
+
 const RouteModal = () => {
 
   // Fontawesome icon modifications
@@ -46,12 +47,10 @@ const RouteModal = () => {
 
   useEffect(() => {
     // Code for the combobox of origin
-    console.log(origin);
   }, [origin]);
 
   useEffect(() => {
     // Code for the combobox of origin
-    console.log(destination);
   }, [destination]);
 
   const handleOriginInput = (e) => {
@@ -84,22 +83,22 @@ const RouteModal = () => {
             <img className='route-modal-icon' src={ routeIcon } alt="route-icon" />
 
             <div className='route-modal-search-box'>
-              <input 
-                id='origin'
-                className='route-modal-combo-box' 
-                type="text" 
-                value={origin}
-                onChange={handleOriginInput}
-                placeholder='Origin'
-              />
-              <input 
-                id='destination'
-                className='route-modal-combo-box' 
-                type="text" 
-                value={destination}
-                onChange={handleDestinationInput}
-                placeholder='Destination'
-              />
+                <input 
+                  id='origin'
+                  className='route-modal-combo-box' 
+                  type="text" 
+                  value={origin}
+                  onChange={handleOriginInput}
+                  placeholder='Origin'
+                />
+                <input 
+                  id='destination'
+                  className='route-modal-combo-box' 
+                  type="text" 
+                  value={destination}
+                  onChange={handleDestinationInput}
+                  placeholder='Destination'
+                />
             </div>
           </div>
           <div className='route-modal-top-right'>
