@@ -29,7 +29,7 @@ const HomePage = () => {
 
       <div className="home-buttons">
         <HomeButtons 
-          about = {true}
+          about = {false}
           routeReport = {true}
           routePlanner = {true}
           routeUpdate = {true}

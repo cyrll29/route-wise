@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
@@ -16,37 +16,58 @@ const RouteModal = () => {
   const iconList = Object
     .keys(Icons)
     .filter(key => key !== "fas" && key !== "prefix" )
-    .map(icon => Icons[icon]);
-  library.add(...iconList);
+    .map(icon => Icons[icon])
+  library.add(...iconList)
   // End
     
 
   // Declarations
   const transportationOptions = [
-    { value: '0', label: 'All'},
-    { value: '1', label: 'Jeepney'},
-    { value: '2', label: 'Carousel'},
-    { value: '3', label: 'Train'},
-    { value: '4', label: 'UV Express'},
-    { value: '5', label: 'Walking'}
+    { value: '0', label: 'Jeepney'},
+    { value: '1', label: 'Carousel'},
+    { value: '2', label: 'Train'},
+    { value: '3', label: 'UV Express'},
+    { value: '4', label: 'Walking'}
   ]
   const routeTestData = [
     { value: '0', title: "Going to SM North Edsa", way: "Ride jeep" },
     { value: '1', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
     { value: '2', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
   ]
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [routeList, setRouteList] = useState([]);
-  // End
+  const [origin, setOrigin] = useState("")
+  const [destination, setDestination] = useState("")
+  const [selectedOptions, setSelectedOptions] = useState([])
+  const [routeList, setRouteList] = useState([])
 
-
+  // Functions
   const getRoutes = () => {
     setRouteList(routeTestData)
   }
 
-  const handleSelectChange = (selectedValues) => setSelectedOptions(selectedValues);
+  useEffect(() => {
+    // Code for the combobox of origin
+    console.log(origin);
+  }, [origin]);
 
-  
+  useEffect(() => {
+    // Code for the combobox of origin
+    console.log(destination);
+  }, [destination]);
+
+  const handleOriginInput = (e) => {
+    const originInput = e.target.value
+    setOrigin(originInput)
+  }
+
+  const handleDestinationInput = (e) => {
+    setDestination(e.target.value)
+    console.log(destination)
+  }
+
+  const handleSelectChange = (selectedValues) => {
+    setSelectedOptions(selectedValues)
+  }
+
   return (
     <>
       <ModalHeader 
@@ -64,15 +85,19 @@ const RouteModal = () => {
 
             <div className='route-modal-search-box'>
               <input 
-                id='place-origin'
+                id='origin'
                 className='route-modal-combo-box' 
                 type="text" 
+                value={origin}
+                onChange={handleOriginInput}
                 placeholder='Origin'
               />
               <input 
-                id='place-destination'
+                id='destination'
                 className='route-modal-combo-box' 
                 type="text" 
+                value={destination}
+                onChange={handleDestinationInput}
                 placeholder='Destination'
               />
             </div>
@@ -86,7 +111,6 @@ const RouteModal = () => {
           <FontAwesomeIcon icon="car" className="route-modal-reset-icon"/>
           <Select
               options={transportationOptions}
-              isSearchable={true}
               isMulti
               placeholder="Select a transportation option"
               onChange={handleSelectChange}
@@ -141,6 +165,6 @@ const customStyles = {
     fontSize: '15px',
     border: '2px inset #EBE9ED',
     width: '290px',
-    height: '10%',
+    height: '100px',
   }),
 };
