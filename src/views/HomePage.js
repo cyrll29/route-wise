@@ -9,13 +9,9 @@ const HomePage = () => {
 
   // Declarations
   const [activeModal, setActiveModal] = useState("planner");
-  // End
 
-
-  // onClick function for buttons
+  // Functions
   const btnModalClick = (modal) => setActiveModal(modal);
-  // End
-
     
   return (
     <>

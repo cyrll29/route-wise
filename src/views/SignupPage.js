@@ -12,26 +12,17 @@ const SignupPage = () => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassword, setUserConfirmPassword] = useState('');
-  // End
 
-
-  // onChange input functions
+  // Functions
+  const handleSignupClick = () => {
+    // Authentication Conditions
+    navigate('/')
+  }
+  
   const handleNameChange = (event) => setUserName(event.target.value)
   const handleEmailChange = (event) => setUserEmail(event.target.value)
   const handlePasswordChange = (event) => setUserPassword(event.target.value)
   const handleConfirmPasswordChange = (event) => setUserConfirmPassword(event.target.value)
-  // End
-
-
-  // onClick function of the Signup Button
-  const signupClick = () => navigate('/')
-  // End
-
-
-  // Others
-  const navigateToLandingPage = () => navigate('/')
-  // End
-
 
   return (
     <div className="signup-page">
@@ -48,8 +39,10 @@ const SignupPage = () => {
             <h6>Username: </h6>
             <input 
               type="text"
+              id='userName'
               value={userName}
               onChange={handleNameChange} 
+              autoComplete='on'
             />
           </div>
 
@@ -57,8 +50,10 @@ const SignupPage = () => {
             <h6>Email: </h6>
             <input 
               type="text"
+              id='userEmail'
               value={userEmail}
               onChange={handleEmailChange} 
+              autoComplete='on'
             />
           </div>
 
@@ -66,6 +61,7 @@ const SignupPage = () => {
             <h6>Password: </h6>
             <input 
               type="password"
+              id='userPassword'
               value={userPassword}
               onChange={handlePasswordChange} 
             />
@@ -75,19 +71,20 @@ const SignupPage = () => {
             <h6>Confirm Password: </h6>
             <input 
               type="password"
+              id='userConfirmPassword'
               value={userConfirmPassword}
               onChange={handleConfirmPasswordChange} 
             />
           </div>
 
           <div className='form-button mb20'>
-            <button onClick={() => signupClick()}>Sign Up</button>
+            <button onClick={handleSignupClick}>Sign Up</button>
           </div>
         </div>
       </div>
       
       <div className='back-button-div'>
-        <button className='back-btn' onClick={() => navigateToLandingPage()}>Back</button>
+        <button className='back-btn' onClick={() => navigate('/')}>Back</button>
       </div>
     </div>
   )

@@ -33,7 +33,7 @@ const RouteModal = () => {
   const routeTestData = [
     { value: '0', title: "Going to SM North Edsa", way: "Ride jeep" },
     { value: '1', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
-    { value: '1', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
+    { value: '2', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
   ]
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [routeList, setRouteList] = useState([]);
@@ -64,11 +64,13 @@ const RouteModal = () => {
 
             <div className='route-modal-search-box'>
               <input 
+                id='place-origin'
                 className='route-modal-combo-box' 
                 type="text" 
                 placeholder='Origin'
               />
               <input 
+                id='place-destination'
                 className='route-modal-combo-box' 
                 type="text" 
                 placeholder='Destination'

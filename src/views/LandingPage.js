@@ -2,27 +2,17 @@ import { useNavigate } from 'react-router-dom'
 import '../assets/styles/landing.css'
 import logo from '../assets/img/logo.png'
 
-
 const LandingPage = () => {
 
   // Declarations
-  const navigate = useNavigate();
-  // End
+  const navigate = useNavigate()
 
-
-  // Guest Access
+  // Functions
   const navigateToGuestPage = () => {
-    navigate('/HomePage');
+    // Authentication Conditions
+    navigate('/HomePage')
   }
-  // End
 
-
-  // Others
-  const navigateToLoginPage = () => navigate('/LoginPage');
-  const navigateToSignupPage = () => navigate('/SignupPage');
-  // End
-  
-    
   return (
     <div className='landing-page'>
       <div className='landing-container'>
@@ -36,12 +26,12 @@ const LandingPage = () => {
         </div>
 
         <div className='landing-btn'>
-          <button onClick={() => navigateToLoginPage()}>Sign in with Email</button>
-          <button onClick={() => navigateToGuestPage()}>Continue as Guest</button>
+          <button onClick={() => navigate('/LoginPage')}>Sign in with Email</button>
+          <button onClick={navigateToGuestPage}>Continue as Guest</button>
         </div>
 
         <div className='landing-txt'>
-          <h5>No Account? <span onClick={() => navigateToSignupPage()}>Create One</span></h5>
+          <h5>No Account? <span onClick={() => navigate('/SignupPage')}>Create One</span></h5>
         </div>
       </div>
     </div>

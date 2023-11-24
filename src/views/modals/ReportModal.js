@@ -30,6 +30,7 @@ const ReportModal = () => {
               Mark the Location
             </button>
             <input
+              id="report-location"
               className="report-modal-mark-location"
               type="text"
               placeholder="Location"
@@ -43,6 +44,7 @@ const ReportModal = () => {
             </div>
             <div className="report-modal-title-input-div">
               <input
+                id="report-title"
                 className="report-modal-title-input"
                 type="text"
                 placeholder="Report TItle"
@@ -55,6 +57,7 @@ const ReportModal = () => {
               Category
             </button>
             <Select
+              id="report-category"
               className="report-modal-select"
               options={reportCategory}
               isSearchable={true}
@@ -67,6 +70,7 @@ const ReportModal = () => {
             </div>
             <div className="report-modal-body-input-div">
               <textarea
+                id="report-description"
                 className="report-modal-body-input"
                 type="text"
                 placeholder="Describe the situation"

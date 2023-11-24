@@ -3,14 +3,12 @@ import
   useLoadScript} 
 from "@react-google-maps/api"
 import "../assets/styles/googlemap.css"
-import GoogleMapStyle from '../utils/GoogleMapStyle'
 
-const GoogleMapApi = ({mapStyle}) => {
+const GoogleMapApi = () => {
     
   const { isLoaded } = useLoadScript({ 
     googleMapsApiKey: "AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM",
     // libraries: ["places"],
-    // googleMapsApiKey: "AIzaSy3WkL7V9XzNrR9T07SrV_z0B7WlJsG5U4s"
   });
 
   if (!isLoaded) return <div>Loading...</div>
@@ -18,19 +16,10 @@ const GoogleMapApi = ({mapStyle}) => {
   const mapOptions = {
     zoom: 13,
     center: { lat: 14.676208, lng: 121.043861 },
-    mapTypeId: "roadmap",
-    // mapId: "cf8af2361b08851",
-    styles: GoogleMapStyle.mapStyle,
+    mapId: "cf8af2361b08851", // map id for map style changes
 
     // UI Controls
-    zoomControl: false,
-    mapTypeControl: false,
-    scaleControl: false,
-    streetViewControl: false,
-    rotateControl: false,
-    fullscreenControl: false,  
     disableDefaultUI: true,
-    clickableIcons: false,
   }
 
   return <Map options={mapOptions} />

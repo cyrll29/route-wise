@@ -7,33 +7,26 @@ import logo from '../assets/img/logo.png'
 const LoginPage = () => {
 
   // Declarations
-  const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  // End 
+  const navigate = useNavigate()
+  const [userEmail, setUserEmail] = useState('')
+  const [userPassword, setUserPassword] = useState('')
 
+  // Functions
+  const handleEmailChange = (e) => {
+    setUserEmail(e.target.value)
+  }
 
-  // onChange input functions
-  const handleEmailChange = (event) => setUserEmail(event.target.value);
-  const handlePasswordChange = (event) => setUserPassword(event.target.value);
-  // End
+  const handlePasswordChange = (e) => {
+    setUserPassword(e.target.value)
+  }
 
-
-  // onClick function of the Login Button
-  const loginClick = () => {
+  const handleLoginClick = () => {
     if (userEmail === "admin" && userPassword === "admin") {
-      navigate('/HomePage');
+      navigate('/HomePage')
     } else {
-      alert("Wrong Email/Password");
+      alert("Wrong Email/Password")
     }
   }
-  // End
-
-
-  // Others
-  const navigateToLandingPage = () => navigate('/');
-  // End
-
 
   return (
     <div className="login-page">
@@ -48,10 +41,12 @@ const LoginPage = () => {
         <div className='form-container'>
           <div className='mb20'>
             <h6>Email: </h6>
-            <input 
-              type="text"
+            <input
+              type="text" 
+              id='userEmail'
               value={userEmail}
               onChange={handleEmailChange} 
+              autoComplete='on'
             />
           </div>
 
@@ -59,18 +54,19 @@ const LoginPage = () => {
             <h6>Password: </h6>
             <input 
               type="password"
+              id='userPassword'
               value={userPassword}
               onChange={handlePasswordChange} 
             />
           </div>
 
           <div className='form-button mb20'>
-            <button onClick={() => loginClick()}>Login</button>
+            <button onClick={handleLoginClick}>Login</button>
           </div>
         </div>
 
         <div className='back-button-div'>
-          <button className='back-btn' onClick={() => navigateToLandingPage()}>Back</button>
+          <button className='back-btn' onClick={() => navigate('/')}>Back</button>
         </div>
       </div>
     </div>
