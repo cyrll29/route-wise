@@ -242,7 +242,6 @@ input {
   height: 38px;
   width: 100px;
   padding: 10px;
-  transition: opacity 0.3s;
 }
 .report-modal-select {
   width: 200px;
@@ -285,4 +284,45 @@ input {
 .report-modal-mark-button:hover {
   opacity: 0.7;
   cursor: pointer;
+}
+
+/* --------------------HINDRANCE MODAL-------------------- */
+.hindrance-modal-reportlist {
+  background-color: #f8c107;
+  padding: 20px;
+  border-radius: 20px;
+  width: 95%;
+  font-size: 15px;
+  margin: auto;
+}
+.hindrance-modal-newpost {
+  background-color: #f8c107;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  height: 25px;
+  width: 140px;
+  padding: 5px;
+  transition: opacity 0.3s;
+  margin: 20px auto;
+}
+.hindrance-modal-search {
+  background-color: #f8c107;
+  width: 95%;
+  height: 40px;
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 12.75%;
+}
+.hindrance-modal-searchbar {
+  background-color: #272b39;
+  height: 38px;
+  width: 70%;
+  border-radius: 10px;
+  border: none;
+  position: inherit;
+  top: 50%;
+  left: 50%;
+
+  color: white;
 }
