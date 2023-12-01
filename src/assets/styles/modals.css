@@ -181,12 +181,13 @@ input {
 
 .report-modal-main {
   position: relative;
-  top: 12.75%;
+
   padding: 15px;
 }
 .report-modal-instruction {
   text-align: justify;
-  font-size: 20px;
+  padding: 10px 0 10px 0px;
+  font-size: 18px;
 }
 
 .report-modal-mark {
@@ -294,6 +295,9 @@ input {
   width: 95%;
   font-size: 15px;
   margin: auto;
+}
+.hindrance-modal-buttons {
+  padding: 0px 0px 0px 10px;
 }
 .hindrance-modal-newpost {
   background-color: #f8c107;
