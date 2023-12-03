@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import ModalHeader from "../../components/ModalHeader";
 import "../../assets/styles/modals.css";
 import Select from "react-select";
+import axios from "axios";
+import { useSnackbar } from 'notistack'
 
 const reportCategory = [
   { value: 1, label: "Traffic" },
@@ -10,8 +13,34 @@ const reportCategory = [
 ];
 
 const ReportModal = () => {
-  function handleSubmit(e) {
+  const [location, setLocation] = useState('')
+  const [title, setTitle] = useState('')
+  const [category, setCategory] = useState('')
+  const [body, setBody] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+
+  const handleSubmit = (e) => {
     e.preventDefault();
+    const data = {
+      location,
+      title,
+      category,
+      body
+    }
+    console.log(data)
+    setLoading(true)
+    axios
+      .post('http://localhost:3001/reports', data)
+      .then(() => {
+        setLoading(false)
+        enqueueSnackbar('Report Created successfully', { variant: 'success' })
+      })
+      .catch((error) => {
+        setLoading(false)
+        enqueueSnackbar('Error', { variant: 'error' })
+        console.log(error)
+      })
   }
 
   return (
@@ -33,8 +62,10 @@ const ReportModal = () => {
               id="report-location"
               className="report-modal-mark-location"
               type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               placeholder="Location"
-              disabled
+              // disabled
             />
           </div>
 
@@ -47,6 +78,8 @@ const ReportModal = () => {
                 id="report-title"
                 className="report-modal-title-input"
                 type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 placeholder="Report TItle"
                 maxLength={50}
               />
@@ -61,6 +94,8 @@ const ReportModal = () => {
               className="report-modal-select"
               options={reportCategory}
               isSearchable={true}
+              value={category.label}
+              onChange={(cat) => setCategory(cat.label)}
               placeholder="Select a category"
             />
           </div>
@@ -73,6 +108,8 @@ const ReportModal = () => {
                 id="report-description"
                 className="report-modal-body-input"
                 type="text"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
                 placeholder="Describe the situation"
               ></textarea>
             </div>

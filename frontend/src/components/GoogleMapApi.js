@@ -3,8 +3,8 @@ import GoogleMap from "./GoogleMap"
 import "../assets/styles/googlemap.css"
 
 const GoogleMapApi = () => {
-  const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-  const GOOGLE_MAPS_MAP_ID = process.env.REACT_APP_GOOGLE_MAPS_MAP_ID
+  const GOOGLE_MAPS_API_KEY = "AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM"
+  const GOOGLE_MAPS_MAP_ID = "cf8af2361b08851"
 
   console.log(process.env)
     
