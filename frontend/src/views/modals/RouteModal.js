@@ -3,6 +3,7 @@ import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
 import Select from 'react-select'
+import axios from 'axios'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,12 +38,35 @@ const RouteModal = () => {
   ]
   const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
-  const [selectedOptions, setSelectedOptions] = useState([])
+  const [transportation, setTransportation] = useState([])
+  const [loading, setLoading] = useState(false)
   const [routeList, setRouteList] = useState([])
+
+  const clearFields = () => {
+    setOrigin('')
+    setDestination('')
+    setTransportation('')
+  }
 
   // Functions
   const getRoutes = () => {
-    setRouteList(routeTestData)
+    const data = {
+      origin,
+      destination,
+      transportation
+    }
+    console.log(data)
+    setLoading(true)
+    axios
+      .post('http://localhost:3001/routes', data)
+      .then(() => {
+        setLoading(false)
+        clearFields()
+      })
+      .catch((error) => {
+        setLoading(false)
+        console.log(error)
+      })
   }
 
   useEffect(() => {
@@ -52,6 +76,7 @@ const RouteModal = () => {
   useEffect(() => {
     // Code for the combobox of origin
   }, [destination]);
+
 
   const handleOriginInput = (e) => {
     const originInput = e.target.value
@@ -64,7 +89,8 @@ const RouteModal = () => {
   }
 
   const handleSelectChange = (selectedValues) => {
-    setSelectedOptions(selectedValues)
+    const selectedValuesArray = selectedValues.map((trans) => trans.label)
+    setTransportation(selectedValues)
   }
 
   return (
@@ -113,7 +139,7 @@ const RouteModal = () => {
               isMulti
               placeholder="Select a transportation option"
               onChange={handleSelectChange}
-              value={selectedOptions}
+              value={transportation}
               styles={customStyles}
           />
         </div>
