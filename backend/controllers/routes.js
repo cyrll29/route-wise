@@ -8,7 +8,8 @@ routesRouter.post('/', async (request, response) => {
   try {
     if (
       !request.body.origin ||
-      !request.body.destination
+      !request.body.destination ||
+      !request.body.transportation
     ) {
       return response.status(400).send({
         message: "Send all required fields"
@@ -17,6 +18,7 @@ routesRouter.post('/', async (request, response) => {
     const newRoute = {
       origin: request.body.origin,
       destination: request.body.destination,
+      transportation: request.body.transportation,
       firstRoute: "LRT2 Recto to LRT2 Pureza",
       secondRoute: "Punta - Quiapo Jeep",
       thirdRoute: request.body.thirdRoute
@@ -68,11 +70,11 @@ routesRouter.put('/:id', async (request, response) => {
     if (
       !request.body.origin ||
       !request.body.destination ||
-      !request.body.firstRoute
+      !request.body.transportation
     ) {
       return response.status(400).send({ message: "Send all required fields" })
     }
-    const { id } = request.params``
+    const { id } = request.params
     const result = await Route.findByIdAndUpdate
 
     if (!result) {

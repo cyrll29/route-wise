@@ -3,7 +3,6 @@ import ModalHeader from "../../components/ModalHeader";
 import "../../assets/styles/modals.css";
 import Select from "react-select";
 import axios from "axios";
-import { useSnackbar } from 'notistack'
 
 const reportCategory = [
   { value: 1, label: "Traffic" },
@@ -18,7 +17,13 @@ const ReportModal = () => {
   const [category, setCategory] = useState('')
   const [body, setBody] = useState('')
   const [loading, setLoading] = useState(false)
-  const { enqueueSnackbar } = useSnackbar()
+
+  const clearFields = () => {
+    setLocation('')
+    setTitle('')
+    setCategory('')
+    setBody('')
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,11 +39,10 @@ const ReportModal = () => {
       .post('http://localhost:3001/reports', data)
       .then(() => {
         setLoading(false)
-        enqueueSnackbar('Report Created successfully', { variant: 'success' })
+        clearFields()
       })
       .catch((error) => {
         setLoading(false)
-        enqueueSnackbar('Error', { variant: 'error' })
         console.log(error)
       })
   }

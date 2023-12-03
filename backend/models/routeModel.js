@@ -10,6 +10,10 @@ const routeSchema = mongoose.Schema(
       type: String,
       required: true
     },
+    transportation: {
+      type: String,
+      required: true
+    },
     firstRoute: {
       type: String
     },
