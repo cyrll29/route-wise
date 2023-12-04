@@ -1,32 +1,45 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/login.css'
 import logo from '../assets/img/logo.png'
+import axios from 'axios'
 
 
 const LoginPage = () => {
 
   // Declarations
   const navigate = useNavigate()
-  const [userEmail, setUserEmail] = useState('')
-  const [userPassword, setUserPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
   // Functions
-  const handleEmailChange = (e) => {
-    setUserEmail(e.target.value)
-  }
+  const handleLoginClick = async (event) => {
+    event.preventDefault()
 
-  const handlePasswordChange = (e) => {
-    setUserPassword(e.target.value)
-  }
-
-  const handleLoginClick = () => {
-    if (userEmail === "admin" && userPassword === "admin") {
-      navigate('/HomePage')
-    } else {
-      alert("Wrong Email/Password")
+    const credentials = {
+      username,
+      password
+    }
+    
+    try {
+      await axios
+        .post('http://localhost:3001/api/login', credentials)
+        .then((response) => {
+          console.log(response.data)
+          setUser(response.data)
+          setUsername('')
+          setPassword('')
+        })
+    } catch (exception) {
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
+
 
   return (
     <div className="login-page">
@@ -38,14 +51,19 @@ const LoginPage = () => {
 
         <h4>Login to your Account</h4>
 
+        {user === null ?
+          <></> :
+          navigate('/HomePage')
+        }
+
         <div className='form-container'>
           <div className='mb20'>
-            <h6>Email: </h6>
+            <h6>Username: </h6>
             <input
               type="text" 
-              id='userEmail'
-              value={userEmail}
-              onChange={handleEmailChange} 
+              id='username'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} 
               autoComplete='on'
             />
           </div>
@@ -54,9 +72,9 @@ const LoginPage = () => {
             <h6>Password: </h6>
             <input 
               type="password"
-              id='userPassword'
-              value={userPassword}
-              onChange={handlePasswordChange} 
+              id='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
             />
           </div>
 
