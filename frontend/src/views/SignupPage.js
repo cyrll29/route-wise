@@ -2,27 +2,49 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/img/logo.png'
 import '../assets/styles/signup.css'
+import userService from '../services/user'
 
 
 const SignupPage = () => {
 
   // Declarations
   const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [userConfirmPassword, setUserConfirmPassword] = useState('');
+  const [name, setName] = useState('')
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [user, setUser] = useState('')
 
   // Functions
-  const handleSignupClick = () => {
-    // Authentication Conditions
-    navigate('/')
+  const handleSignupClick = (e) => {
+    e.preventDefault()
+    
+    const data = {
+      username,
+      name,
+      password
+    }
+    console.log(data)
+
+    userService
+      .create(data)
+  }
+
+  const handleNameChange = (event) => {
+    setName(event.target.value)
   }
   
-  const handleNameChange = (event) => setUserName(event.target.value)
-  const handleEmailChange = (event) => setUserEmail(event.target.value)
-  const handlePasswordChange = (event) => setUserPassword(event.target.value)
-  const handleConfirmPasswordChange = (event) => setUserConfirmPassword(event.target.value)
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value)
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value)
+  }
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value)
+  }
 
   return (
     <div className="signup-page">
@@ -35,24 +57,25 @@ const SignupPage = () => {
         <h4>Create an Account</h4>
 
         <div className='form-container'>
+
           <div className='mb20'>
-            <h6>Username: </h6>
+            <h6>Name: </h6>
             <input 
               type="text"
-              id='userName'
-              value={userName}
+              id='name'
+              value={name}
               onChange={handleNameChange} 
               autoComplete='on'
             />
           </div>
 
           <div className='mb20'>
-            <h6>Email: </h6>
+            <h6>Username: </h6>
             <input 
               type="text"
-              id='userEmail'
-              value={userEmail}
-              onChange={handleEmailChange} 
+              id='username'
+              value={username}
+              onChange={handleUsernameChange} 
               autoComplete='on'
             />
           </div>
@@ -61,8 +84,8 @@ const SignupPage = () => {
             <h6>Password: </h6>
             <input 
               type="password"
-              id='userPassword'
-              value={userPassword}
+              id='password'
+              value={password}
               onChange={handlePasswordChange} 
             />
           </div>
@@ -71,8 +94,8 @@ const SignupPage = () => {
             <h6>Confirm Password: </h6>
             <input 
               type="password"
-              id='userConfirmPassword'
-              value={userConfirmPassword}
+              id='confirmPassword'
+              value={confirmPassword}
               onChange={handleConfirmPasswordChange} 
             />
           </div>
