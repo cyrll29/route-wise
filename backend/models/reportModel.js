@@ -16,6 +16,10 @@ const reportSchema = new mongoose.Schema({
   body: {
     type: String,
     required: true
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
@@ -27,4 +31,6 @@ reportSchema.set('toJSON', {
   }
 })
 
-export const Report = mongoose.model('Report', reportSchema)
+const Report = mongoose.model('Report', reportSchema)
+
+export default Report

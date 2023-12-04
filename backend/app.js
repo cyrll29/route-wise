@@ -4,8 +4,9 @@ const app = express()
 import cors from 'cors'
 import mongoose from 'mongoose'
 
-import routesRoute from './controllers/routes.js'
-import reportsRoute from './controllers/reports.js'
+import routesRoute from './controllers/routesController.js'
+import reportsRoute from './controllers/reportsController.js'
+import usersRoute from './controllers/usersController.js'
 import middleware from './utils/middleware.js'
 
 mongoose.set('strictQuery', false)
@@ -23,6 +24,7 @@ app.use(cors())
 app.use(express.json())
 app.use(middleware.requestLogger)
 
+app.use('/api/users', usersRoute)
 app.use('/api/routes', routesRoute)
 app.use('/api/reports', reportsRoute)
 

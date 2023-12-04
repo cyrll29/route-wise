@@ -26,4 +26,6 @@ routeSchema.set('toJSON', {
   }
 })
 
-export const Route = mongoose.model('Route', routeSchema)
+const Route = mongoose.model('Route', routeSchema)
+
+export default Route

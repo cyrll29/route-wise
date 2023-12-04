@@ -1,5 +1,6 @@
 import express from 'express'
-import { Report } from '../models/reportModel.js'
+import Report from '../models/reportModel.js'
+import User from '../models/userModel.js'
 
 const reportsRouter = express.Router()
 
@@ -13,14 +14,20 @@ reportsRouter.post('/', async (request, response) => {
       return response.status(400).send({ message: "Send all required fields" })
     }
 
+    const user = await User.findById(body.userId)
+
     const report = new Report ({
       location: body.location,
       title: body.title,
       category: body.category,
       body: body.body,
+      user: user.id
     })
 
     const savedReport = await report.save()
+    user.reports = user.reports.concat(savedReport._id)
+    await user.save()
+
     return response.status(201).json({
       message: "Report created successfully",
       savedReport
@@ -36,6 +43,7 @@ reportsRouter.post('/', async (request, response) => {
 reportsRouter.get('/', async (request, response) => {
   try {
     const reports = await Report.find({})
+      .populate('user', { username: 1, name: 1 })
 
     return response.status(200).json({
       count: reports.length,
