@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ModalHeader from "../../components/ModalHeader";
 import "../../assets/styles/modals.css";
 import Select from "react-select";
+import reportService from '../../services/reportService'
 import axios from "axios";
 
 const reportCategory = [
@@ -34,17 +35,9 @@ const ReportModal = () => {
       body
     }
     console.log(data)
-    setLoading(true)
-    axios
-      .post('http://localhost:3001/api/reports', data)
-      .then(() => {
-        setLoading(false)
-        clearFields()
-      })
-      .catch((error) => {
-        setLoading(false)
-        console.log(error)
-      })
+
+    reportService
+      .create(data)
   }
 
   return (

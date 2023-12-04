@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/login.css'
 import logo from '../assets/img/logo.png'
-import axios from 'axios'
+import loginService from '../services/login'
+import reportService from '../services/reportService'
 
 
 const LoginPage = () => {
@@ -17,21 +18,17 @@ const LoginPage = () => {
   // Functions
   const handleLoginClick = async (event) => {
     event.preventDefault()
-
-    const credentials = {
-      username,
-      password
-    }
     
     try {
-      await axios
-        .post('http://localhost:3001/api/login', credentials)
-        .then((response) => {
-          console.log(response.data)
-          setUser(response.data)
-          setUsername('')
-          setPassword('')
-        })
+      const user = await loginService.login({
+        username, password
+      })
+      console.log(user)
+      reportService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
