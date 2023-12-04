@@ -58,7 +58,7 @@ const RouteModal = () => {
     console.log(data)
     setLoading(true)
     axios
-      .post('http://localhost:3001/routes', data)
+      .post('http://localhost:3001/api/routes', data)
       .then(() => {
         setLoading(false)
         clearFields()

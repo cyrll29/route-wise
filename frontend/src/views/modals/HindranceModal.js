@@ -11,7 +11,7 @@ const HindranceModal = () => {
   useEffect(() => {
     setLoading(true)
     axios
-      .get("http://localhost:3001/reports")
+      .get("http://localhost:3001/api/reports")
       .then((response) => {
         console.log(response.data.data)
         setReports(response.data.data)

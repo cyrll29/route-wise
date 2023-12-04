@@ -36,7 +36,7 @@ const ReportModal = () => {
     console.log(data)
     setLoading(true)
     axios
-      .post('http://localhost:3001/reports', data)
+      .post('http://localhost:3001/api/reports', data)
       .then(() => {
         setLoading(false)
         clearFields()
