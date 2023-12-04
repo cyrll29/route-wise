@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import ModalHeader from "../../components/ModalHeader";
-import "../../assets/styles/modals.css";
 import Select from "react-select";
+import ModalHeader from "../../components/ModalHeader";
 import reportService from '../../services/reportService'
-import axios from "axios";
+
+import "../../assets/styles/modals.css";
 
 const reportCategory = [
   { value: 1, label: "Traffic" },
@@ -17,14 +17,6 @@ const ReportModal = () => {
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [body, setBody] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  const clearFields = () => {
-    setLocation('')
-    setTitle('')
-    setCategory('')
-    setBody('')
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +30,12 @@ const ReportModal = () => {
 
     reportService
       .create(data)
+      .then(() => {
+        setLocation('')
+        setTitle('')
+        setCategory('')
+        setBody('')
+      })
   }
 
   return (

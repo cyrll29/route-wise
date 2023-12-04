@@ -1,6 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/users'
-
+const baseUrl = 'http://localhost:3001/api/routes'
 
 
 const getAll = () => {
@@ -10,7 +9,6 @@ const getAll = () => {
 
 
 const create = async newObject => {
-
   const response = await axios.post(baseUrl, newObject)
   return response.data
 }
@@ -20,5 +18,11 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
+const routeService = {
+  getAll,
+  create,
+  update
+}
 
-export default { getAll, create, update }
+
+export default routeService

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import Select from 'react-select'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
-import Select from 'react-select'
-import axios from 'axios'
+import routeService from '../../services/routeService'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,39 +14,10 @@ import '../../assets/styles/modals.css'
 
 const RouteModal = () => {
 
-  // Fontawesome icon modifications
-  const iconList = Object
-    .keys(Icons)
-    .filter(key => key !== "fas" && key !== "prefix" )
-    .map(icon => Icons[icon])
-  library.add(...iconList)
-  // End
-    
-
-  // Declarations
-  const transportationOptions = [
-    { value: '0', label: 'Jeepney'},
-    { value: '1', label: 'Carousel'},
-    { value: '2', label: 'Train'},
-    { value: '3', label: 'UV Express'},
-    { value: '4', label: 'Walking'}
-  ]
-  const routeTestData = [
-    { value: '0', title: "Going to SM North Edsa", way: "Ride jeep" },
-    { value: '1', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
-    { value: '2', title: "Going to SM Sta Mesa", way: "Ride LRT2" },
-  ]
   const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
   const [transportation, setTransportation] = useState([])
-  const [loading, setLoading] = useState(false)
   const [routeList, setRouteList] = useState([])
-
-  const clearFields = () => {
-    setOrigin('')
-    setDestination('')
-    setTransportation('')
-  }
 
   // Functions
   const getRoutes = () => {
@@ -56,40 +27,27 @@ const RouteModal = () => {
       transportation
     }
     console.log(data)
-    setLoading(true)
-    axios
-      .post('http://localhost:3001/api/routes', data)
+
+    routeService
+      .create(data)
       .then(() => {
-        setLoading(false)
-        clearFields()
+        setOrigin('')
+        setDestination('')
+        setTransportation('')
       })
       .catch((error) => {
-        setLoading(false)
         console.log(error)
       })
-  }
 
-  useEffect(() => {
-    // Code for the combobox of origin
-  }, [origin]);
-
-  useEffect(() => {
-    // Code for the combobox of origin
-  }, [destination]);
-
-
-  const handleOriginInput = (e) => {
-    const originInput = e.target.value
-    setOrigin(originInput)
-  }
-
-  const handleDestinationInput = (e) => {
-    setDestination(e.target.value)
-    console.log(destination)
+    routeService
+      .getAll()
+      .then((result) => {
+        console.log(result.data)
+        setRouteList(result.data)
+      })
   }
 
   const handleSelectChange = (selectedValues) => {
-    const selectedValuesArray = selectedValues.map((trans) => trans.label)
     setTransportation(selectedValues)
   }
 
@@ -114,7 +72,7 @@ const RouteModal = () => {
                   className='route-modal-combo-box' 
                   type="text" 
                   value={origin}
-                  onChange={handleOriginInput}
+                  onChange={(e) => setOrigin(e.target.value)}
                   placeholder='Origin'
                 />
                 <input 
@@ -122,7 +80,7 @@ const RouteModal = () => {
                   className='route-modal-combo-box' 
                   type="text" 
                   value={destination}
-                  onChange={handleDestinationInput}
+                  onChange={(e) => setDestination(e.target.value)}
                   placeholder='Destination'
                 />
             </div>
@@ -159,17 +117,17 @@ const RouteModal = () => {
           <div className='route-modal-list'>
             <p>Suggested Routes</p>
             {routeList.map((route) => (
-              <li key={route.value}>
+              <li key={route.id}>
                 <div className='route-modal-list-box'>
                   <div>
-                    <h4>{ route.title }</h4>
+                    <h4>{ route.origin }</h4>
                   </div>
                   <div>
                     <div>
-                      <p>{ route.title }</p>
+                      <p>{ route.destination }</p>
                     </div>
                     <div>
-                      <p>{ route.way }</p>
+                      <p>{ route.firstRoute }</p>
                     </div>
                   </div>
                 </div>
@@ -183,6 +141,20 @@ const RouteModal = () => {
 }
 
 export default RouteModal
+
+const transportationOptions = [
+  { value: '0', label: 'Jeepney'},
+  { value: '1', label: 'Carousel'},
+  { value: '2', label: 'Train'},
+  { value: '3', label: 'UV Express'},
+  { value: '4', label: 'Walking'}
+]
+
+const iconList = Object
+    .keys(Icons)
+    .filter(key => key !== "fas" && key !== "prefix" )
+    .map(icon => Icons[icon])
+  library.add(...iconList)
 
 const customStyles = {
   control: (provided) => ({

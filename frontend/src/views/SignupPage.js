@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import userService from '../services/userService'
+
 import logo from '../assets/img/logo.png'
 import '../assets/styles/signup.css'
-import userService from '../services/user'
 
 
 const SignupPage = () => {
@@ -13,21 +14,24 @@ const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [user, setUser] = useState('')
 
   // Functions
   const handleSignupClick = (e) => {
     e.preventDefault()
     
-    const data = {
-      username,
-      name,
-      password
-    }
-    console.log(data)
+    const data = {username, name, password}
 
     userService
       .create(data)
+      .then(() => {
+        console.log("Registration Successful: ", data)
+        alert("Registration Successful")
+        setName('')
+        setUsername('')
+        setPassword('')
+        setConfirmPassword('')
+      })
+
   }
 
   const handleNameChange = (event) => {

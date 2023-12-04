@@ -1,16 +1,20 @@
+import { useEffect } from 'react'
 import { useLoadScript} from "@react-google-maps/api"
 import GoogleMap from "./GoogleMap"
-import "../assets/styles/googlemap.css"
+
+import "../../assets/styles/googlemap.css"
 
 const GoogleMapApi = () => {
-  const GOOGLE_MAPS_API_KEY = "AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM"
-  const GOOGLE_MAPS_MAP_ID = "cf8af2361b08851"
+  const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY
+  const GOOGLE_MAPS_MAP_ID = process.env.REACT_APP_MAP_ID
 
-  console.log(process.env)
+  useEffect(() => {
+    console.log("TEST CONSOLE LOG")
+  }, [])
     
   const { isLoaded } = useLoadScript({ 
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
+    libraries: lib,
   });
 
   if (!isLoaded) return <div>Loading...</div>
@@ -29,4 +33,5 @@ const GoogleMapApi = () => {
   )
 }
 
+const lib = ["places"]
 export default GoogleMapApi

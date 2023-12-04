@@ -1,27 +1,25 @@
 import { useState, useEffect } from 'react'
 import ModalHeader from "../../components/ModalHeader";
 import ReportList from "../../components/hindrance/ReportList"
+import reportService from '../../services/reportService'
+
 import "../../assets/styles/modals.css";
-import axios from 'axios'
 
 const HindranceModal = () => {
   const [reports, setReports] = useState([])
-  const [loading, setLoading] = useState(false)
-  
+
   useEffect(() => {
-    setLoading(true)
-    axios
-      .get("http://localhost:3001/api/reports")
-      .then((response) => {
-        console.log(response.data.data)
-        setReports(response.data.data)
-        setLoading(false)
+    reportService
+      .getAll()
+      .then((reports) => {
+        console.log(reports.data)
+        setReports(reports.data)
       })
       .catch ((error) => {
         console.log(error)
-        setLoading(false)
       })
   }, [])
+
   return (
     <>
       <ModalHeader title="Hindrance" />

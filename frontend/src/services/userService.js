@@ -1,13 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/reports'
+const baseUrl = 'http://localhost:3001/api/users'
 
 
-let token = null
-
-
-const setToken = newToken => {
-  token = `Bearer ${newToken}`
-}
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -16,11 +10,8 @@ const getAll = () => {
 
 
 const create = async newObject => {
-  const config = {
-    headers: { Authorization: token },
-  }
 
-  const response = await axios.post(baseUrl, newObject, config)
+  const response = await axios.post(baseUrl, newObject)
   return response.data
 }
 
@@ -29,12 +20,10 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-const reportService = {
+const userService = {
   getAll,
   create,
-  update,
-  setToken
+  update
 }
 
-
-export default reportService
+export default userService

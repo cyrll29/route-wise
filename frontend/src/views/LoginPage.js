@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { login } from '../services/loginService'
+import reportService from '../services/reportService'
+
 import '../assets/styles/login.css'
 import logo from '../assets/img/logo.png'
-import loginService from '../services/login'
-import reportService from '../services/reportService'
 
 
 const LoginPage = () => {
 
   // Declarations
   const navigate = useNavigate()
-  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -20,22 +20,30 @@ const LoginPage = () => {
     event.preventDefault()
     
     try {
-      const user = await loginService.login({
+      const user = await login({
         username, password
       })
-      console.log(user)
+
+      console.log("Login Successful: ", user)
+      alert("Login Successful")
+      
       reportService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
 
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
       setTimeout(() => {
-        setErrorMessage(null)
       }, 5000)
     }
   }
+
+  useEffect(() => {
+    // Navigate after the component is rendered and user is set
+    if (user !== null) {
+      navigate('/HomePage');
+    }
+  }, [user, navigate]);
 
 
   return (
@@ -48,11 +56,7 @@ const LoginPage = () => {
 
         <h4>Login to your Account</h4>
 
-        {user === null ?
-          <></> :
-          navigate('/HomePage')
-        }
-
+        {user === null ? (
         <div className='form-container'>
           <div className='mb20'>
             <h6>Username: </h6>
@@ -79,6 +83,7 @@ const LoginPage = () => {
             <button onClick={handleLoginClick}>Login</button>
           </div>
         </div>
+        ) : null}
 
         <div className='back-button-div'>
           <button className='back-btn' onClick={() => navigate('/')}>Back</button>
