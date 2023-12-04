@@ -1,0 +1,32 @@
+
+
+GET http://localhost:3001/api/reports
+Content-Type: application/json
+
+###
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/login
+
+{
+    "username": "mluukkai",
+    "password": "salainen"
+}
+
+###
+
+POST http://localhost:3001/api/reports
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldGNzIiwiaWQiOiI2NTZkYjI5Y2E5NTZiYTllNDJiYjE1NGEiLCJpYXQiOjE3MDE2ODc5OTJ9.Gv5cb4pKhQuJLav3FkT-b9Ees_T975yMStFwzu5Os0I
+
+{
+  "location": "netcs Account",
+  "title": "PUP Traffic",
+  "category": "Accident",
+  "body": "May Accidente rito wahhhh"
+}
+
+###
+
+DELETE http://localhost:3001/api/reports/656daea6c63728b966a2d0ec

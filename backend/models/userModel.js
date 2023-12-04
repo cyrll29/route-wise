@@ -6,10 +6,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validate: {
-      validator: /^[a-zA-Z0-9_]{3,16}$/, 
-      message: "Usernames must be 6 to 12 characters long and contain only alphanumeric characters and underscores (_)."
-    },
+    // validate: {
+    //   validator: /^[a-zA-Z0-9_]{3,16}$/, 
+    //   message: "Usernames must be 6 to 12 characters long and contain only alphanumeric characters and underscores (_)."
+    // },
   },
   name: String,
   passwordHash: String,

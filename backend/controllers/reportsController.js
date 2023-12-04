@@ -1,8 +1,18 @@
 import express from 'express'
 import Report from '../models/reportModel.js'
 import User from '../models/userModel.js'
+import jwt from 'jsonwebtoken'
 
 const reportsRouter = express.Router()
+
+// Authorization
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
 
 // Save a new route to database
 reportsRouter.post('/', async (request, response) => {
@@ -13,8 +23,15 @@ reportsRouter.post('/', async (request, response) => {
     if (!body.location || !body.title || !body.category || !body.body) {
       return response.status(400).send({ message: "Send all required fields" })
     }
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.ACCESS_TOKEN_SECRET)
+    console.log("getTokenFrom: ", getTokenFrom(request))
+    console.log("decodedToken: ", decodedToken)
+    console.log(process.env.ACCESS_TOKEN_SECRET)
 
-    const user = await User.findById(body.userId)
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
 
     const report = new Report ({
       location: body.location,
@@ -43,7 +60,7 @@ reportsRouter.post('/', async (request, response) => {
 reportsRouter.get('/', async (request, response) => {
   try {
     const reports = await Report.find({})
-      .populate('user', { username: 1, name: 1 })
+      // .populate('user', { username: 1, name: 1 })
 
     return response.status(200).json({
       count: reports.length,
