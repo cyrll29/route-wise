@@ -14,10 +14,7 @@ const HindranceModal = () => {
 
     const diffInMilliseconds = now - createdAt
     const diffInMinutes = Math.round(diffInMilliseconds / (60 * 1000))
-    console.log("date created: ", createdAt)
-    console.log("date now: ", now)
-    console.log(diffInMilliseconds)
-    console.log(diffInMinutes)
+
     if (diffInMinutes < 1) {
       return 'Just now';
     } else if (diffInMinutes === 1) {
@@ -28,7 +25,8 @@ const HindranceModal = () => {
   }
 
   useEffect(() => {
-    reportService
+    const interval = setInterval(() => {
+      reportService
       .getAll()
       .then((response) => {
         const updatedReports = response.data.map((report) => ({
@@ -42,7 +40,26 @@ const HindranceModal = () => {
       .catch ((error) => {
         console.log(error)
       })
-  }, [])
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // useEffect(() => {
+  //   reportService
+  //   .getAll()
+  //   .then((response) => {
+  //     const updatedReports = response.data.map((report) => ({
+  //       ...report,
+  //       postedAgo: timeComparison(report.createdAt),
+  //     }));
+
+  //     console.log(updatedReports)
+  //     setReports(updatedReports)
+  //   })
+  //   .catch ((error) => {
+  //     console.log(error)
+  //   })
+  // }, []);
 
   return (
     <>

@@ -1,7 +1,7 @@
 # REPORTS REQUESTS
-GET http://localhost:3001/api/reports/656e85353ad1b59612304e30
+GET http://localhost:3001/api/reports/
 ###
-DELETE http://localhost:3001/api/reports/656e2249ea2b8be2498c92b1
+DELETE http://localhost:3001/api/reports/656e85353ad1b59612304e30
 ###
 POST http://localhost:3001/api/reports
 Content-Type: application/json
