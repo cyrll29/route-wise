@@ -19,8 +19,10 @@ const HindranceModal = () => {
       return 'Just now';
     } else if (diffInMinutes === 1) {
       return 'Posted 1 minute ago';
-    } else {
+    } else if (diffInMinutes <= 60){
       return `Posted ${diffInMinutes} minutes ago`;
+    } else {
+      return `Posted ${Math.round(diffInMinutes/60)} hours ago`
     }
   }
 
