@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import GoogleMapApi from '../components/googlemap/GoogleMapApi'
 import HomeButtons from '../utils/HomeButtons'
 import HomeModals from '../utils/HomeModals' 
+import reportService from '../services/reportService'
 
 import '../assets/styles/home.css'
 
@@ -9,9 +10,14 @@ const HomePage = () => {
 
   // Declarations
   const [activeModal, setActiveModal] = useState("planner");
+  const [hasToken, setHasToken] = useState()
 
   // Functions
   const btnModalClick = (modal) => setActiveModal(modal);
+
+  useEffect(() => {
+    setHasToken(reportService.getToken())
+  }, [])
     
   return (
     <>
@@ -27,7 +33,7 @@ const HomePage = () => {
 
       <div className="home-buttons">
         <HomeButtons 
-          routeReport = {true}
+          routeReport = {hasToken}
           routePlanner = {true}
           routeUpdate = {true}
           btnModalClick={btnModalClick}

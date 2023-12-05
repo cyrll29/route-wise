@@ -9,6 +9,14 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
+const getToken = () => {
+  if (token !== null) {
+    return true
+  } else {
+    return false
+  }
+}
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
@@ -33,7 +41,8 @@ const reportService = {
   getAll,
   create,
   update,
-  setToken
+  setToken,
+  getToken
 }
 
 
