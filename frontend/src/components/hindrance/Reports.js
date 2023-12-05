@@ -8,6 +8,7 @@ const Reports = ({ report }) => {
         <li>Title: {report.title}</li>
         <li>Category: {report.category}</li>
         <li>Body: {report.body}</li>
+        <li>Posted Ago: {report.postedAgo}</li>
       </div>
       <br />
     </ul>

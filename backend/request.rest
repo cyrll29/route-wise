@@ -1,17 +1,17 @@
 # REPORTS REQUESTS
-GET http://localhost:3001/api/reports
+GET http://localhost:3001/api/reports/656e85353ad1b59612304e30
 ###
-DELETE http://localhost:3001/api/reports/656e149b94c5664428d35aaa
+DELETE http://localhost:3001/api/reports/656e2249ea2b8be2498c92b1
 ###
 POST http://localhost:3001/api/reports
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNhYnNrbm93cyIsImlkIjoiNjU2ZTBiYzFiMWY4NjA5MTJhN2U3Y2I3IiwiaWF0IjoxNzAxNzEwODY1LCJleHAiOjE3MDE3MTQ0NjV9.fmT_z0v22uyKQMUMKOcbGjvTq7RQHV-YqEtSDPHrNpg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNhYnNrbm93cyIsImlkIjoiNjU2ZTBlM2RiMWY4NjA5MTJhN2U3Y2QxIiwiaWF0IjoxNzAxNzM5NjY3LCJleHAiOjE3MDE3NDMyNjd9.AEOHAU9bUL6Y4iBMzU6rYTK7VCBo9vBvLxPrrXXeOHM
 
 {
-  "location": "PUP STA MESA",
-  "title": "Traffic Pureza",
-  "category": "Accident",
-  "body": "Lorem Ipsum"
+  "location": "TEST",
+  "title": "TEST1",
+  "category": "TEST2",
+  "body": "TEST3"
 }
 
 

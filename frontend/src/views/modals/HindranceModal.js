@@ -8,12 +8,36 @@ import "../../assets/styles/modals.css";
 const HindranceModal = () => {
   const [reports, setReports] = useState([])
 
+  const timeComparison = (dateCreated) => {
+    const now = new Date()
+    const createdAt = new Date(dateCreated)
+
+    const diffInMilliseconds = now - createdAt
+    const diffInMinutes = Math.round(diffInMilliseconds / (60 * 1000))
+    console.log("date created: ", createdAt)
+    console.log("date now: ", now)
+    console.log(diffInMilliseconds)
+    console.log(diffInMinutes)
+    if (diffInMinutes < 1) {
+      return 'Just now';
+    } else if (diffInMinutes === 1) {
+      return 'Posted 1 minute ago';
+    } else {
+      return `Posted ${diffInMinutes} minutes ago`;
+    }
+  }
+
   useEffect(() => {
     reportService
       .getAll()
-      .then((reports) => {
-        console.log(reports.data)
-        setReports(reports.data)
+      .then((response) => {
+        const updatedReports = response.data.map((report) => ({
+          ...report,
+          postedAgo: timeComparison(report.createdAt),
+        }));
+
+        console.log(updatedReports)
+        setReports(updatedReports)
       })
       .catch ((error) => {
         console.log(error)

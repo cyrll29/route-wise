@@ -40,6 +40,7 @@ reportsRouter.post('/', async (request, response) => {
       body: body.body,
       user: user.id
     })
+    console.log(report)
 
     const savedReport = await report.save()
     user.reports = user.reports.concat(savedReport._id)
