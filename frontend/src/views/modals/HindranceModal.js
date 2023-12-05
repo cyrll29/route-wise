@@ -7,6 +7,7 @@ import "../../assets/styles/modals.css";
 
 const HindranceModal = () => {
   const [reports, setReports] = useState([])
+  const [count, setCount] = useState(0)
 
   const timeComparison = (dateCreated) => {
     const now = new Date()
@@ -25,43 +26,30 @@ const HindranceModal = () => {
       return `Posted ${Math.round(diffInMinutes/60)} hours ago`
     }
   }
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      reportService
-      .getAll()
-      .then((response) => {
-        const updatedReports = response.data.map((report) => ({
-          ...report,
-          postedAgo: timeComparison(report.createdAt),
-        }));
+    let timer = setInterval(() => {
+    setCount((count) => count + 1);
+  }, 60000);
 
-        console.log(updatedReports)
-        setReports(updatedReports)
-      })
-      .catch ((error) => {
-        console.log(error)
-      })
-    }, 10000);
-    return () => clearInterval(interval);
+  return () => clearTimeout(timer)
   }, []);
 
-  // useEffect(() => {
-  //   reportService
-  //   .getAll()
-  //   .then((response) => {
-  //     const updatedReports = response.data.map((report) => ({
-  //       ...report,
-  //       postedAgo: timeComparison(report.createdAt),
-  //     }));
+  useEffect(() => {
+    reportService
+    .getAll()
+    .then((response) => {
+      const updatedReports = response.data.map((report) => ({
+        ...report,
+        postedAgo: timeComparison(report.createdAt),
+      }));
 
-  //     console.log(updatedReports)
-  //     setReports(updatedReports)
-  //   })
-  //   .catch ((error) => {
-  //     console.log(error)
-  //   })
-  // }, []);
+      console.log(updatedReports)
+      setReports(updatedReports)
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
+  }, [count]);
 
   return (
     <>
