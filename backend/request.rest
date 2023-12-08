@@ -24,9 +24,9 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "cabsknows",
+  "username": "netcs",
   "name": "Kenneth Cabobos",
-  "password": "cabsknows"
+  "password": "netcs"
 }
 ###
 DELETE http://localhost:3001/api/users/656e1194b1f860912a7e7cec

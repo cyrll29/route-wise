@@ -1,6 +1,10 @@
+import { useState } from 'react'
 import "../../assets/styles/modals.css";
+import ReportDetail from '../ReportDetail'
 
 const Reports = ({ report }) => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <ul>
       <div className="hindrance-modal-reportlist">
@@ -9,8 +13,15 @@ const Reports = ({ report }) => {
         <li>Category: {report.category}</li>
         <li>Body: {report.body}</li>
         <li>Posted Ago: {report.postedAgo}</li>
+        <button onClick={() => setShowModal(true)}>open</button>
       </div>
       <br />
+      <div>
+        {showModal 
+          ? <ReportDetail report={report} onClose={() => setShowModal(false)}/>
+          : <></>
+        }
+      </div>
     </ul>
   );
 }
