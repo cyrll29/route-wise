@@ -24,6 +24,7 @@
     "mongoose": "^7.6.5",
     "mongoose-unique-validator": "^4.0.0",
     "nodemon": "^3.0.2",
+    "validation": "^0.0.1",
     "validator": "^13.11.0"
   }
 }

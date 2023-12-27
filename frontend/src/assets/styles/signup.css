@@ -89,6 +89,7 @@ html, body {
     color: #F8ECC4;
     background-color: #880015;
     font-weight: 600;
+    margin-top: 20px;
     transition: opacity 0.2s;
 }
 

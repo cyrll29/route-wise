@@ -2,110 +2,102 @@ import express from 'express'
 import Report from '../models/reportModel.js'
 import User from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
-
 const reportsRouter = express.Router()
 
 // Authorization
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
+const getTokenFrom = req => {
+  const authorization = req.get('authorization')
   if (authorization && authorization.startsWith('Bearer ')) {
     return authorization.replace('Bearer ', '')
   }
   return null
 }
 
-// Save a new route to database
-reportsRouter.post('/', async (request, response) => {
 
-  const body = request.body
-
+// http get
+reportsRouter.get('/', async (req, res) => {
   try {
-    if (!body.location || !body.title || !body.category || !body.body) {
-      return response.status(400).send({ message: "Send all required fields" })
-    }
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.ACCESS_TOKEN_SECRET)
-    console.log("getTokenFrom: ", getTokenFrom(request))
-    console.log("decodedToken: ", decodedToken)
-    console.log(process.env.ACCESS_TOKEN_SECRET)
-
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
-
-    const report = new Report ({
-      location: body.location,
-      title: body.title,
-      category: body.category,
-      body: body.body,
-      user: user.id
-    })
-    console.log(report)
-
-    const savedReport = await report.save()
-    user.reports = user.reports.concat(savedReport._id)
-    await user.save()
-
-    return response.status(201).json({
-      message: "Report created successfully",
-      savedReport
-    })
-
-  } catch (error) {
-    console.log("POST ERROR: ", error)
-    response.status(500).send({ message: error.message })
-  }
-})
-
-// Get all routes from database
-reportsRouter.get('/', async (request, response) => {
-  try {
-    const reports = await Report.find({})
+    const reports = await Report
+      .find({})
       // .populate('user', { username: 1, name: 1 })
 
-    return response.status(200).json({
+    return res.status(200).json({
       count: reports.length,
       data: reports
     })
-
-  } catch (error) {
-    console.log("GET ERROR: ", error)
-    response.status(500).send({ message: error.message })
+  } 
+  
+  catch (error) {
+    res.status(500).send({ message: error.message })
   }
 })
 
-// Get single route from database
-reportsRouter.get('/:id', async (request, response) => {
 
-  const { id } = request.params
+// http get id
+reportsRouter.get('/:id', async (req, res) => {
+  const { id } = req.params
 
   try {
     const report = await Report.findById(id)
-
     if (report) {
-      return response.status(200).json({ 
-        message: "ID Found",
-        data: report 
-      })
-    } else {
-      return response.status(404).end()
+      return res.status(200).json({ data: report })
     }
+    
+    return res.status(404).json({ message: "ID Not Found" })
+  } 
 
-  } catch (error) {
-    console.log("GET ID ERROR: ", error)
-    response.status(500).send({ message: error.message })
+  catch (error) {
+    res.status(500).send({ message: error.message })
   }
 })
 
-// Update a route from database
-reportsRouter.put('/:id', async (request, response) => {
 
-  const body = request.body
-  const { id } = request.params
+// http post
+reportsRouter.post('/', async (req, res) => {
+  const {location, title, category, body} = req.body
+
+  try {
+    if (!location || !title || !category || !body) {
+      return res.status(400).send({ message: "Send all required fields" })
+    }
+
+    // Token Verification
+    const decodedToken = jwt.verify(getTokenFrom(req), process.env.ACCESS_TOKEN_SECRET)
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: 'token invalid' })
+    }
+
+    // Save Report
+    const user = await User.findById(decodedToken.id)
+    const report = new Report ({
+      location: location,
+      title: title,
+      category: category,
+      body: body,
+      user: user.id
+    })
+    const savedReport = await report.save()
+
+    // Update User document
+    user.reports = user.reports.concat(savedReport._id)
+    await user.save()
+    return res.status(201).json({ savedReport })
+  } 
+
+  catch (error) {
+    res.status(500).send({ message: error.message })
+  }
+})
+
+
+// http put
+reportsRouter.put('/:id', async (req, res) => {
+  const body = req.body
+  const { id } = req.params
 
   try {
     if (!body.location || !body.title || !body.category || !body.body) {
-      return response.status(400).send({ message: "Send all required fields" })
+      return res.status(400).send({ message: "Send all required fields" })
     }
 
     const report = {
@@ -117,41 +109,34 @@ reportsRouter.put('/:id', async (request, response) => {
 
     Report.findByIdAndUpdate(id, report, { new: true })
       .then(updatedReport => {
-        return response.status(200).json({
-          message: "Report updates successfully",
-          updatedReport
-        })
+        return res.status(200).json({ updatedReport })
       })
       .catch((error) => {
         console.log(error)
-        return response.status(400).json({ message: "Report not found" })
+        return res.status(400).json({ message: "Report not found" })
       })
-
-  } catch (error) {
-    console.log("PUT ERROR: ", error)
-    response.status(500).send({ message: error.message })
+  } 
+  
+  catch (error) {
+    res.status(500).send({ message: error.message })
   }
 })
 
-// Delete a route from database
-reportsRouter.delete('/:id', async (request, response) => {
-
-  const { id } = request.params
+// http delete
+reportsRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params
 
   try {
-    const result = await Report.findByIdAndDelete(id)
-
-    if (!result) {
-      return response.status(404).json({ message: "Report not found" })
+    const data = await Report.findByIdAndDelete(id)
+    if (!data) {
+      return res.status(404).json({ message: "Report not found" })
     }
-    return response.status(200).send({ 
-      message: "Report deleted successfully",
-      result
-    })
 
-  } catch (error) {
-    console.log("DELETE ERROR: ", error)
-    response.status(500).send({ message: error.message })
+    return res.status(200).send({ data })
+  } 
+
+  catch (error) {
+    res.status(500).send({ message: error.message })
   }
 })
 

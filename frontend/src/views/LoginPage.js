@@ -11,7 +11,7 @@ const LoginPage = () => {
 
   // Declarations
   const navigate = useNavigate()
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
     
     try {
       const user = await login({
-        username, password
+        email, password
       })
 
       console.log("Login Successful: ", user)
@@ -29,7 +29,7 @@ const LoginPage = () => {
       
       reportService.setToken(user.token)
       setUser(user)
-      setUsername('')
+      setEmail('')
       setPassword('')
 
     } catch (exception) {
@@ -59,12 +59,12 @@ const LoginPage = () => {
         {user === null ? (
         <div className='form-container'>
           <div className='mb20'>
-            <h6>Username: </h6>
+            <h6>Email: </h6>
             <input
               type="text" 
-              id='username'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)} 
+              id='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} 
               autoComplete='on'
             />
           </div>
