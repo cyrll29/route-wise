@@ -96,7 +96,7 @@ usersRouter.post('/', async (req, res) => {
     }).save()
 
     const url = `http://localhost:3000/users/${user._id}/verify/${token.token}`
-    await sendEmail(user.email, "Verify Email", url)
+    await sendEmail(user.email, "Verify Email", url, "Activate your RouteWise Account")
     
     res.status(200).json({
       message: "Registration Successful. An Email sent to your account please verify",

@@ -8,6 +8,7 @@ import routesRoute from './controllers/routesController.js'
 import reportsRoute from './controllers/reportsController.js'
 import usersRoute from './controllers/usersController.js'
 import loginRoute from './controllers/loginController.js'
+import passwordResetRoute from './controllers/passwordReset.js'
 import middleware from './utils/middleware.js'
 
 mongoose.set('strictQuery', false)
@@ -29,6 +30,7 @@ app.use('/api/users', usersRoute)
 app.use('/api/routes', routesRoute)
 app.use('/api/reports', reportsRoute)
 app.use('/api/login', loginRoute)
+app.use('/api/password-reset', passwordResetRoute)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
