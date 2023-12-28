@@ -84,6 +84,10 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)} 
             />
           </div>
+          
+          <div>
+            <p onClick={() => navigate('/ForgetPassword')}> Forget Password </p>
+          </div>
 
           <div className='form-button mb20'>
             <button onClick={handleLoginClick}>Login</button>
