@@ -1,13 +1,12 @@
-const CmnPopupModal = ({ message, errorType, onClose }) => {
+const CmnPopupModal = ({ message, onClose, textBtn }) => {
   return (
     <div className="common-popup-modal">
       <div className="common-popup-modal-container">
         <div>
-          <p> {errorType} </p>
           <p> {message} </p>
         </div>
         <div>
-          <button onClick={onClose}>close</button>
+          <button onClick={onClose}>{textBtn}</button>
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import userService from '../services/userService'
-import CmnPopupModal from '../components/CmnPopupModal'
 
 import logo from '../assets/img/logo.png'
 import '../assets/styles/signup.css'
@@ -12,9 +11,8 @@ const SignupPage = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showModal, setShowModal] = useState(false)
-  const [modalErrortype, setModalErrortype] = useState('')
-  const [modalMessage, setModalMessage] = useState('')
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState('')
 
   // Functions
   const clearInputFields = () => {
@@ -29,15 +27,19 @@ const SignupPage = () => {
     userService
       .create(data)
       .then((response) => {
-        setModalMessage(response.message)
-        setShowModal(true)
+        setMsg(response.message);
+        setError("");
         clearInputFields();
       })
       .catch((error) => {
-        console.log(error.response.data)
-        setModalErrortype(error.response.data.errorType)
-        setModalMessage(error.response.data.message)
-        setShowModal(true)
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setError(error.response.data.message);
+          setMsg("");
+        }
       })
   } 
 
@@ -85,9 +87,8 @@ const SignupPage = () => {
             />
           </div>
 
-          <div>
-
-          </div>
+          {error && <div className="signup-page-error-msg">{error}</div>}
+          {msg && <div className="signup-page-success-msg">{msg}</div>}
 
           <div className='form-button mb20'>
             <button onClick={handleSignupClick}>Sign Up</button>
@@ -97,20 +98,6 @@ const SignupPage = () => {
       
       <div className='back-button-div'>
         <button className='back-btn' onClick={() => navigate('/')}>Back</button>
-      </div>
-
-      <div>
-        {showModal
-          ? <CmnPopupModal 
-              errorType={modalErrortype}
-              message={modalMessage}
-              onClose={() => {
-                setShowModal(false)
-                setModalErrortype('')
-                setModalMessage('')
-                navigate('/')
-              }}/>
-          : <></>}
       </div>
     </div>
   )

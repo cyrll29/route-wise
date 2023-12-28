@@ -19,7 +19,6 @@ usersRouter.get('/', async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ 
-      errorType: "Server Error",
       message: error.message 
     })
   }
@@ -35,15 +34,13 @@ usersRouter.post('/', async (req, res) => {
     let user = await User.findOne({ email: email })
     if (user) {
       return res.status(409).json({ 
-        errorType: "Email Exists" ,
-        message: "User with given email is existing" 
+        message: "Sorry, the email you provided is already registered. If you have an account, please log in. If not, try using a different email address." 
       })
     }
 
     if (!name || !email || !password) {
       return res.status(404).json({
-        errorType: "Missing Input",
-        message: "Please Input all the Required Fields"
+        message: "Please provide all the required information. Make sure to fill in your name, password, and email."
       })
     }
 
@@ -54,16 +51,14 @@ usersRouter.post('/', async (req, res) => {
           minNumbers: 1, minSymbols: 1 
     })) {
       return res.status(400).json({
-        errorType: "Invalid Email Format and Weak Password",
-        message: "Please use the format ex.'@gmail.com' and choose a stronger password. It should have at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols.."
+        message: "Invalid email format and weak password. Please use the format 'example@gmail.com' and choose a stronger password with at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols."
       })
     }
 
     // Email Validation
     if (!emailValidation.test(email)) {
       return res.status(400).json({ 
-        errorType: "Invalid Email Format",
-        message: "Please use the format ex.'@gmail.com'." 
+        message: "Invalid email format. Please use the format 'example@gmail.com." 
       });
     }
 
@@ -76,8 +71,7 @@ usersRouter.post('/', async (req, res) => {
       minSymbols: 1 
     })) {
       return res.status(400).json({ 
-        errorType: "Weak Password",
-        message: "Please choose a stronger password. It should have at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols." })
+        message: "Weak Password. Choose a stronger password with at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols" })
     }
 
     // Password Hashing
@@ -99,14 +93,12 @@ usersRouter.post('/', async (req, res) => {
     await sendEmail(user.email, "Verify Email", url, "Activate your RouteWise Account")
     
     res.status(200).json({
-      message: "Registration Successful. An Email sent to your account please verify",
-      data: user
+      message: "Registration successful! An email has been sent for account verification.",
     })
 
   } catch (error) {
     return res.status(500).send({ 
-      errorType: "Server Error", 
-      message: error.message 
+      message: "Internal server error" 
     })
   }
 })
@@ -116,7 +108,7 @@ usersRouter.get('/:id/verify/:token', async (req, res) => {
     const user = await User.findOne({_id: req.params.id})
     if (!user) {
       return res.status(400).json({
-        message: "Invalid link1"
+        message: "Invalid user link"
       })
     }
 
@@ -126,49 +118,48 @@ usersRouter.get('/:id/verify/:token', async (req, res) => {
     })
     if (!token) {
       return res.status(400).json({
-        message: "Invalid link2"
+        message: "Invalid token link"
       })
     }
 
     await User.updateOne({_id: user._id}, {verified: true})
 
     return res.status(200).json({
-      message: "Email verified successfully"
+      message: "Your email has been successfully verified"
     })
 
   } catch (error) {
     return res.status(500).json({
-      errorType: "Server Error",
-      message: error.message
+      message: "Internal server error"
     })
   }
 })
 
 
-usersRouter.delete('/:id', async (req, res) => {
-  const { id } = req.params
+// usersRouter.delete('/:id', async (req, res) => {
+//   const { id } = req.params
 
-  try {
-    const data = await User.findByIdAndDelete(id)
+//   try {
+//     const data = await User.findByIdAndDelete(id)
 
-    if (!data) {
-      return res.status(404).json({ 
-        errorType: "Unknown User",
-        message: "User is not found" 
-      })
-    }
+//     if (!data) {
+//       return res.status(404).json({ 
+//         errorType: "Unknown User",
+//         message: "User is not found" 
+//       })
+//     }
 
-    return res.status(200).json({ 
-      message: "User deleted successfully",
-      deletedData: data
-    })
+//     return res.status(200).json({ 
+//       message: "User deleted successfully",
+//       deletedData: data
+//     })
 
-  } catch (error) {
-    res.status(500).json({ 
-      errorType: "Server Error",
-      message: error.message 
-    })
-  }
-})
+//   } catch (error) {
+//     res.status(500).json({ 
+//       errorType: "Server Error",
+//       message: error.message 
+//     })
+//   }
+// })
 
 export default usersRouter

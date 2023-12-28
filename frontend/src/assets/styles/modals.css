@@ -371,11 +371,29 @@ input {
 }
 
 .common-popup-modal-container {
-  width: 300px;
-  height: 150px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 50;
-  opacity: 1;
-  z-index: 51;
+  padding: 50px;
+	background-color: rgba(255, 255, 255, 0.9);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+		0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+}
+
+.common-popup-modal-container p {
+  margin-bottom: 20px;
+}
+
+.common-popup-modal-container button {
+  border: none;
+	outline: none;
+	padding: 12px 0;
+	background-color: #880015;
+	color: white;
+	border-radius: 20px;
+	width: 180px;
+	font-size: 14px;
+	cursor: pointer;
+	margin: 10px auto;
 }

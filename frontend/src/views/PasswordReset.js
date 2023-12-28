@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../assets/styles/passwordreset.css"
 
@@ -9,6 +9,7 @@ const PasswordReset = () => {
 	const [msg, setMsg] = useState("");
 	const [error, setError] = useState("");
 	const param = useParams();
+	const navigate = useNavigate();
 	const url = `http://localhost:3001/api/password-reset/${param.id}/${param.token}`;
 	console.log(url)
 	useEffect(() => {
@@ -49,7 +50,7 @@ const PasswordReset = () => {
 			{validUrl ? (
 				<div className="password-reset-container">
 					<form className="password-reset-form-container" onSubmit={handleSubmit}>
-						<h1>Add New Password</h1>
+						<h1>New Password</h1>
 						<input
 							type="password"
 							placeholder="Password"
@@ -61,7 +62,7 @@ const PasswordReset = () => {
 						/>
 						{error && <div className="password-reset-error-msg">{error}</div>}
 						{msg && <div className="password-reset-success-msg">{msg}</div>}
-						<button type="submit" className="password-reset-green-btn">
+						<button type="submit" className="password-reset-btn">
 							Submit
 						</button>
 					</form>
@@ -69,6 +70,9 @@ const PasswordReset = () => {
 			) : (
 				<h1>404 Not Found</h1>
 			)}
+			<div className='back-button-div'>
+				<button className='back-btn' onClick={() => navigate('/')}>Back</button>
+			</div>
 		</>
 	);
 };

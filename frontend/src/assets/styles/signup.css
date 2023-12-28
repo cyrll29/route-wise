@@ -30,6 +30,22 @@ html, body {
     height: 100vh;
 }
 
+.signup-page-success-msg,
+.signup-page-error-msg {
+	width: 400px;
+	padding: 10px;
+	margin: 10px 0 0 0;
+	font-size: 13px;
+	background-color: #f34646;
+	color: white;
+	border-radius: 12px;
+	text-align: center;
+}
+
+.signup-page-success-msg {
+	background-color: #5cdd5c;
+}
+
 .signup-page .signup-container .signup-logo {
     display: flex;
     align-items: center;
@@ -87,13 +103,13 @@ html, body {
 
 .signup-page .signup-container .form-container .form-button button {
     height: 35px;
-    width: 400px;
+    width: 200px;
     border: none;
-    border-radius: 12px;
+    border-radius: 20px;
     color: #F8ECC4;
     background-color: #880015;
     font-weight: 600;
-    margin-top: 20px;
+    margin-top: 12px;
     transition: opacity 0.2s;
 }
 

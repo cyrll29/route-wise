@@ -11,13 +11,18 @@ loginRouter.post('/', async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
+  if (!user) {
+    return res.status(401).json({ 
+      message: "Sorry, the email you entered is not registered. Please check your email or register for a new account."
+    })
+  }
+
   const passwordCorrect = user === null
     ? false
     : await bcrypt.compare(password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
     return res.status(401).json({ 
-      errorType: "Inputs",
       message: "User has entered invalid email or password"
     })
   }
@@ -33,12 +38,10 @@ loginRouter.post('/', async (req, res) => {
       await sendEmail(user.email, "Verify Email", url)
 
       return res.status(401).json({
-        errorType: "Unverified Email",
-        message: "A mail is sent to your account, please verify your email"
+        message: "We've sent an email to your account. Your account is not fully active until verification is complete."
       })
     }
     return res.status(401).json({
-      errorType: "Unverified Email",
       message: "Your email is not verified. Please check your email"
     })
   }
@@ -57,7 +60,7 @@ loginRouter.post('/', async (req, res) => {
   res.status(200).send({
     token,
     email: user.email,
-    name: user.name
+    name: user.name,
   })
 })
 

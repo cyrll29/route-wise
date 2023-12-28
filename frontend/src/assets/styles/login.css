@@ -11,6 +11,10 @@ html, body {
     background-color: #F8ECC4;
 }
 
+.mb5 {
+    margin-bottom: 5px;
+}
+
 .mb10 {
     margin-bottom: 10px;
 }
@@ -24,6 +28,17 @@ html, body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+
+.login-page-error-msg {
+	width: 400px;
+	padding: 10px;
+	margin: 10px 0 0 0;
+	font-size: 13px;
+	background-color: #f34646;
+	color: white;
+	border-radius: 12px;
+	text-align: center;
 }
 
 .login-page .login-container {
@@ -40,6 +55,7 @@ html, body {
     align-items: center;
     margin-bottom: 30px;
 }
+
 
 .login-page .login-container .login-logo img {
     width: 50px;
@@ -69,6 +85,20 @@ html, body {
     align-items: center;
 }
 
+.login-page .login-container .form-container .login-page-forget-password {
+    text-align: left;
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.login-page .login-container .form-container .login-page-forget-password h6 {
+    cursor: pointer;
+    color: #880015;
+    text-decoration: underline;
+    margin: 0;
+    font-size: 12px; /* Adjust font size as needed */
+}
+
+
 .login-page .login-container .form-container h6 {
     font-style: bold;
 }
@@ -83,11 +113,12 @@ html, body {
 
 .login-page .login-container .form-container .form-button button {
     height: 35px;
-    width: 400px;
+    width: 200px;
     border: none;
-    border-radius: 12px;
+    border-radius: 20px;
     color: #F8ECC4;
     background-color: #880015;
+    margin-top: 12px;
     font-weight: 600;
     transition: opacity 0.2s;
 }

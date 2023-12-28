@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../services/loginService'
 import reportService from '../services/reportService'
@@ -9,17 +9,20 @@ import logo from '../assets/img/logo.png'
 
 
 const LoginPage = () => {
-
-  // Declarations
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [modalErrortype, setModalErrortype] = useState('')
   const [modalMessage, setModalMessage] = useState('')
+  const [error, setError] = useState('')
 
   // Functions
+  const clearInputFields = () => {
+    setEmail('')
+    setPassword('')
+  }
+
   const handleLoginClick = async (event) => {
     event.preventDefault()
     
@@ -28,28 +31,32 @@ const LoginPage = () => {
         email, password
       })
 
-      console.log("Login Successful: ", user)
-      alert("Login Successful")
+      // console.log("Login Successful: ", user)
+      // alert("Login Successful")
+      setModalMessage("Log in Succesful")
+      setShowModal(true)
       
       reportService.setToken(user.token)
       setUser(user)
-      setEmail('')
-      setPassword('')
+      clearInputFields()
 
     } catch (error) {
-      console.log(error.response.data)
-      setModalErrortype(error.response.data.errorType)
-      setModalMessage(error.response.data.message)
-      setShowModal(true)
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message);
+      }
     }
   }
 
-  useEffect(() => {
-    // Navigate after the component is rendered and user is set
+  const checkToken = () => {
     if (user !== null) {
       navigate('/HomePage');
     }
-  }, [user, navigate]);
+  }
+
 
 
   return (
@@ -60,10 +67,11 @@ const LoginPage = () => {
             <h1><span>R</span>oute<span>W</span>ise</h1>
         </div>
 
-        <h4>Login to your Account</h4>
 
         {user === null ? (
+          
         <div className='form-container'>
+          <h4>Login to your Account</h4>
           <div className='mb20'>
             <h6>Email: </h6>
             <input
@@ -75,7 +83,7 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className='mb20'>
+          <div className='mb5'>
             <h6>Password: </h6>
             <input 
               type="password"
@@ -84,14 +92,17 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)} 
             />
           </div>
-          
-          <div>
-            <p onClick={() => navigate('/ForgetPassword')}> Forget Password </p>
+
+          {error && <div className="login-page-error-msg">{error}</div>}
+
+          <div className='form-button mb10'>
+            <button onClick={handleLoginClick}>Log in</button>
           </div>
 
-          <div className='form-button mb20'>
-            <button onClick={handleLoginClick}>Login</button>
+          <div className='login-page-forget-password'>
+            <h6 onClick={() => navigate('/ForgetPassword')}> Forget Password </h6>
           </div>
+
         </div>
         ) : null}
 
@@ -102,12 +113,12 @@ const LoginPage = () => {
       <div>
         {showModal
           ? <CmnPopupModal 
-              errorType={modalErrortype}
               message={modalMessage}
+              textBtn="Go to Home Page"
               onClose={() => {
                 setShowModal(false)
-                setModalErrortype('')
                 setModalMessage('')
+                checkToken()
               }}/>
           : <></>}
       </div>

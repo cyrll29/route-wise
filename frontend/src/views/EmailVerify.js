@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import success from "../assets/img/success.png";
 import "../assets/styles/emailverify.css";
 
 const EmailVerify = () => {
 	const [validUrl, setValidUrl] = useState(true);
+	const navigate = useNavigate()
 	const param = useParams();
   console.log(param.id)
   console.log(param.token)
@@ -29,11 +30,9 @@ const EmailVerify = () => {
 		<>
 			{validUrl ? (
 				<div className="email-verify-container">
-					<img src={success} alt="success_img" />
+					<img src={success} alt="success_img" className="email-verify-success"/>
 					<h1>Email verified successfully</h1>
-					<Link to="/LoginPage">
-						<button className="email-verify-green-btn">Login</button>
-					</Link>
+					<button onClick={() => navigate('/LoginPage')} className="email-verify-btn">Login</button>
 				</div>
 			) : (
 				<h1>404 Not Found</h1>

@@ -4,6 +4,7 @@ import Token from '../models/token.js'
 import crypto from 'crypto'
 import sendEmail from '../utils/sendEmail.js'
 import Joi from 'joi'
+import validator from 'validator'
 import passwordComplexity from 'joi-password-complexity'
 import bcrypt from 'bcrypt'
 
@@ -79,6 +80,17 @@ passwordReset.post("/:id/:token", async (req, res) => {
   const { password } = req.body
 
   try {
+    if (!validator.isStrongPassword(password, {
+      minLength: 8, 
+      minLowercase: 1, 
+      minUppercase: 1, 
+      minNumbers: 1, 
+      minSymbols: 1 
+    })) {
+      return res.status(400).json({ 
+        message: "Weak Password. Choose a stronger password with at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols" })
+    }
+
     const passwordSchema = Joi.object({
       password: passwordComplexity().required().label("Password")
     })
