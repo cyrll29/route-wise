@@ -1,9 +1,11 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
 import User from '../models/userModel.js'
+import Token from '../models/token.js'
+import sendEmail from '../utils/sendEmail.js'
 import validator from 'validator'
+import crypto from 'crypto'
 const usersRouter = express.Router()
-
 
 usersRouter.get('/', async (req, res) => {
   try {
@@ -30,8 +32,8 @@ usersRouter.post('/', async (req, res) => {
 
   try {
     // Email Uniqueness
-    let userEmail = await User.findOne({ email: email })
-    if (userEmail) {
+    let user = await User.findOne({ email: email })
+    if (user) {
       return res.status(409).json({ 
         errorType: "Email Exists" ,
         message: "User with given email is existing" 
@@ -81,15 +83,27 @@ usersRouter.post('/', async (req, res) => {
     // Password Hashing
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
-    const user = new User({
+    user = await new User({
       name,
       passwordHash,
       email,
-    })
-    const savedUser = await user.save()
+    }).save()
+
     res.status(201).json({
       message: "Registration Successful",
-      data: savedUser
+      data: user
+    })
+
+    // Create Token
+    const token = await new Token({
+      userId: user.id,
+      token: crypto.randomBytes(32).toString('hex')
+    }).save()
+
+    const url = `http://localhost:3001/users/${user.id}/verify/${token.token}`
+    await sendEmail(user.email, "Verify Email", url)
+    res.status(201).json({
+      message: "An Email sent to your account please verify"
     })
 
   } catch (error) {
@@ -97,6 +111,37 @@ usersRouter.post('/', async (req, res) => {
       errorType: "Server Error", 
       message: error.message 
     })
+  }
+})
+
+usersRouter.get('/:id/verify/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({id: req.params.id})
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid link"
+      })
+    }
+
+    const token = await Token.findOne({
+      userId: user.id,
+      token: req.params.token
+    })
+    if (!token) {
+      return res.status(400).json({
+        message: "Invalid link"
+      })
+    }
+
+    await User.updateOne({id: user.id, verified: true})
+    await token.remove()
+
+    res.status(200).json({
+      message: "Email verified successfully"
+    })
+
+  } catch (error) {
+    
   }
 })
 
