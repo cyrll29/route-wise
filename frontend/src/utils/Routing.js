@@ -7,6 +7,7 @@ import LandingPage from "../views/LandingPage"
 import LoginPage from "../views/LoginPage"
 import SignupPage from "../views/SignupPage"
 import HomePage from "../views/HomePage"
+import EmailVerify from "../views/EmailVerify"
 
 
 const Routing = () => {
@@ -18,6 +19,7 @@ const Routing = () => {
           <Route path='/LoginPage' element={<LoginPage />}></Route>
           <Route path='/SignupPage' element={<SignupPage />}></Route>
           <Route path='/HomePage' element={<HomePage />}></Route>
+          <Route path='/users/:id/verify/:token' element={<EmailVerify />}></Route>
         </Routes>
       </Router>
     </>

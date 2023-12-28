@@ -85,6 +85,10 @@ const SignupPage = () => {
             />
           </div>
 
+          <div>
+
+          </div>
+
           <div className='form-button mb20'>
             <button onClick={handleSignupClick}>Sign Up</button>
           </div>
@@ -104,6 +108,7 @@ const SignupPage = () => {
                 setShowModal(false)
                 setModalErrortype('')
                 setModalMessage('')
+                navigate('/')
               }}/>
           : <></>}
       </div>

@@ -17,7 +17,7 @@ const sendEmail = async (email, subject, text) => {
       from: process.env.USER,
       to: email,
       subject: subject,
-      text: text
+      html: `<a href=${text}>Activate your RouteWise account</a>`
     })
     console.log("Email sent successfully")
   } catch (error) {
