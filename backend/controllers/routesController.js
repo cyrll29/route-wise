@@ -3,54 +3,57 @@ import Route from '../models/routeModel.js'
 const routesRouter = express.Router()
 
 
-// http get
 routesRouter.get('/', async (req, res) => {
   try {
     const routes = await Route
       .find({})
-
     return res.status(200).json({
       count: routes.length,
       data: routes
     })
-  } 
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).json({
+      errorType: "Server Error", 
+      message: error.message 
+    })
   }
 })
 
 
-// http get id
 routesRouter.get('/:id', async (req, res) => {
   const { id } = req.params
 
   try {
     const route = await Route.findById(id)
-
-    if (route) {
-      return res.status(200).json({ 
-        message: "ID Found",
-        data: route 
+    if (!route) {
+      return res.status(404).json({
+        errorType: "No Route Found"
       })
-    } else {
-      return res.status(404).end()
-    }
-  } 
-  
-  catch (error) {
-    res.status(500).send({ message: error.message })
+    } 
+    return res.status(200).json({ 
+      message: "Route Found",
+      data: route 
+    })
+    
+  } catch (error) {
+    res.status(500).json({
+      errorType: "Server Error", 
+      message: error.message 
+    })
   }
 })
 
 
-// http post
 routesRouter.post('/', async (req, res) => {
   const body = req.body
 
   try {
     if (!body.origin || !body.destination || !body.transportation) {
-      return res.status(400).send({ message: "Send all required fields" })
+      return res.status(400).json({ 
+        errorType: "Missing Inputs",
+        message: "Send all required fields" 
+      })
     }
 
     const route = new Route ({
@@ -65,22 +68,26 @@ routesRouter.post('/', async (req, res) => {
       message: "Route created successfully",
       savedRoute
     })
-  } 
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).json({
+      errorType: "Server Error", 
+      message: error.message
+    })
   }
 })
 
 
-// http put
 routesRouter.put('/:id', async (req, res) => {
   const body = req.body
   const { id } = req.params
 
   try {
     if (!body.origin || !body.destination || !body.transportation) {
-      return res.status(400).send({ message: "Send all required fields" })
+      return res.status(400).json({
+        errorType: "Missing Inputs", 
+        message: "Send all required fields" 
+      })
     }
     
     const route = {
@@ -93,30 +100,32 @@ routesRouter.put('/:id', async (req, res) => {
     Route.findByIdAndUpdate(id, route, { new: true })
       .then(updatedRoute => {
         return res.status(200).json({
-          message: "Report updates successfully",
+          message: "Route updates successfully",
           updatedRoute
         })
       })
       .catch((error) => {
         console.log(error)
-        return res.status(400).json({ message: "Report not found" })
+        return res.status(400).json({ 
+          errorType: "Not Found",
+          message: "Route not found" 
+        })
       })
-  } 
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).json({
+      errorType: "Server Error", 
+      message: error.message 
+    })
   }
 })
 
 
-// http delete
 routesRouter.delete('/:id', async (req, res) => {
-
   const { id } = req.params
 
   try {
     const result = await Route.findByIdAndDelete(id)
-
     if (!result) {
       return res.status(404).json({ message: "Route not found" })
     }
@@ -126,8 +135,10 @@ routesRouter.delete('/:id', async (req, res) => {
     })
 
   } catch (error) {
-    console.log("DELETE ERROR: ", error)
-    res.status(500).send({ message: error.message })
+    res.status(500).json({
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 

@@ -19,6 +19,10 @@ html, body {
     margin-bottom: 20px;
 }
 
+.required-asterisk {
+    color: red;
+}
+
 .signup-page {
     display: flex;
     align-items: center;

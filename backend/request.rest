@@ -24,12 +24,12 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-  "username": "netcs",
   "name": "Kenneth Cabobos",
-  "password": "netcs"
+  "email": "caboboskennethzxc@gmail.com",
+  "password": "20Pnetcs!"
 }
 ###
-DELETE http://localhost:3001/api/users/656e1194b1f860912a7e7cec
+DELETE http://localhost:3001/api/users/658ce4ffea79517d06d73a0f
 
 
 

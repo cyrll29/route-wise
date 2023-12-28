@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import validator from 'validator'
 import userService from '../services/userService'
 import CmnPopupModal from '../components/CmnPopupModal'
 
@@ -9,70 +8,37 @@ import '../assets/styles/signup.css'
 
 
 const SignupPage = () => {
-
-  // Declarations
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [modalErrortype, setModalErrortype] = useState('')
   const [modalMessage, setModalMessage] = useState('')
-  const [passwordMessage, setPasswordMessage] = useState('')
-  const [correctPassword, setCorrectPassword] = useState(null)
 
+  // Functions
   const clearInputFields = () => {
     setName('')
     setEmail('')
     setPassword('')
-    setCorrectPassword(null)
   }
 
-
-  // Functions
   const handleSignupClick = (e) => {
     e.preventDefault()
-
-    // Email Validation
-    const emailValidation = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    if (!emailValidation.test(email)) {
-      setModalMessage("Invalid Email Format")
-      setShowModal(true)
-      return;
-    }
-
-    // Password Validation
-    if (!correctPassword) {
-      setModalMessage("Set a Strong password")
-      setShowModal(true)
-      return
-    }
-
-    // http Post
     const data = {name, password, email}
     userService
       .create(data)
-      .then((data) => {
-        setModalMessage("Registration Successful")
+      .then((response) => {
+        setModalMessage(response.message)
         setShowModal(true)
         clearInputFields();
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error.response.data)
+        setModalErrortype(error.response.data.errorType)
+        setModalMessage(error.response.data.message)
+        setShowModal(true)
       })
-  } 
-  
-  // Password Validator
-  const validate = (value) => { 
-    setPassword(value)
-    if (validator.isStrongPassword(value, { 
-      minLength: 8, minLowercase: 1, 
-      minUppercase: 1, minNumbers: 1, minSymbols: 1 
-    })) { 
-      setPasswordMessage('Strong Password') 
-      setCorrectPassword(true)
-    } else { 
-      setPasswordMessage('Not Strong Password') 
-    } 
   } 
 
   return (
@@ -88,7 +54,7 @@ const SignupPage = () => {
         <div className='form-container'>
 
           <div className='mb20'>
-            <h6>Name: </h6>
+            <h6><span className='required-asterisk'>*</span>Name: </h6>
             <input 
               type="text"
               id='name'
@@ -99,7 +65,7 @@ const SignupPage = () => {
           </div>
 
           <div className='mb20'>
-            <h6>Email: </h6>
+            <h6><span className='required-asterisk'>*</span>Email: </h6>
             <input 
               type="email"
               id='email'
@@ -110,22 +76,14 @@ const SignupPage = () => {
           </div>
 
           <div>
-            <h6>Password: </h6>
+            <h6><span className='required-asterisk'>*</span>Password: </h6>
             <input 
               type="password"
               id='password'
               value={password}
-              onChange={e => validate(e.target.value)} 
+              onChange={e => setPassword(e.target.value)} 
             />
           </div>
-          {password === '' ? <></> : 
-            <span style={{ 
-                fontWeight: 'bold', 
-                color: 'red', 
-                fontSize: '12px'
-            }}>{passwordMessage}</span>
-          }
-          
 
           <div className='form-button mb20'>
             <button onClick={handleSignupClick}>Sign Up</button>
@@ -140,9 +98,11 @@ const SignupPage = () => {
       <div>
         {showModal
           ? <CmnPopupModal 
+              errorType={modalErrortype}
               message={modalMessage}
               onClose={() => {
                 setShowModal(false)
+                setModalErrortype('')
                 setModalMessage('')
               }}/>
           : <></>}

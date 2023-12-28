@@ -5,62 +5,102 @@ import validator from 'validator'
 const usersRouter = express.Router()
 
 
-// http get
 usersRouter.get('/', async (req, res) => {
   try {
     const users = await User
       .find({})
       .populate('reports', {location: 1, title: 1, category: 1})
-      
     return res.status(200).json({ 
       count: users.length, 
       data: users 
     })
-  } 
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).json({ 
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 
 
-// http post
 usersRouter.post('/', async (req, res) => {
+  const emailValidation = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const { name, password, email } = req.body
 
   try {
+    // Email Uniqueness
+    let userEmail = await User.findOne({ email: email })
+    if (userEmail) {
+      return res.status(409).json({ 
+        errorType: "Email Exists" ,
+        message: "User with given email is existing" 
+      })
+    }
+
+    if (!name || !email || !password) {
+      return res.status(404).json({
+        errorType: "Missing Input",
+        message: "Please Input all the Required Fields"
+      })
+    }
+
+    // Email and Password Validation
+    if (!emailValidation.test(email) 
+        && !validator.isStrongPassword(password, {
+          minLength: 8, minLowercase: 1, minUppercase: 1, 
+          minNumbers: 1, minSymbols: 1 
+    })) {
+      return res.status(400).json({
+        errorType: "Invalid Email Format and Weak Password",
+        message: "Please use the format ex.'@gmail.com' and choose a stronger password. It should have at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols.."
+      })
+    }
+
     // Email Validation
-    const emailValidation = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (!emailValidation.test(email)) {
-      return res.status(400).json({ error: "Invalid email format" });
+      return res.status(400).json({ 
+        errorType: "Invalid Email Format",
+        message: "Please use the format ex.'@gmail.com'." 
+      });
     }
 
     // Password Validation
-    if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })) {
-      return res.status(400).json({ error: "Set a Strong Password" })
+    if (!validator.isStrongPassword(password, {
+      minLength: 8, 
+      minLowercase: 1, 
+      minUppercase: 1, 
+      minNumbers: 1, 
+      minSymbols: 1 
+    })) {
+      return res.status(400).json({ 
+        errorType: "Weak Password",
+        message: "Please choose a stronger password. It should have at least 8 characters, including uppercase and lowercase letters, numbers, and special symbols." })
     }
 
     // Password Hashing
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
-
-    // Save User
     const user = new User({
       name,
       passwordHash,
       email,
     })
     const savedUser = await user.save()
-    res.status(201).json({data: savedUser})
-  } 
+    res.status(201).json({
+      message: "Registration Successful",
+      data: savedUser
+    })
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).send({ 
+      errorType: "Server Error", 
+      message: error.message 
+    })
   }
 })
 
 
-// http delete
 usersRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
 
@@ -68,14 +108,22 @@ usersRouter.delete('/:id', async (req, res) => {
     const data = await User.findByIdAndDelete(id)
 
     if (!data) {
-      return res.status(404).json({ message: "Report not found" })
+      return res.status(404).json({ 
+        errorType: "Unknown User",
+        message: "User is not found" 
+      })
     }
 
-    return res.status(200).send({ message: "Report deleted successfully"})
-  } 
-  
-  catch (error) {
-    res.status(500).send({ message: error.message })
+    return res.status(200).json({ 
+      message: "User deleted successfully",
+      deletedData: data
+    })
+
+  } catch (error) {
+    res.status(500).json({ 
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 

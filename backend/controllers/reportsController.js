@@ -14,26 +14,25 @@ const getTokenFrom = req => {
 }
 
 
-// http get
 reportsRouter.get('/', async (req, res) => {
   try {
     const reports = await Report
       .find({})
       // .populate('user', { username: 1, name: 1 })
-
     return res.status(200).json({
       count: reports.length,
       data: reports
     })
-  } 
-  
-  catch (error) {
-    res.status(500).send({ message: error.message })
+
+  } catch (error) {
+    res.status(500).json({ 
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 
 
-// http get id
 reportsRouter.get('/:id', async (req, res) => {
   const { id } = req.params
 
@@ -43,22 +42,29 @@ reportsRouter.get('/:id', async (req, res) => {
       return res.status(200).json({ data: report })
     }
     
-    return res.status(404).json({ message: "ID Not Found" })
-  } 
+    return res.status(404).json({ 
+      errorType: "ID Not Found",
+      message: "ID does not exist" 
+    })
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).json({ 
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 
 
-// http post
 reportsRouter.post('/', async (req, res) => {
   const {location, title, category, body} = req.body
 
   try {
     if (!location || !title || !category || !body) {
-      return res.status(400).send({ message: "Send all required fields" })
+      return res.status(400).send({ 
+        errorType: "Missing Inputs",
+        message: "Send all required fields" 
+      })
     }
 
     // Token Verification
@@ -81,23 +87,30 @@ reportsRouter.post('/', async (req, res) => {
     // Update User document
     user.reports = user.reports.concat(savedReport._id)
     await user.save()
-    return res.status(201).json({ savedReport })
-  } 
+    return res.status(201).json({ 
+      message: "Report created successfully",
+      savedReport 
+    })
 
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).send({ 
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 
 
-// http put
 reportsRouter.put('/:id', async (req, res) => {
   const body = req.body
   const { id } = req.params
 
   try {
     if (!body.location || !body.title || !body.category || !body.body) {
-      return res.status(400).send({ message: "Send all required fields" })
+      return res.status(400).json({
+        errorType: "Missing Inputs", 
+        message: "Send all required fields" 
+      })
     }
 
     const report = {
@@ -109,34 +122,49 @@ reportsRouter.put('/:id', async (req, res) => {
 
     Report.findByIdAndUpdate(id, report, { new: true })
       .then(updatedReport => {
-        return res.status(200).json({ updatedReport })
+        return res.status(200).json({ 
+          message: "Report updated successfully",
+          updatedReport 
+        })
       })
       .catch((error) => {
         console.log(error)
-        return res.status(400).json({ message: "Report not found" })
+        return res.status(400).json({ 
+          errorType: "404 Not Found",
+          message: "Report not found" 
+        })
       })
-  } 
-  
-  catch (error) {
-    res.status(500).send({ message: error.message })
+
+  } catch (error) {
+    res.status(500).json({ 
+      errorType: "Server Type",
+      message: error.message 
+    })
   }
 })
 
-// http delete
+
 reportsRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
 
   try {
     const data = await Report.findByIdAndDelete(id)
     if (!data) {
-      return res.status(404).json({ message: "Report not found" })
+      return res.status(404).json({ 
+        errorType: "Missing Report",
+        message: "Report not found" 
+      })
     }
+    return res.status(200).json({
+      message: "Report deleted successfully",
+      data 
+    })
 
-    return res.status(200).send({ data })
-  } 
-
-  catch (error) {
-    res.status(500).send({ message: error.message })
+  } catch (error) {
+    res.status(500).json({ 
+      errorType: "Server Error",
+      message: error.message 
+    })
   }
 })
 
