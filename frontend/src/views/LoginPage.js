@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../services/loginService'
 import reportService from '../services/reportService'
+import CmnPopupModal from '../components/CmnPopupModal'
 
 import '../assets/styles/login.css'
 import logo from '../assets/img/logo.png'
@@ -14,6 +15,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+  const [modalErrortype, setModalErrortype] = useState('')
+  const [modalMessage, setModalMessage] = useState('')
 
   // Functions
   const handleLoginClick = async (event) => {
@@ -32,9 +36,11 @@ const LoginPage = () => {
       setEmail('')
       setPassword('')
 
-    } catch (exception) {
-      setTimeout(() => {
-      }, 5000)
+    } catch (error) {
+      console.log(error.response.data)
+      setModalErrortype(error.response.data.errorType)
+      setModalMessage(error.response.data.message)
+      setShowModal(true)
     }
   }
 
@@ -88,6 +94,18 @@ const LoginPage = () => {
         <div className='back-button-div'>
           <button className='back-btn' onClick={() => navigate('/')}>Back</button>
         </div>
+      </div>
+      <div>
+        {showModal
+          ? <CmnPopupModal 
+              errorType={modalErrortype}
+              message={modalMessage}
+              onClose={() => {
+                setShowModal(false)
+                setModalErrortype('')
+                setModalMessage('')
+              }}/>
+          : <></>}
       </div>
     </div>
   )

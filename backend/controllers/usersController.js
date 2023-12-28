@@ -89,25 +89,22 @@ usersRouter.post('/', async (req, res) => {
       email,
     }).save()
 
-    res.status(201).json({
-      message: "Registration Successful",
-      data: user
-    })
-
     // Create Token
     const token = await new Token({
-      userId: user.id,
+      userId: user._id,
       token: crypto.randomBytes(32).toString('hex')
     }).save()
 
-    const url = `http://localhost:3001/users/${user.id}/verify/${token.token}`
+    const url = `http://localhost:3001/api/users/${user._id}/verify/${token.token}`
     await sendEmail(user.email, "Verify Email", url)
-    res.status(201).json({
-      message: "An Email sent to your account please verify"
+    
+    res.status(200).json({
+      message: "Registration Successful. An Email sent to your account please verify",
+      data: user
     })
 
   } catch (error) {
-    res.status(500).send({ 
+    return res.status(500).send({ 
       errorType: "Server Error", 
       message: error.message 
     })
@@ -116,32 +113,34 @@ usersRouter.post('/', async (req, res) => {
 
 usersRouter.get('/:id/verify/:token', async (req, res) => {
   try {
-    const user = await User.findOne({id: req.params.id})
+    const user = await User.findOne({_id: req.params.id})
     if (!user) {
       return res.status(400).json({
-        message: "Invalid link"
+        message: "Invalid link1"
       })
     }
 
     const token = await Token.findOne({
-      userId: user.id,
+      userId: user._id,
       token: req.params.token
     })
     if (!token) {
       return res.status(400).json({
-        message: "Invalid link"
+        message: "Invalid link2"
       })
     }
 
-    await User.updateOne({id: user.id, verified: true})
-    await token.remove()
+    await User.updateOne({_id: user._id}, {verified: true})
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Email verified successfully"
     })
 
   } catch (error) {
-    
+    return res.status(500).json({
+      errorType: "Server Error",
+      message: error.message
+    })
   }
 })
 
