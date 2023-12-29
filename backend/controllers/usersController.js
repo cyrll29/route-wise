@@ -19,7 +19,7 @@ usersRouter.get('/', async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ 
-      message: error.message 
+      message: "Internal server error"
     })
   }
 })
@@ -90,7 +90,14 @@ usersRouter.post('/', async (req, res) => {
     }).save()
 
     const url = `http://localhost:3000/users/${user._id}/verify/${token.token}`
-    await sendEmail(user.email, "Verify Email", url, "Activate your RouteWise Account")
+    await sendEmail(
+      user.email, 
+      "Welcome to RouteWise", 
+      url, 
+      "account verification process",
+      "Thank you for signing up! We're excited to have you on board.",
+      "Verify Email"
+    )
     
     res.status(200).json({
       message: "Registration successful! An email has been sent for account verification.",
@@ -136,30 +143,27 @@ usersRouter.get('/:id/verify/:token', async (req, res) => {
 })
 
 
-// usersRouter.delete('/:id', async (req, res) => {
-//   const { id } = req.params
+usersRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params
 
-//   try {
-//     const data = await User.findByIdAndDelete(id)
+  try {
+    const data = await User.findByIdAndDelete(id)
 
-//     if (!data) {
-//       return res.status(404).json({ 
-//         errorType: "Unknown User",
-//         message: "User is not found" 
-//       })
-//     }
+    if (!data) {
+      return res.status(404).json({ 
+        message: "User not found" 
+      })
+    }
 
-//     return res.status(200).json({ 
-//       message: "User deleted successfully",
-//       deletedData: data
-//     })
+    return res.status(200).json({ 
+      message: "User deleted successfully",
+    })
 
-//   } catch (error) {
-//     res.status(500).json({ 
-//       errorType: "Server Error",
-//       message: error.message 
-//     })
-//   }
-// })
+  } catch (error) {
+    res.status(500).json({ 
+      message: "Internal server error"
+    })
+  }
+})
 
 export default usersRouter

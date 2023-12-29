@@ -5,6 +5,7 @@ import User from '../models/userModel.js'
 import Token from '../models/token.js'
 import sendEmail from '../utils/sendEmail.js'
 import crypto from 'crypto'
+import config from '../utils/config.js'
 const loginRouter = express.Router()
 
 loginRouter.post('/', async (req, res) => {
@@ -34,8 +35,16 @@ loginRouter.post('/', async (req, res) => {
         userId: user._id,
         token: crypto.randomBytes(32).toString("hex")
       }).save()
-      const url = `http://localhost:3001/api/users/${user._id}/verify/${token.token}`
-      await sendEmail(user.email, "Verify Email", url)
+
+      const url = `http://localhost:3000/users/${user._id}/verify/${token.token}`
+      await sendEmail(
+        user.email, 
+        "Welcome to RouteWise", 
+        url, 
+        "account verification process",
+        "Thank you for signing up! We're excited to have you on board.",
+        "Verify Email"
+      )
 
       return res.status(401).json({
         message: "We've sent an email to your account. Your account is not fully active until verification is complete."
@@ -53,11 +62,11 @@ loginRouter.post('/', async (req, res) => {
 
   const token = jwt.sign(
     userForToken, 
-    process.env.ACCESS_TOKEN_SECRET,
+    config.ACCESS_TOKEN_SECRET,
     { expiresIn: 60*60 }
   )
 
-  res.status(200).send({
+  res.status(200).json({
     token,
     email: user.email,
     name: user.name,

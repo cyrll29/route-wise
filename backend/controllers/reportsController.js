@@ -2,6 +2,7 @@ import express from 'express'
 import Report from '../models/reportModel.js'
 import User from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
+import config from '../utils/config.js'
 const reportsRouter = express.Router()
 
 // Authorization
@@ -25,9 +26,8 @@ reportsRouter.get('/', async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({ 
-      errorType: "Server Error",
-      message: error.message 
+    res.status(500).json({
+      message: "Internal server error"
     })
   }
 })
@@ -39,18 +39,18 @@ reportsRouter.get('/:id', async (req, res) => {
   try {
     const report = await Report.findById(id)
     if (report) {
-      return res.status(200).json({ data: report })
+      return res.status(200).json({ 
+        data: report 
+      })
     }
     
     return res.status(404).json({ 
-      errorType: "ID Not Found",
-      message: "ID does not exist" 
+      message: "User ID does not exist" 
     })
 
   } catch (error) {
-    res.status(500).json({ 
-      errorType: "Server Error",
-      message: error.message 
+    res.status(500).json({
+      message: "Internal server error"
     })
   }
 })
@@ -61,16 +61,17 @@ reportsRouter.post('/', async (req, res) => {
 
   try {
     if (!location || !title || !category || !body) {
-      return res.status(400).send({ 
-        errorType: "Missing Inputs",
-        message: "Send all required fields" 
+      return res.status(400).json({ 
+        message: "Please provide values for all required fields: location, title, category, and body." 
       })
     }
 
     // Token Verification
-    const decodedToken = jwt.verify(getTokenFrom(req), process.env.ACCESS_TOKEN_SECRET)
+    const decodedToken = jwt.verify(getTokenFrom(req), config.ACCESS_TOKEN_SECRET)
     if (!decodedToken.id) {
-      return res.status(401).json({ error: 'token invalid' })
+      return res.status(401).json({ 
+        error: 'token invalid' 
+      })
     }
 
     // Save Report
@@ -89,13 +90,11 @@ reportsRouter.post('/', async (req, res) => {
     await user.save()
     return res.status(201).json({ 
       message: "Report created successfully",
-      savedReport 
     })
 
   } catch (error) {
-    res.status(500).send({ 
-      errorType: "Server Error",
-      message: error.message 
+    res.status(500).json({
+      message: "Internal server error"
     })
   }
 })
@@ -108,8 +107,7 @@ reportsRouter.put('/:id', async (req, res) => {
   try {
     if (!body.location || !body.title || !body.category || !body.body) {
       return res.status(400).json({
-        errorType: "Missing Inputs", 
-        message: "Send all required fields" 
+        message: "Please provide values for all required fields: location, title, category, and body." 
       })
     }
 
@@ -124,21 +122,18 @@ reportsRouter.put('/:id', async (req, res) => {
       .then(updatedReport => {
         return res.status(200).json({ 
           message: "Report updated successfully",
-          updatedReport 
         })
       })
       .catch((error) => {
         console.log(error)
         return res.status(400).json({ 
-          errorType: "404 Not Found",
           message: "Report not found" 
         })
       })
 
   } catch (error) {
     res.status(500).json({ 
-      errorType: "Server Type",
-      message: error.message 
+      message: "Internal server error"
     })
   }
 })
@@ -151,19 +146,16 @@ reportsRouter.delete('/:id', async (req, res) => {
     const data = await Report.findByIdAndDelete(id)
     if (!data) {
       return res.status(404).json({ 
-        errorType: "Missing Report",
         message: "Report not found" 
       })
     }
     return res.status(200).json({
       message: "Report deleted successfully",
-      data 
     })
 
   } catch (error) {
     res.status(500).json({ 
-      errorType: "Server Error",
-      message: error.message 
+      message: "Internal server error"
     })
   }
 })

@@ -1,8 +1,8 @@
-import config from './utils/config.js'
 import express from 'express'
 const app = express()
 import cors from 'cors'
 import mongoose from 'mongoose'
+import config from './utils/config.js'
 
 import routesRoute from './controllers/routesController.js'
 import reportsRoute from './controllers/reportsController.js'

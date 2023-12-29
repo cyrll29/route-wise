@@ -19,12 +19,16 @@ passwordReset.post('/', async (req, res) => {
     })
     const { error } = emailSchema.validate(req.body)
     if (error) {
-      return res.status(400).json({ message: error.details[0].message })
+      return res.status(400).json({ 
+        message: error.details[0].message 
+      })
     }
 
     let user = await User.findOne({ email: email })
     if (!user) {
-      return res.status(409).json({ message: "User with given email does not exist!" })
+      return res.status(409).json({ 
+        message: "User with given email does not exist!" 
+      })
     }
 
     let token = await Token.findOne({ userId: user._id })
@@ -36,12 +40,24 @@ passwordReset.post('/', async (req, res) => {
     }
 
     const url = `http://localhost:3000/password-reset/${user._id}/${token.token}`
-    await sendEmail(user.email, "Password Reset", url, "Click here to reset password.")
+    await sendEmail(
+      user.email, 
+      "Password Reset", 
+      url, 
+      "account password reset",
+      "We received a request to reset your RouteWise account password. If you did not make this request, you can ignore this email.",
+      "Reset Password"
 
-    res.status(200).json({message: "password reset link sent to your email account"})
+    )
+
+    res.status(200).json({
+      message: "Password reset link is sent to your email account, please check."
+    })
 
   } catch (error) {
-    res.status(500).json({message: "Internal server error"})
+    res.status(500).json({
+      message: "Internal server error"
+    })
   }
 })
 
@@ -52,25 +68,30 @@ passwordReset.get("/:id/:token", async (req, res) => {
   try {
     const user = await User.findOne({_id: id})
     if (!user) {
-      return res.status(400).json({ message: "Invalid link1" })
+      return res.status(400).json({ 
+        message: "Invalid user link" 
+      })
     }
-    console.log("FIRST RUN")
 
     const token = await Token.findOne({
       userId: user._id,
       token: req.params.token
     })
-    console.log(token)
+
     if (!token) {
-      return res.status(400).json({ message: "Invalid link2" })
+      return res.status(400).json({ 
+        message: "Invalid token link" 
+      })
     }
 
-    console.log("SECOND RUN")
-
-    res.status(200).json({ message: "Valid Url" })
+    res.status(200).json({ 
+      message: "Valid Url" 
+    })
 
   } catch (error) {
-    res.status(500).json({message: "Internal server error"})
+    res.status(500).json({
+      message: "Internal server error"
+    })
   }
 })
 
@@ -98,17 +119,19 @@ passwordReset.post("/:id/:token", async (req, res) => {
 
     const user = await User.findOne({_id: id})
     if (!user) {
-      return res.status(400).json({ message: "Invalid link1" })
+      return res.status(400).json({ 
+        message: "Invalid user link" 
+      })
     }
-
-    console.log(user)
 
     const token = await Token.findOne({
       userId: user._id,
       token: req.params.token
     })
     if (!token) {
-      return res.status(400).json({ message: "Invalid link2" })
+      return res.status(400).json({ 
+        message: "Invalid token link" 
+      })
     }
 
     if (!user.verified) {
@@ -119,15 +142,17 @@ passwordReset.post("/:id/:token", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, saltRounds)
 
     user.passwordHash = passwordHash
-    console.log("---------")
-    console.log(user)
     await user.save()
-    // await User.updateOne({_id: user._id}, {pass})
 
-    res.status(200).json({ message: "password reset successfully" })
+
+    res.status(200).json({ 
+      message: "Password reset successful" 
+    })
 
   } catch (error) {
-    res.status(500).json({message: "Internal server error"})
+    res.status(500).json({
+      message: "Internal server error"
+    })
   }
 })
 

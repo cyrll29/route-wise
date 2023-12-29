@@ -1,29 +1,31 @@
 import nodemailer from 'nodemailer'
+import config from './config.js'
+import emailContent from './emailContent.js'
 
-const sendEmail = async (email, subject, url, text) => {
+const sendEmail = async (email, subject, url, text, introduction, button) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      post: process.env.EMAIL_PORT,
-      secure: Boolean(process.env.SECURE),
+      host: config.HOST,
+      service: config.SERVICE,
+      post: config.EMAIL_PORT,
+      secure: Boolean(config.SECURE),
       auth: {
-        user: process.env.USER,
-        pass: process.env.PASS
+        user: config.USER,
+        pass: config.PASS
       }
     })
 
     await transporter.sendMail({
-      from: process.env.USER,
+      from: config.USER,
       to: email,
       subject: subject,
-      html: `<a href=${url}>${text}</a>`
+      html: emailContent(subject, text, url, introduction, button)
     })
     console.log("Email sent successfully")
   } catch (error) {
-    console.log("Email not sent")
-    console.log(error)
+    console.log("Email not sent: ", error)
   }
 }
+
 
 export default sendEmail
