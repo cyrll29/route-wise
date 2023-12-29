@@ -19,7 +19,8 @@ reportsRouter.get('/', async (req, res) => {
   try {
     const reports = await Report
       .find({})
-      // .populate('user', { username: 1, name: 1 })
+      .populate('user', { name: 1 })
+      
     return res.status(200).json({
       count: reports.length,
       data: reports
@@ -81,7 +82,8 @@ reportsRouter.post('/', async (req, res) => {
       title: title,
       category: category,
       body: body,
-      user: user.id
+      user: user.id,
+      duration: "Just Now"
     })
     const savedReport = await report.save()
 
@@ -93,6 +95,7 @@ reportsRouter.post('/', async (req, res) => {
     })
 
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: "Internal server error"
     })

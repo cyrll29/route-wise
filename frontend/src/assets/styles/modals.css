@@ -317,14 +317,6 @@ input {
 }
 
 /* --------------------HINDRANCE MODAL-------------------- */
-.hindrance-modal-reportlist {
-  background-color: #f8c107;
-  padding: 20px;
-  border-radius: 20px;
-  width: 95%;
-  font-size: 15px;
-  margin: auto;
-}
 .hindrance-modal-buttons {
   padding: 0px 0px 0px 10px;
 }
@@ -337,7 +329,7 @@ input {
   width: 140px;
   padding: 5px;
   transition: opacity 0.3s;
-  margin: 20px auto;
+  margin: 20px auto 5px auto;
 }
 .hindrance-modal-search {
   background-color: #f8c107;
@@ -356,11 +348,102 @@ input {
   position: inherit;
   top: 50%;
   left: 50%;
-
   color: white;
 }
 
+/* --------------------HINDRANCE MODAL LIST-------------------- */
+.hindrance-notif-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.hindrance-maximize-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.hindrance-maximize-icon:hover {
+  opacity: 0.7;
+}
+
+.hindrance-modal-reportlist {
+  /* background-color: #f8c107; */
+  width: 95%;
+  margin: 10px auto;
+  padding: 15px 10px 10px 20px;
+
+  border: 2px solid #f8c107;
+
+  border-radius: 5px;
+  font-size: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.hindrance-modal-reportlist-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.hindrance-modal-reportlist-top-left {
+  display: flex;
+  align-items: center;
+}
+
+.hindrance-modal-reportlist-top-left p {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.hindrance-modal-reportlist-top-right {
+  display: flex;
+  align-items: center;
+}
+
+.hindrance-modal-reportlist-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  margin: 10px 0 0 15px;
+}
+
+.hindrance-modal-reportlist-bottom p {
+  margin-bottom: 7px;
+}
+
+.hindrance-modal-reportlist-bottom h4 {
+  margin-bottom: 7px;
+}
+
+.hindrance-modal-reportlist-bottom-category-location {
+  font-size: 12px;
+}
+
+.hindrance-modal-reportlist-bottom-timeframe {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
 /* --------------------REPORT DETAIL POPUP-------------------- */
+.report-detail-notif-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.report-detail-image-placeholder {
+  width: 185px;
+  height: 160px;
+}
+
 .report-detail-modal {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.7);
@@ -370,18 +453,72 @@ input {
   bottom: 0;
   z-index: 50;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .report-detail-content {
-  width: 700px;
-  height: 500px;
-  background-color: white;
-  border-radius: 50;
-  opacity: 1;
-  z-index: 51;
+  width: 500px;
+  height: 250px;
+  padding: 10px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+		0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.report-detail-content-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.report-detail-content-top-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-detail-content-middle {
+  margin: 0 auto 15px auto;
+}
+
+.report-detail-content-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.report-detail-person-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+.report-detail-person-name {
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.report-detail-content-category-location {
+  margin-bottom: 2px;
+}
+
+.report-detail-content-timeframe {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.9);
+  margin-bottom: 15px;
+}
+
+.report-detail-content-body {
+  font-size: 12px;
+  margin-left: 10px;
 }
 
 /* --------------------COMMON POPUP MODAL-------------------- */

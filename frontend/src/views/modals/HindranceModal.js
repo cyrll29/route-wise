@@ -9,23 +9,25 @@ const HindranceModal = () => {
   const [reports, setReports] = useState([])
   const [count, setCount] = useState(0)
 
+  // Time comparison
   const timeComparison = (dateCreated) => {
     const now = new Date()
     const createdAt = new Date(dateCreated)
-
     const diffInMilliseconds = now - createdAt
     const diffInMinutes = Math.round(diffInMilliseconds / (60 * 1000))
-
     if (diffInMinutes < 1) {
       return 'Just now';
     } else if (diffInMinutes === 1) {
-      return 'Posted 1 minute ago';
+      return '1 minute ago';
     } else if (diffInMinutes <= 60){
-      return `Posted ${diffInMinutes} minutes ago`;
+      return `${diffInMinutes} minutes ago`;
+    } else if (diffInMinutes > 60 && diffInMinutes < 120) {
+      return '1 hour ago'
     } else {
-      return `Posted ${Math.round(diffInMinutes/60)} hours ago`
+      return `${Math.round(diffInMinutes/60)} hours ago`
     }
   }
+
   useEffect(() => {
     let timer = setInterval(() => {
     setCount((count) => count + 1);
@@ -44,7 +46,7 @@ const HindranceModal = () => {
       }));
 
       console.log(updatedReports)
-      setReports(updatedReports)
+      setReports(updatedReports.reverse())
     })
     .catch ((error) => {
       console.log(error)
@@ -54,11 +56,11 @@ const HindranceModal = () => {
   return (
     <>
       <ModalHeader title="Hindrance" />
-      <div className="hindrance-modal-search">
+      {/* <div className="hindrance-modal-search">
         <div>
           <input className="hindrance-modal-searchbar" />
         </div>
-      </div>
+      </div> */}
       <div className="hindrance-modal-buttons">
         <button className="hindrance-modal-newpost">NEW POSTS</button>
       </div>

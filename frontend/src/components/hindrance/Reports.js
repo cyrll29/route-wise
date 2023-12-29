@@ -1,28 +1,37 @@
 import { useState } from 'react'
 import "../../assets/styles/modals.css";
+import notif from '../../assets/img/notif.png'
+import maximize from '../../assets/img/maximize.png'
 import ReportDetail from '../ReportDetail'
 
 const Reports = ({ report }) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
-    <ul>
+    <div>
       <div className="hindrance-modal-reportlist">
-        <li>Location: {report.location}</li>
-        <li>Title: {report.title}</li>
-        <li>Category: {report.category.label}</li>
-        <li>Body: {report.body}</li>
-        <li>Posted Ago: {report.postedAgo}</li>
-        <button onClick={() => setShowModal(true)}>open</button>
+        <div className='hindrance-modal-reportlist-top'>
+          <div className='hindrance-modal-reportlist-top-left'>
+            <img src={notif} alt="notif-icon" className='hindrance-notif-icon' />
+            <p>{report.user.name}</p>
+          </div>
+          <div className='hindrance-modal-reportlist-top-right'>
+            <img onClick={() => {setShowModal(true)}} src={maximize} alt="maximize-icon" className='hindrance-maximize-icon' />
+          </div>
+        </div>
+        <div className='hindrance-modal-reportlist-bottom'>
+          <h4 className='hindrance-modal-reportlist-bottom-title'>{report.title}</h4>
+          <p className='hindrance-modal-reportlist-bottom-category-location'>{report.category.label} at {report.location}</p>
+          <p className='hindrance-modal-reportlist-bottom-timeframe'>{report.postedAgo}</p>
+        </div>
       </div>
-      <br />
       <div>
         {showModal 
           ? <ReportDetail report={report} onClose={() => setShowModal(false)}/>
           : <></>
         }
       </div>
-    </ul>
+    </div>
   );
 }
 
