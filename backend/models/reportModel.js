@@ -11,7 +11,7 @@ const reportSchema = new mongoose.Schema(
       required: true
     },
     category: {
-      type: String,
+      type: Object,
       required: true
     },
     body: {

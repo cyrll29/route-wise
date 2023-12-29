@@ -10,7 +10,7 @@ const Reports = ({ report }) => {
       <div className="hindrance-modal-reportlist">
         <li>Location: {report.location}</li>
         <li>Title: {report.title}</li>
-        <li>Category: {report.category}</li>
+        <li>Category: {report.category.label}</li>
         <li>Body: {report.body}</li>
         <li>Posted Ago: {report.postedAgo}</li>
         <button onClick={() => setShowModal(true)}>open</button>

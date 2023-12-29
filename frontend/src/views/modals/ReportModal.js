@@ -5,18 +5,29 @@ import reportService from '../../services/reportService'
 
 import "../../assets/styles/modals.css";
 
-const reportCategory = [
-  { value: 1, label: "Traffic" },
-  { value: 2, label: "Accident" },
-  { value: 3, label: "Road Blockage" },
-  { value: 4, label: "Flood" },
-];
+
 
 const ReportModal = () => {
   const [location, setLocation] = useState('')
   const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState(null)
   const [body, setBody] = useState('')
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState('')
+  const [reportCategory, setReportCategory] = useState([
+    { value: 1, label: "Traffic" },
+    { value: 2, label: "Accident" },
+    { value: 3, label: "Road Blockage" },
+    { value: 4, label: "Flood" },
+  ])
+
+  // Functions
+  const clearInputFields = () => {
+    setLocation('')
+    setTitle('')
+    setCategory(null)
+    setBody('')
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,11 +41,20 @@ const ReportModal = () => {
 
     reportService
       .create(data)
-      .then(() => {
-        setLocation('')
-        setTitle('')
-        setCategory('')
-        setBody('')
+      .then((response) => {
+        setMsg(response.message)
+        setError('')
+        clearInputFields()
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setError(error.response.data.message);
+          setMsg("");
+        }
       })
   }
 
@@ -51,7 +71,7 @@ const ReportModal = () => {
         <form className="report-modal-form" onSubmit={handleSubmit}>
           <div className="report-modal-mark">
             <button className="report-modal-mark-button">
-              Mark the Location
+              Mark Location
             </button>
             <input
               id="report-location"
@@ -66,7 +86,7 @@ const ReportModal = () => {
 
           <div className="report-modal-title-div">
             <div className="report-modal-title">
-              <p>Title:</p>
+              <p><span className='red-asterisk'>*</span>Title:</p>
             </div>
             <div className="report-modal-title-input-div">
               <input
@@ -81,22 +101,23 @@ const ReportModal = () => {
             </div>
           </div>
           <div className="report-modal-category-div">
-            <button className="report-modal-category" disabled>
-              Category
-            </button>
+            <div className="report-modal-category">
+              <p><span className='red-asterisk'>*</span>Category:</p>
+            </div>
             <Select
               id="report-category"
               className="report-modal-select"
               options={reportCategory}
               isSearchable={true}
-              value={category.label}
-              onChange={(cat) => setCategory(cat.label)}
+              value={category}
+              onChange={(selectedOption) => setCategory(selectedOption)}
               placeholder="Select a category"
+              styles={customStyles}
             />
           </div>
           <div className="report-modal-body-div">
             <div className="report-modal-body">
-              <p>Body:</p>
+              <p><span className='red-asterisk'>*</span>Body:</p>
             </div>
             <div className="report-modal-body-input-div">
               <textarea
@@ -109,6 +130,10 @@ const ReportModal = () => {
               ></textarea>
             </div>
           </div>
+
+          {error && <div className="error-msg">{error}</div>}
+          {msg && <div className="success-msg">{msg}</div>}
+
           <div className="report-modal-button">
             <button className="report-modal-submit">SUBMIT</button>
           </div>
@@ -119,3 +144,11 @@ const ReportModal = () => {
 };
 
 export default ReportModal;
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    border: '1px solid black',
+    height: '35px',
+  }),
+};

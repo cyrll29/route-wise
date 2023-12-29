@@ -8,6 +8,26 @@ input {
   border: 2px inset #ebe9ed;
 }
 
+.success-msg,
+.error-msg {
+	width: 100%;
+	padding: 10px;
+	margin: 10px 0 0 0;
+	font-size: 13px;
+	background-color: #f34646;
+	color: white;
+	border-radius: 6px;
+	text-align: center;
+}
+
+.success-msg {
+	background-color: #00c04b;
+}
+
+.red-asterisk {
+  color: red;
+}
+
 /* --------------------HEADER MODAL-------------------- */
 
 .header-modal {
@@ -186,8 +206,7 @@ input {
 }
 .report-modal-instruction {
   text-align: justify;
-  padding: 10px 0 10px 0px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .report-modal-mark {
@@ -198,84 +217,96 @@ input {
   justify-content: space-between;
 }
 .report-modal-mark-button {
-  background-color: #272b39;
-  color: #f8c107;
+  background-color: #880015;
+  color: #F8C107;
   border: none;
   border-radius: 10px;
-  height: 38px;
+  font-size: 12px;
+  font-weight: 600;
+  height: 35px;
   width: 100px;
   padding: 5px;
   transition: opacity 0.3s;
 }
 .report-modal-mark-location {
-  height: 38px;
+  height: 35px;
   width: 200px;
   border-color: black;
+  font-size: 12px;
   border-width: 1px;
 }
 .report-modal-title {
   display: flex;
   padding: 20px 0 0 0;
+  font-size: 14px;
+  font-weight: 600;
 }
 .report-modal-title-input {
-  height: 38px;
+  height: 35px;
   width: 100%;
   display: flex;
   padding: 3px;
   border-color: black;
   border-width: 1px;
-  font-size: 15px;
+  font-size: 12px;
   resize: none;
 }
 
 .report-modal-category-div {
   display: flex;
   padding: 20px 0 0 0;
-  align-items: center;
-  flex-direction: row;
+  align-items: left;
+  flex-direction: column;
   justify-content: space-between;
 }
+
 .report-modal-category {
-  background-color: #272b39;
-  color: #f8c107;
-  border: none;
-  border-radius: 10px;
-  height: 38px;
-  width: 100px;
-  padding: 10px;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
 }
+
 .report-modal-select {
-  width: 200px;
+  width: 100%;
   border-color: black;
+  border-width: 1px;
+  font-size: 12px;
+}
+.report-modal-body-div {
+  padding: 0 0 10px 0;
 }
 .report-modal-body {
   display: flex;
   padding: 20px 0 0 0;
+  font-size: 14px;
+  font-weight: 600;
 }
 .report-modal-body-input {
-  height: 200px;
+  height: 100px;
   width: 100%;
   display: flex;
   padding: 10px;
-  border-color: black;
-  border-width: 1px;
-  font-size: 15px;
+  border-color: 1px solid black;
+  /* border-width: 1px; */
+  font-size: 12px;
   resize: none;
 }
 .report-modal-button {
   display: flex;
   justify-content: center;
-  padding: 20px 0 0 0;
+  padding: 15px 0 0 0;
 }
 .report-modal-submit {
-  background-color: #272b39;
-  color: #f8c107;
+  background-color: #880015;
+  color: #FFFFFF;
   border: none;
   border-radius: 10px;
-  height: 50px;
-  width: 75%;
+  height: 40px;
+  font-weight: 600;
+  width: 55%;
   padding: 7px 40px;
   transition: opacity 0.3s;
+  font-size: 12px;
 }
 
 .report-modal-submit:hover {
