@@ -13,42 +13,51 @@ import '../../assets/styles/modals.css'
 
 
 const RouteModal = () => {
+  const transportationOptions = [
+    { value: '0', label: 'Jeepney'},
+    { value: '1', label: 'Carousel'},
+    { value: '2', label: 'Train'},
+    { value: '3', label: 'UV Express'},
+    { value: '4', label: 'Walking'}
+  ]
 
   const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
   const [transportation, setTransportation] = useState([])
   const [routeList, setRouteList] = useState([])
+  const [error, setError] = useState('')
 
   // Functions
+  const clearInputFields = () => {
+    setOrigin('')
+    setDestination('')
+    setTransportation([])
+  }
+
   const getRoutes = () => {
     const data = {
       origin,
       destination,
       transportation
     }
-    console.log(data)
 
     routeService
       .create(data)
-      .then(() => {
-        setOrigin('')
-        setDestination('')
-        setTransportation('')
+      .then((response) => {
+        setRouteList(response.data.data)
+        setError('')
+        clearInputFields()
       })
       .catch((error) => {
-        console.log(error)
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setRouteList([])
+          setError(error.response.data.message);
+        }
       })
-
-    routeService
-      .getAll()
-      .then((result) => {
-        console.log(result.data)
-        setRouteList(result.data)
-      })
-  }
-
-  const handleSelectChange = (selectedValues) => {
-    setTransportation(selectedValues)
   }
 
   return (
@@ -85,29 +94,28 @@ const RouteModal = () => {
                 />
             </div>
           </div>
-          <div className='route-modal-top-right'>
-            <FontAwesomeIcon icon="rotate" className="route-modal-reset-icon"/>
-          </div>
         </div>
 
         <div className='route-modal-top-options'>
           <FontAwesomeIcon icon="car" className="route-modal-reset-icon"/>
           <Select
+              id='transportation-options'
               options={transportationOptions}
+              isSearchable
               isMulti
-              placeholder="Select a transportation option"
-              onChange={handleSelectChange}
               value={transportation}
+              onChange={(selectedOption) => setTransportation(selectedOption)}
+              placeholder="Select a transportation option"
               styles={customStyles}
           />
         </div>
 
+        {error && <div className="error-msg">{error}</div>}
+
         <div className='route-modal-button'>
           <button className='route-modal-btn' onClick={getRoutes}>Find Route</button>
         </div>
-      </div>
-
-      <div className='route-modal-bottom'>
+        <div className='route-modal-bottom'>
         {routeList.length === 0 ? (
           <div className='route-modal-bottom-nonexist'>
             <img className='route-modal-bottom-placeholder' src={ routePlaceholder } alt='route'></img>
@@ -129,26 +137,25 @@ const RouteModal = () => {
                     <div>
                       <p>{ route.firstRoute }</p>
                     </div>
+                    <div>
+                      <p>{ route.secondRoute }</p>
+                    </div>
+                    <div>
+                      <p>{ route.thirdRoute }</p>
+                    </div>
                   </div>
                 </div>
               </li>
             ))}
           </div>
-        }
+          }
+        </div>
       </div>
     </>
   )
 }
 
 export default RouteModal
-
-const transportationOptions = [
-  { value: '0', label: 'Jeepney'},
-  { value: '1', label: 'Carousel'},
-  { value: '2', label: 'Train'},
-  { value: '3', label: 'UV Express'},
-  { value: '4', label: 'Walking'}
-]
 
 const iconList = Object
     .keys(Icons)

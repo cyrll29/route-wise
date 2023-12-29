@@ -61,6 +61,14 @@ routesRouter.post('/', async (req, res) => {
 
     const savedRoute = await route.save()
     return res.status(201).json({
+      data: [
+        {
+          id: 0,
+          firstRoute: "LRT Balintawak to LRT Doroteo Jose",
+          secondRoute: "LRT Recto to LRT Pureza",
+          thirdRoute: "Walk to CEA"
+        }
+      ],
       message: "Route created successfully",
     })
 

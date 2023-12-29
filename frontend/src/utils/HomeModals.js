@@ -1,6 +1,6 @@
 import RouteReportModal from '../views/modals/ReportModal'
 import RouteUpdateModal from '../views/modals/HindranceModal'
-import RoutePlannerModal from '../views/modals/RouteModal'
+import RoutePlannerModal from '../views/modals/PlannerModal'
 
 
 const HomeModals = (props) => {

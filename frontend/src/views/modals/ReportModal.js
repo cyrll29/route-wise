@@ -2,24 +2,23 @@ import { useState } from 'react'
 import Select from "react-select";
 import ModalHeader from "../../components/ModalHeader";
 import reportService from '../../services/reportService'
-
 import "../../assets/styles/modals.css";
 
-
-
 const ReportModal = () => {
+  
+  const reportCategory = [
+    { value: 1, label: "Traffic" },
+    { value: 2, label: "Accident" },
+    { value: 3, label: "Road Blockage" },
+    { value: 4, label: "Flood" },
+  ]
+
   const [location, setLocation] = useState('')
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState(null)
   const [body, setBody] = useState('')
   const [msg, setMsg] = useState("");
   const [error, setError] = useState('')
-  const [reportCategory, setReportCategory] = useState([
-    { value: 1, label: "Traffic" },
-    { value: 2, label: "Accident" },
-    { value: 3, label: "Road Blockage" },
-    { value: 4, label: "Flood" },
-  ])
 
   // Functions
   const clearInputFields = () => {
@@ -37,7 +36,6 @@ const ReportModal = () => {
       category,
       body
     }
-    console.log(data)
 
     reportService
       .create(data)

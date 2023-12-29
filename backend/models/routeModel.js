@@ -10,7 +10,7 @@ const routeSchema = new mongoose.Schema({
     required: true
   },
   transportation: {
-    type: String,
+    type: Object,
     required: true
   },
   firstRoute: {
