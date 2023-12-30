@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 import config from './config.js'
 import emailContent from './emailContent.js'
 
-const sendEmail = async (email, subject, url, text, introduction, button) => {
+const sendEmail = async (email, name, url, subject, text, introduction, button, ending) => {
   try {
     const transporter = nodemailer.createTransport({
       host: config.HOST,
@@ -19,7 +19,7 @@ const sendEmail = async (email, subject, url, text, introduction, button) => {
       from: config.USER,
       to: email,
       subject: subject,
-      html: emailContent(subject, text, url, introduction, button)
+      html: emailContent(subject, text, url, introduction, button, name, ending)
     })
     console.log("Email sent successfully")
   } catch (error) {

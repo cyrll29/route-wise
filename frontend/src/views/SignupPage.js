@@ -61,7 +61,11 @@ const SignupPage = () => {
               type="text"
               id='name'
               value={name}
-              onChange={e => setName(e.target.value)} 
+              onChange={e => {
+                setName(e.target.value)
+                setMsg('')
+                setError('')
+              }} 
               autoComplete='on'
             />
           </div>
@@ -72,7 +76,11 @@ const SignupPage = () => {
               type="email"
               id='email'
               value={email}
-              onChange={e => setEmail(e.target.value)} 
+              onChange={e => {
+                setEmail(e.target.value)
+                setMsg('')
+                setError('')
+              }} 
               autoComplete='on'
             />
           </div>
@@ -83,7 +91,11 @@ const SignupPage = () => {
               type="password"
               id='password'
               value={password}
-              onChange={e => setPassword(e.target.value)} 
+              onChange={e => {
+                setPassword(e.target.value)
+                setMsg('')
+                setError('')
+              }} 
             />
           </div>
 

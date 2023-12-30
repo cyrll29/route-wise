@@ -55,7 +55,11 @@ const PasswordReset = () => {
 							type="password"
 							placeholder="Password"
 							name="password"
-							onChange={(e) => setPassword(e.target.value)}
+							onChange={e => {
+                setPassword(e.target.value)
+                setMsg('')
+                setError('')
+              }} 
 							value={password}
 							required
 							className="password-reset-input"

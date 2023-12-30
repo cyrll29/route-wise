@@ -39,11 +39,13 @@ loginRouter.post('/', async (req, res) => {
       const url = `http://localhost:3000/users/${user._id}/verify/${token.token}`
       await sendEmail(
         user.email, 
+        user.name,
+        url,
         "Welcome to RouteWise", 
-        url, 
         "account verification process",
         "Thank you for signing up! We're excited to have you on board.",
-        "Verify Email"
+        "Verify Email",
+        "If you didn't create an account with us, please disregard this email. It's possible that someone entered your email address mistakenly during the registration process."
       )
 
       return res.status(401).json({

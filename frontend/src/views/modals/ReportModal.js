@@ -76,7 +76,11 @@ const ReportModal = () => {
               className="report-modal-mark-location"
               type="text"
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={e => {
+                setLocation(e.target.value)
+                setMsg('')
+                setError('')
+              }} 
               placeholder="Location"
               // disabled
             />
@@ -92,7 +96,11 @@ const ReportModal = () => {
                 className="report-modal-title-input"
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => {
+                  setTitle(e.target.value)
+                  setMsg('')
+                  setError('')
+                }} 
                 placeholder="Report TItle"
                 maxLength={50}
               />
@@ -123,7 +131,11 @@ const ReportModal = () => {
                 className="report-modal-body-input"
                 type="text"
                 value={body}
-                onChange={(e) => setBody(e.target.value)}
+                onChange={e => {
+                  setBody(e.target.value)
+                  setMsg('')
+                  setError('')
+                }} 
                 placeholder="Describe the situation"
               ></textarea>
             </div>

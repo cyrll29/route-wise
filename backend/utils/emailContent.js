@@ -1,4 +1,4 @@
-const emailContent = (subject, text, url, introduction, button) => `
+const emailContent = (subject, text, url, introduction, button, name, ending) => `
 <html>
 <head>
   <style>
@@ -38,12 +38,18 @@ const emailContent = (subject, text, url, introduction, button) => `
 </head>
 <body>
   <div class="container">
-    <h1>${subject}</h1>
+    <p>Hi ${name}</p>
     <p>
       ${introduction}
       Please click the button below to complete the ${text}.
     </p>
     <a class="anchor" href="${url}">${button}</a>
+    <br>
+    <br>
+    <p> ${ending} </p>
+    <br>
+    <p> Thanks, </p>
+    <p> The RouteWise team </p>
   </div>
 </body>
 </html>

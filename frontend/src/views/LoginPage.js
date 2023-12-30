@@ -78,7 +78,10 @@ const LoginPage = () => {
               type="text" 
               id='email'
               value={email}
-              onChange={(e) => setEmail(e.target.value)} 
+              onChange={e => {
+                setEmail(e.target.value)
+                setError('')
+              }} 
               autoComplete='on'
             />
           </div>
@@ -89,7 +92,10 @@ const LoginPage = () => {
               type="password"
               id='password'
               value={password}
-              onChange={(e) => setPassword(e.target.value)} 
+              onChange={e => {
+                setPassword(e.target.value)
+                setError('')
+              }} 
             />
           </div>
 

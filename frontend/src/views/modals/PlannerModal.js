@@ -81,7 +81,10 @@ const RouteModal = () => {
                   className='route-modal-combo-box' 
                   type="text" 
                   value={origin}
-                  onChange={(e) => setOrigin(e.target.value)}
+                  onChange={e => {
+                    setOrigin(e.target.value)
+                    setError('')
+                  }} 
                   placeholder='Origin'
                 />
                 <input 
@@ -89,7 +92,10 @@ const RouteModal = () => {
                   className='route-modal-combo-box' 
                   type="text" 
                   value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
+                  onChange={e => {
+                    setDestination(e.target.value)
+                    setError('')
+                  }} 
                   placeholder='Destination'
                 />
             </div>

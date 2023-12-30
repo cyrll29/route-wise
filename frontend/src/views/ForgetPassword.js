@@ -37,7 +37,11 @@ const ForgotPassword = () => {
 					type="email"
 					placeholder="Email"
 					name="email"
-					onChange={(e) => setEmail(e.target.value)}
+					onChange={(e) => {
+						setEmail(e.target.value)
+						setError('')
+						setMsg('')
+					}}
 					value={email}
 					required
 					className="forget-password-input"

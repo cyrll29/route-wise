@@ -41,13 +41,14 @@ passwordReset.post('/', async (req, res) => {
 
     const url = `http://localhost:3000/password-reset/${user._id}/${token.token}`
     await sendEmail(
-      user.email, 
+      user.email,
+      user.name,
+      url,
       "Password Reset", 
-      url, 
       "account password reset",
-      "We received a request to reset your RouteWise account password. If you did not make this request, you can ignore this email.",
-      "Reset Password"
-
+      "We received a request to reset your RouteWise account password.",
+      "Reset Password",
+      "If you didn't request a password reset, you can safely ignore this email. Someone else might have typed your email address by mistake."
     )
 
     res.status(200).json({
