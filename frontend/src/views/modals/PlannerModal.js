@@ -1,9 +1,13 @@
 import { useState } from 'react'
+import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 import Select from 'react-select'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
 import routeService from '../../services/routeService'
+import directionsApi from '../../components/googlemap/directionsApi'
+import config from '../../utils/config'
+
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,13 +25,13 @@ const RouteModal = () => {
     { value: '4', label: 'Walking'}
   ]
 
-  const [origin, setOrigin] = useState("")
-  const [destination, setDestination] = useState("")
+  const [origin, setOrigin] = useState(null)
+  const [destination, setDestination] = useState(null)
   const [transportation, setTransportation] = useState([])
   const [routeList, setRouteList] = useState([])
   const [error, setError] = useState('')
 
-  // Functions
+  // API REQUEST
   const clearInputFields = () => {
     setOrigin('')
     setDestination('')
@@ -47,8 +51,10 @@ const RouteModal = () => {
         setRouteList(response.data.data)
         setError('')
         clearInputFields()
+        directionsApi.getRequirements(data)
       })
       .catch((error) => {
+        console.log(error)
         if (
           error.response &&
           error.response.status >= 400 &&
@@ -59,6 +65,28 @@ const RouteModal = () => {
         }
       })
   }
+
+  // SEARCH BOX OF ORIGIN AND DESTINATION
+  const { isLoaded } =  useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_API_KEY,
+    libraries: config.libraries
+  }); 
+
+  if(!isLoaded) return <div>Loading...</div>
+
+  const onPlaceChanged = originOrDestination => {
+    if (originOrDestination !== null) {
+      const places = originOrDestination.getPlace()
+      console.log(places)
+    }
+    setError("")
+  }
+
+  const options = {
+    componentRestrictions: {country: "ph"},
+    fields: ["address_components", "geometry", "icon", "name"],
+  }
+
 
   return (
     <>
@@ -76,28 +104,32 @@ const RouteModal = () => {
             <img className='route-modal-icon' src={ routeIcon } alt="route-icon" />
 
             <div className='route-modal-search-box'>
-                <input 
+              <Autocomplete
+                onPlaceChanged={() => onPlaceChanged(origin)}
+                options={options}
+                onLoad={(autocomplete) => setOrigin(autocomplete)}
+              >
+                <input
                   id='origin'
-                  className='route-modal-combo-box' 
-                  type="text" 
-                  value={origin}
-                  onChange={e => {
-                    setOrigin(e.target.value)
-                    setError('')
-                  }} 
-                  placeholder='Origin'
-                />
-                <input 
+                  type="text"
+                  placeholder="Origin"
+                  className='route-modal-combo-box'
+                /> 
+              </Autocomplete>
+              
+              <Autocomplete
+                onPlaceChanged={() => onPlaceChanged(destination)}
+                options={options}
+                onLoad={(autocomplete) => setDestination(autocomplete)}
+              >
+                <input
                   id='destination'
-                  className='route-modal-combo-box' 
-                  type="text" 
-                  value={destination}
-                  onChange={e => {
-                    setDestination(e.target.value)
-                    setError('')
-                  }} 
-                  placeholder='Destination'
-                />
+                  type="text"
+                  placeholder="Destination"
+                  className='route-modal-combo-box'
+                /> 
+              </Autocomplete>
+
             </div>
           </div>
         </div>
@@ -161,7 +193,10 @@ const RouteModal = () => {
   )
 }
 
+
 export default RouteModal
+
+
 
 const iconList = Object
     .keys(Icons)

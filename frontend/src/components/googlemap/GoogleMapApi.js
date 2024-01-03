@@ -1,5 +1,6 @@
-import { useLoadScript} from "@react-google-maps/api"
+import { useLoadScript } from "@react-google-maps/api"
 import GoogleMap from "./GoogleMap"
+import config from '../../utils/config'
 
 import "../../assets/styles/googlemap.css"
 
@@ -7,7 +8,7 @@ const GoogleMapApi = () => {
     
   const { isLoaded } = useLoadScript({ 
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
-    libraries: lib,
+    libraries: config.libraries,
   });
   if (!isLoaded) return <div>Loading...</div>
 
@@ -33,5 +34,4 @@ const GoogleMapApi = () => {
   )
 }
 
-const lib = ["places"]
 export default GoogleMapApi
