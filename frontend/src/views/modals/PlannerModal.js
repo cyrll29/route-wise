@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 import Select from 'react-select'
 import ModalHeader from '../../components/ModalHeader'
@@ -25,25 +25,28 @@ const RouteModal = () => {
     { value: '4', label: 'Walking'}
   ]
 
-  const [origin, setOrigin] = useState(null)
-  const [destination, setDestination] = useState(null)
+  const originRef = useRef(null)
+  const destinationRef = useRef(null)
+
   const [transportation, setTransportation] = useState([])
   const [routeList, setRouteList] = useState([])
   const [error, setError] = useState('')
 
   // API REQUEST
   const clearInputFields = () => {
-    setOrigin('')
-    setDestination('')
     setTransportation([])
+    originRef.current.value = ""
+    destinationRef.current.value = ""
   }
 
   const getRoutes = () => {
     const data = {
-      origin,
-      destination,
+      origin: originRef.current.value,
+      destination: destinationRef.current.value,
       transportation
     }
+    console.log(data)
+    
 
     routeService
       .create(data)
@@ -72,14 +75,8 @@ const RouteModal = () => {
     libraries: config.libraries
   }); 
 
-  if(!isLoaded) return <div>Loading...</div>
-
-  const onPlaceChanged = originOrDestination => {
-    if (originOrDestination !== null) {
-      const places = originOrDestination.getPlace()
-      console.log(places)
-    }
-    setError("")
+  if(!isLoaded) {
+    return <div>Loading...</div>
   }
 
   const options = {
@@ -105,29 +102,25 @@ const RouteModal = () => {
 
             <div className='route-modal-search-box'>
               <Autocomplete
-                onPlaceChanged={() => onPlaceChanged(origin)}
                 options={options}
-                onLoad={(autocomplete) => setOrigin(autocomplete)}
               >
-                <input
-                  id='origin'
-                  type="text"
-                  placeholder="Origin"
+                <input 
+                  type="text" 
+                  placeholder='Origin' 
+                  ref={originRef}
                   className='route-modal-combo-box'
-                /> 
+                />
               </Autocomplete>
-              
+
               <Autocomplete
-                onPlaceChanged={() => onPlaceChanged(destination)}
                 options={options}
-                onLoad={(autocomplete) => setDestination(autocomplete)}
               >
-                <input
-                  id='destination'
-                  type="text"
-                  placeholder="Destination"
+                <input 
+                  type="text" 
+                  placeholder='Destination' 
+                  ref={destinationRef}
                   className='route-modal-combo-box'
-                /> 
+                />
               </Autocomplete>
 
             </div>
