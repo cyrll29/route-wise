@@ -12,9 +12,6 @@ const routeSchema = new mongoose.Schema({
   transportation: {
     type: Object,
     required: true
-  },
-  firstRoute: {
-    type: String
   }
 })
 

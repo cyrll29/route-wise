@@ -25,29 +25,39 @@ const RouteModal = () => {
     { value: '4', label: 'Walking'}
   ]
 
-  const originRef = useRef(null)
-  const destinationRef = useRef(null)
-
+  const [origin, setOrigin] = useState(null)
+  const [destination, setDestination] = useState(null)
   const [transportation, setTransportation] = useState([])
   const [routeList, setRouteList] = useState([])
   const [error, setError] = useState('')
 
+  const originInputRef = useRef(null)
+  const destinationInputRef = useRef(null)
+
+
+
   // API REQUEST
   const clearInputFields = () => {
-    setTransportation([])
-    originRef.current.value = ""
-    destinationRef.current.value = ""
+    setTransportation([]) 
+    setOrigin(null)
+    setDestination(null)
+    originInputRef.current.value = "";
+    destinationInputRef.current.value = "";
   }
 
   const getRoutes = () => {
+    if (!origin && !destination) {
+      setRouteList([])
+      setError("Wrong input")
+      return
+    }
     const data = {
-      origin: originRef.current.value,
-      destination: destinationRef.current.value,
+      origin: `place_id:${origin.getPlace().place_id}`,
+      destination: `place_id:${destination.getPlace().place_id}`,
       transportation
     }
     console.log(data)
     
-
     routeService
       .create(data)
       .then((response) => {
@@ -79,9 +89,18 @@ const RouteModal = () => {
     return <div>Loading...</div>
   }
 
+  const onPlaceChanged = (originOrDestination) => {
+    if (originOrDestination !== null) {
+      const places = originOrDestination.getPlace()
+      console.log(places)
+    }
+    setError("")
+  }
+
   const options = {
     componentRestrictions: {country: "ph"},
-    fields: ["address_components", "geometry", "icon", "name"],
+    // fields: ["address_components", "geometry", "icon", "name"],
+    fields: ["place_id"]
   }
 
 
@@ -102,27 +121,32 @@ const RouteModal = () => {
 
             <div className='route-modal-search-box'>
               <Autocomplete
+                onPlaceChanged={() => onPlaceChanged(origin)}
                 options={options}
+                onLoad={(autocomplete) => setOrigin(autocomplete)}
               >
                 <input 
-                  type="text" 
-                  placeholder='Origin' 
-                  ref={originRef}
+                  id='Origin'
+                  type="text"
+                  placeholder="Origin"
                   className='route-modal-combo-box'
-                />
+                  ref={originInputRef}
+                /> 
               </Autocomplete>
 
               <Autocomplete
+                onPlaceChanged={() => onPlaceChanged(destination)}
                 options={options}
+                onLoad={(autocomplete) => setDestination(autocomplete)}
               >
                 <input 
-                  type="text" 
-                  placeholder='Destination' 
-                  ref={destinationRef}
+                  id='Destination'
+                  type="text"
+                  placeholder="Destination"
                   className='route-modal-combo-box'
-                />
+                  ref={destinationInputRef}
+                /> 
               </Autocomplete>
-
             </div>
           </div>
         </div>
