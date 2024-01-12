@@ -36,7 +36,7 @@ loginRouter.post('/', async (req, res) => {
         token: crypto.randomBytes(32).toString("hex")
       }).save()
 
-      const url = `http://localhost:3000/users/${user._id}/verify/${token.token}`
+      const url = `${config.URL_USED}/users/${user._id}/verify/${token.token}`
       await sendEmail(
         user.email, 
         user.name,

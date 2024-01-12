@@ -5,6 +5,7 @@ import Token from '../models/token.js'
 import sendEmail from '../utils/sendEmail.js'
 import validator from 'validator'
 import crypto from 'crypto'
+import config from '../utils/config.js'
 const usersRouter = express.Router()
 
 usersRouter.get('/', async (req, res) => {
@@ -89,7 +90,7 @@ usersRouter.post('/', async (req, res) => {
       token: crypto.randomBytes(32).toString('hex')
     }).save()
 
-    const url = `http://localhost:3000/users/${user._id}/verify/${token.token}`
+    const url = `${config.URL_USED}/users/${user._id}/verify/${token.token}`
     await sendEmail(
       user.email, 
       user.name,

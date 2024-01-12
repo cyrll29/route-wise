@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
+import config from '../utils/config.js'
 import "../assets/styles/forgetpassword.css"
 
 const ForgotPassword = () => {
@@ -12,7 +13,7 @@ const ForgotPassword = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const url = `http://localhost:3001/api/password-reset`;
+			const url = `${config.URL_USED}/api/password-reset`;
 			const { data } = await axios.post(url, { email });
 			setMsg(data.message);
 			setError("");

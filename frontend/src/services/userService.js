@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/users'
+import config from '../utils/config.js'
+
+const baseUrl = `${config.URL_USED}/api/users`
 
 
 
@@ -14,7 +16,7 @@ const create = async newObject => {
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${ baseUrl }/${id}`, newObject)
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then(response => response.data)
 }
 

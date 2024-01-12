@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/routes'
+import config from '../utils/config.js'
+
+const baseUrl = `${config.URL_USED}/api/routes`
 
 
 const getAll = () => {

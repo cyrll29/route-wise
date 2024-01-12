@@ -2,6 +2,7 @@ import express from 'express'
 import User from '../models/userModel.js'
 import Token from '../models/token.js'
 import crypto from 'crypto'
+import config from '../utils/config.js'
 import sendEmail from '../utils/sendEmail.js'
 import Joi from 'joi'
 import validator from 'validator'
@@ -39,7 +40,7 @@ passwordReset.post('/', async (req, res) => {
       }).save()
     }
 
-    const url = `http://localhost:3000/password-reset/${user._id}/${token.token}`
+    const url = `${config.URL_USED}/password-reset/${user._id}/${token.token}`
     await sendEmail(
       user.email,
       user.name,
