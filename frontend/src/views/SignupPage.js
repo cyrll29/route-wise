@@ -22,7 +22,7 @@ const SignupPage = () => {
   }
 
   const handleSignupClick = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     const data = {name, password, email}
     userService
       .create(data)
@@ -96,6 +96,7 @@ const SignupPage = () => {
                 setMsg('')
                 setError('')
               }} 
+              onKeyDown={e => e.key === "Enter" ? handleSignupClick() : null}
             />
           </div>
 

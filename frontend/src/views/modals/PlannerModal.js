@@ -1,34 +1,35 @@
 import { useState, useRef } from 'react'
 import { Autocomplete, useLoadScript } from '@react-google-maps/api';
-import Select from 'react-select'
+// import Select from 'react-select'
 import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
 import routeService from '../../services/routeService'
 import directionsApi from '../../components/googlemap/directionsApi'
 import config from '../../utils/config'
+import RouteList from '../../components/planner/RouteList.js'
 
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Icons from '@fortawesome/free-solid-svg-icons';
 import '../../assets/styles/modals.css'
 
 
 
 const RouteModal = () => {
-  const transportationOptions = [
-    { value: '0', label: 'Jeepney'},
-    { value: '1', label: 'Carousel'},
-    { value: '2', label: 'Train'},
-    { value: '3', label: 'UV Express'},
-    { value: '4', label: 'Walking'}
-  ]
+  // const transportationOptions = [
+  //   { value: '0', label: 'Jeepney'},
+  //   { value: '1', label: 'Carousel'},
+  //   { value: '2', label: 'Train'},
+  //   { value: '3', label: 'UV Express'},
+  //   { value: '4', label: 'Walking'}
+  // ]
 
   const [origin, setOrigin] = useState(null)
   const [destination, setDestination] = useState(null)
   const [transportation, setTransportation] = useState([])
-  const [routeList, setRouteList] = useState([])
+  const [routes, setRoutes] = useState(null)
   const [error, setError] = useState('')
 
   const originInputRef = useRef(null)
@@ -39,15 +40,13 @@ const RouteModal = () => {
   // API REQUEST
   const clearInputFields = () => {
     setTransportation([]) 
-    setOrigin(null)
-    setDestination(null)
-    originInputRef.current.value = "";
-    destinationInputRef.current.value = "";
+    // originInputRef.current.value = "";
+    // destinationInputRef.current.value = "";
   }
 
   const getRoutes = () => {
     if (!origin && !destination) {
-      setRouteList([])
+      setRoutes([])
       setError("Wrong input")
       return
     }
@@ -61,11 +60,11 @@ const RouteModal = () => {
     routeService
       .create(data)
       .then((response) => {
-        setRouteList(response.data.data)
+        setRoutes(response.data.data.routes)
+        console.log(response.data.data.routes)
         setError('')
         clearInputFields()
         directionsApi.getRequirements(data)
-        console.log(response.data)
       })
       .catch((error) => {
         console.log(error)
@@ -74,7 +73,7 @@ const RouteModal = () => {
           error.response.status >= 400 &&
           error.response.status <= 500
         ) {
-          setRouteList([])
+          setRoutes([])
           setError(error.response.data.message);
         }
       })
@@ -152,7 +151,7 @@ const RouteModal = () => {
           </div>
         </div>
 
-        <div className='route-modal-top-options'>
+        {/* <div className='route-modal-top-options'>
           <FontAwesomeIcon icon="car" className="route-modal-reset-icon"/>
           <Select
               id='transportation-options'
@@ -164,7 +163,7 @@ const RouteModal = () => {
               placeholder="Select a transportation option"
               styles={customStyles}
           />
-        </div>
+        </div> */}
 
         {error && <div className="error-msg">{error}</div>}
 
@@ -172,38 +171,21 @@ const RouteModal = () => {
           <button className='route-modal-btn' onClick={getRoutes}>Find Route</button>
         </div>
         <div className='route-modal-bottom'>
-        {routeList.length === 0 ? (
-          <div className='route-modal-bottom-nonexist'>
-            <img className='route-modal-bottom-placeholder' src={ routePlaceholder } alt='route'></img>
-            <p>Please enter both origin and destination.</p>
-          </div>
-        ) : 
-          <div className='route-modal-list'>
-            <p>Suggested Routes</p>
-            {routeList.map((route) => (
-              <li key={route.id}>
-                <div className='route-modal-list-box'>
-                  <div>
-                    <h4>{ route.origin }</h4>
-                  </div>
-                  <div>
-                    <div>
-                      <p>{ route.destination }</p>
-                    </div>
-                    <div>
-                      <p>{ route.firstRoute }</p>
-                    </div>
-                    <div>
-                      <p>{ route.secondRoute }</p>
-                    </div>
-                    <div>
-                      <p>{ route.thirdRoute }</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </div>
+          {!routes ? (
+            <div className='route-modal-bottom-nonexist'>
+              <img className='route-modal-bottom-placeholder' src={ routePlaceholder } alt='route'></img>
+              <p>Please enter both origin and destination.</p>
+            </div>
+          ) : 
+            <div className='route-modal-list'>
+              <div>
+                <p>Suggested Routes</p>
+                <p>Refresh</p>
+              </div>
+              <div>
+                <RouteList routes={routes}/>
+              </div>
+            </div>
           }
         </div>
       </div>
@@ -222,12 +204,12 @@ const iconList = Object
     .map(icon => Icons[icon])
   library.add(...iconList)
 
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    fontSize: '15px',
-    border: '2px inset #EBE9ED',
-    width: '290px',
-    height: '100px',
-  }),
-};
+// const customStyles = {
+//   control: (provided) => ({
+//     ...provided,
+//     fontSize: '15px',
+//     border: '2px inset #EBE9ED',
+//     width: '290px',
+//     height: '100px',
+//   }),
+// };

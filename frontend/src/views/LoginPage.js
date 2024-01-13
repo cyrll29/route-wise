@@ -24,15 +24,13 @@ const LoginPage = () => {
   }
 
   const handleLoginClick = async (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     
     try {
       const user = await login({
         email, password
       })
 
-      // console.log("Login Successful: ", user)
-      // alert("Login Successful")
       setModalMessage("Log in Succesful")
       setShowModal(true)
       
@@ -96,6 +94,7 @@ const LoginPage = () => {
                 setPassword(e.target.value)
                 setError('')
               }} 
+              onKeyDown={e => e.key === "Enter" ? handleLoginClick() : null}
             />
           </div>
 

@@ -1,0 +1,33 @@
+.routelist-section {
+  /* background-color: #f8c107; */
+  width: 95%;
+  margin: 10px auto;
+  padding: 15px 10px 10px 20px;
+
+  border: 2px solid #f8c107;
+
+  border-radius: 5px;
+  font-size: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.routelist-details-section {
+    /* background-color: #f8c107; */
+    width: 90%;
+    margin: 10px auto;
+    padding: 15px 10px 10px 20px;
+  
+    border: 2px solid #f8c107;
+  
+    border-radius: 5px;
+    font-size: 15px;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}

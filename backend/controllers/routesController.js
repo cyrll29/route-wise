@@ -21,12 +21,15 @@ routesRouter.post('/', async (req, res) => {
         origin: body.origin,
         destination: body.destination,
         mode: 'transit',
+        transit_routing_preference: 'less_walking',
+        // optimize: true,
+        alternatives: true,
         key: process.env.REACT_APP_API_KEY
       },
     });
 
     // Get the data from the response
-    const responseData = response.data;
+    const data = response.data;
 
     const route = new Route ({
       origin: body.origin,
@@ -38,15 +41,7 @@ routesRouter.post('/', async (req, res) => {
 
     const savedRoute = await route.save()
     return res.status(201).json({
-      data: [
-        {
-          id: 0,
-          firstRoute: "LRT Balintawak to LRT Doroteo Jose",
-          secondRoute: "LRT Recto to LRT Pureza",
-          thirdRoute: "Walk to CEA"
-        }
-      ],
-      responseData,
+      data,
       message: "Route created successfully",
     })
 
