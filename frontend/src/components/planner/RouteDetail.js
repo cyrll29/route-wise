@@ -29,8 +29,8 @@ const RouteDetail = ({ instruction }) => {
                   __html: step.html_instructions,
                 }}
               ></p>
-              <p>{step.distance.text}</p>
-              <p>{step.duration.text}</p>
+              <p>Distance: {step.distance.text}</p>
+              <p>Duration: {step.duration.text}</p>
             </li>
           ))}
         </ul>

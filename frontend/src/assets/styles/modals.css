@@ -10,19 +10,19 @@ input {
 
 .success-msg,
 .error-msg {
-	width: 290px;
-	padding: 10px;
-	margin: 10px 0 0 0;
-	font-size: 13px;
-	background-color: #f34646;
-	color: white;
-	border-radius: 6px;
-	text-align: center;
+  width: 290px;
+  padding: 10px;
+  margin: 10px 0 0 0;
+  font-size: 13px;
+  background-color: #f34646;
+  color: white;
+  border-radius: 6px;
+  text-align: center;
   margin: auto;
 }
 
 .success-msg {
-	background-color: #00c04b;
+  background-color: #00c04b;
 }
 
 .red-asterisk {
@@ -173,6 +173,25 @@ input {
   opacity: 0.7;
 }
 
+.route-modal-btn-reset {
+  background-color: #f8c107;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  width: 55px;
+  height: 25px;
+  padding: auto;
+  transition: opacity 0.3s;
+  font-size: 12;
+  float: right;
+}
+
+.route-modal-button-reset {
+  padding: 0 10px 0 0;
+}
+.route-modal-btn-reset:hover {
+  opacity: 0.7;
+}
 .route-modal-bottom {
   margin-top: 20px;
 }
@@ -196,6 +215,11 @@ input {
   height: 150px;
 }
 
+.route-modal-suggestedroutes {
+  padding: 5px 0 15px 10px;
+  float: left;
+}
+
 /* --------------------REPORT MODAL-------------------- */
 
 .report-modal-main {
@@ -217,7 +241,7 @@ input {
 }
 .report-modal-mark-button {
   background-color: #880015;
-  color: #F8C107;
+  color: #f8c107;
   border: none;
   border-radius: 10px;
   font-size: 12px;
@@ -453,19 +477,19 @@ input {
   bottom: 0;
   z-index: 50;
 
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .report-detail-content {
   width: 500px;
   height: 250px;
   padding: 10px;
-	background-color: white;
-	border-radius: 10px;
-	box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
-		0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+    0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
 
   display: flex;
   flex-direction: column;
@@ -538,13 +562,13 @@ input {
 
 .common-popup-modal-container {
   padding: 50px;
-	background-color: rgba(255, 255, 255, 0.9);
-	border-radius: 10px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
-		0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+    0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
 }
 
 .common-popup-modal-container p {
@@ -553,13 +577,13 @@ input {
 
 .common-popup-modal-container button {
   border: none;
-	outline: none;
-	padding: 12px 0;
-	background-color: #880015;
-	color: white;
-	border-radius: 20px;
-	width: 180px;
-	font-size: 14px;
-	cursor: pointer;
-	margin: 10px auto;
+  outline: none;
+  padding: 12px 0;
+  background-color: #880015;
+  color: white;
+  border-radius: 20px;
+  width: 180px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 10px auto;
 }

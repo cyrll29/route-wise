@@ -1,20 +1,19 @@
-import { useLoadScript } from "@react-google-maps/api"
-import GoogleMap from "./GoogleMap"
-import config from '../../utils/config'
+import { useLoadScript } from "@react-google-maps/api";
+import GoogleMap from "./GoogleMap";
+import config from "../../utils/config";
 
-import "../../assets/styles/googlemap.css"
+import "../../assets/styles/googlemap.css";
 
 const GoogleMapApi = () => {
-    
-  const { isLoaded } = useLoadScript({ 
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
     libraries: config.libraries,
   });
-  if (!isLoaded) return <div>Loading...</div>
+  if (!isLoaded) return <div>Loading...</div>;
 
   const mapOptions = {
-    zoom: 14, // depth of the zoom
-    center: { lat: 14.6482, lng: 121.0597 }, // center of the map
+    zoom: 16, // depth of the zoom
+    center: { lat: 14.6515, lng: 121.0493 }, // center of the map
     mapId: process.env.REACT_APP_MAP_ID, // map id for map style changes
     disableDefaultUI: true, // disable default UI such as fullscreen
     // restriction: {  // restrict the google map within NCR only
@@ -25,13 +24,9 @@ const GoogleMapApi = () => {
     //     east: 121.1711
     //   }
     // }
-  }
+  };
 
-  return (
-    <GoogleMap 
-      mapOptions={mapOptions} 
-    />
-  )
-}
+  return <GoogleMap mapOptions={mapOptions} />;
+};
 
-export default GoogleMapApi
+export default GoogleMapApi;
