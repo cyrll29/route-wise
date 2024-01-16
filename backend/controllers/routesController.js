@@ -1,6 +1,7 @@
 import express from 'express'
 import Route from '../models/routeModel.js'
 import { Client } from '@googlemaps/google-maps-services-js'
+import axios from 'axios'
 const routesRouter = express.Router()
 
 const client = new Client({});
@@ -15,13 +16,48 @@ routesRouter.post('/', async (req, res) => {
       })
     }
 
+    // Distance Matrix
+    // const apiKey = 'AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM';
+    // const deliveryAddress = 'place_id:ChIJ8cYrcse3lzMRLmWd0Z7Ph9w';
+    // const vendorAddress = 'place_id:ChIJJfn1VGC2lzMRtNhYkEkNokM'
+
+    const reqData = {
+      origin: {
+        "placeId": body.origin,
+      },
+      destination: {
+        "placeId": body.destination,
+      },
+      travelMode: 'TRANSIT',
+      transitPreferences: {
+        "routingPreference": "LESS_WALKING"
+      },
+      computeAlternativeRoutes: true
+    };
+
+    const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes'
+
+    const responseRoute = await axios.post(apiUrl, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-FieldMask": "routes.legs,routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline",
+        "X-Goog-Api-Key": 'AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM'
+      },
+    })
+
+    console.log(responseRoute.data)
+    const responseRouteData = responseRoute.data
+
+
+
+
     // Make a request to the Directions API using the client
     const response = await client.directions({
       params: {
-        origin: body.origin,
-        destination: body.destination,
+        origin: `place_id:${body.origin}`,
+        destination: `place_id:${body.destination}`,
         mode: 'transit',
-        transit_routing_preference: 'less_walking',
+        // transit_routing_preference: 'less_walking',
         // optimize: true,
         alternatives: true,
         key: process.env.REACT_APP_API_KEY
@@ -43,6 +79,7 @@ routesRouter.post('/', async (req, res) => {
     return res.status(201).json({
       data,
       message: "Route created successfully",
+      responseRouteData
     })
 
   } catch (error) {

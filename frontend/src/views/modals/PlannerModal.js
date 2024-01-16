@@ -5,7 +5,6 @@ import ModalHeader from '../../components/ModalHeader'
 import routeIcon from '../../assets/img/route-modal-map-icon.png'
 import routePlaceholder from '../../assets/img/placeholder.png'
 import routeService from '../../services/routeService'
-import directionsApi from '../../components/googlemap/directionsApi'
 import config from '../../utils/config'
 import RouteList from '../../components/planner/RouteList.js'
 
@@ -51,8 +50,8 @@ const RouteModal = () => {
       return
     }
     const data = {
-      origin: `place_id:${origin.getPlace().place_id}`,
-      destination: `place_id:${destination.getPlace().place_id}`,
+      origin: origin.getPlace().place_id,
+      destination: destination.getPlace().place_id,
       transportation
     }
     console.log(data)
@@ -60,11 +59,10 @@ const RouteModal = () => {
     routeService
       .create(data)
       .then((response) => {
+        console.log(response.data)
         setRoutes(response.data.data.routes)
-        console.log(response.data.data.routes)
         setError('')
         clearInputFields()
-        directionsApi.getRequirements(data)
       })
       .catch((error) => {
         console.log(error)

@@ -17,14 +17,14 @@ const GoogleMapApi = () => {
     center: { lat: 14.6482, lng: 121.0597 }, // center of the map
     mapId: process.env.REACT_APP_MAP_ID, // map id for map style changes
     disableDefaultUI: true, // disable default UI such as fullscreen
-    restriction: {  // restrict the google map within NCR only
-      latLngBounds: {
-        north: 14.7407,
-        south: 14.5406,
-        west: 120.9512,
-        east: 121.1711
-      }
-    }
+    // restriction: {  // restrict the google map within NCR only
+    //   latLngBounds: {
+    //     north: 14.7407,
+    //     south: 14.5406,
+    //     west: 120.9512,
+    //     east: 121.1711
+    //   }
+    // }
   }
 
   return (

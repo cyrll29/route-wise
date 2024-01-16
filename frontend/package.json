@@ -9,6 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@googlemaps/google-maps-services-js": "github:googlemaps/google-maps-services-js",
     "@googlemaps/js-api-loader": "^1.16.2",
+    "@googlemaps/polyline-codec": "^1.0.28",
     "@react-google-maps/api": "^2.19.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
