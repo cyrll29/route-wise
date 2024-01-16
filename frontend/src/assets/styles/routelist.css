@@ -6,7 +6,7 @@
 
   border: 2px solid #f8c107;
 
-  border-radius: 5px;
+  border-radius: 15px;
   font-size: 15px;
 
   display: flex;
@@ -16,18 +16,37 @@
 }
 
 .routelist-details-section {
-    /* background-color: #f8c107; */
-    width: 90%;
-    margin: 10px auto;
-    padding: 15px 10px 10px 20px;
-  
-    border: 2px solid #f8c107;
-  
-    border-radius: 5px;
-    font-size: 15px;
-  
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* align-items: center; */
+  /* background-color: #f8c107; */
+  width: 90%;
+  margin: 10px auto;
+  padding: 15px 10px 10px 20px;
+
+  border: 2px solid #f8c107;
+
+  border-radius: 15px;
+  font-size: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.route-arrival {
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+.route-ETA {
+  font-size: 12px;
+  color: darkgray;
+  text-align: center;
+}
+.route-arrival-details {
+  text-align: center;
+}
+
+.route-logo-eta {
+  height: 20px;
+  float: left;
 }
