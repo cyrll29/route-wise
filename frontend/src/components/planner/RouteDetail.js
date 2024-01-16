@@ -3,9 +3,9 @@ import { useState } from "react";
 const RouteDetail = ({ instruction }) => {
   const [showMoreDetails, setShowMoreDetails] = useState(null);
 
-  const removeBoldTags = (htmlString) => {
-    return htmlString.replace(/<\/?b>/g, "");
-  };
+  // const removeBoldTags = (htmlString) => {
+  //   return htmlString.replace(/<\/?b>/g, "");
+  // };
 
   return (
     <div className="routelist-details-section">
@@ -26,7 +26,7 @@ const RouteDetail = ({ instruction }) => {
             <li key={stepIndex}>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: removeBoldTags(step.html_instructions),
+                  __html: step.html_instructions,
                 }}
               ></p>
               <p>{step.distance.text}</p>
