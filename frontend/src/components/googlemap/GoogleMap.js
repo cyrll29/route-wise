@@ -2,14 +2,24 @@ import { GoogleMap, Polyline, Marker } from "@react-google-maps/api"
 import decodePolyline from 'decode-google-map-polyline'
 import polyline from '@mapbox/polyline'
 import "../../assets/styles/googlemap.css"
+import { useEffect, useState } from "react"
 
 const Map = ({ mapOptions }) => {
   const markerPosition = 
   
   {lat: 14.6367, lng: 120.98012}
 
-  const overviewPolyline = "gpmxAivuaV[bC^F`@DN?PEG^[zBIu@TDYlBkAdIQxAOjAiAxISrAeAlHm@lEI|AGnC@`JF~MB|HHzLBvDC~CAlAHpNAbDF`HJtPJbJ@vEEzEBtEJzQPtV@~F@jGChA@xCBfC?XI?H??JBlB@|DCj@UNGLEP?XHX"
-  const result = decodePolyline(overviewPolyline)
+  const [result, setResult] = useState('')
+ 
+  const overviewPolyline = localStorage.getItem("polyline")
+
+  useEffect(() => {
+    const result = decodePolyline(overviewPolyline)
+
+    setResult(result)
+    console.log(result)
+  }, [overviewPolyline])
+  
   // const result = polyline.decode(overviewPolyline, 5)
   // const polylinePath = result.map(([lat, lng]) => ({lat, lng}))
   // const resulty = [
@@ -31,13 +41,14 @@ const Map = ({ mapOptions }) => {
     <GoogleMap 
       options={mapOptions}
       mapContainerClassName="map-container"
+      onClick={() => console.log(localStorage.getItem("polyline"))}
     >
       <Polyline
         path={result}
         options={{
           strokeColor: "#FF0000", // Set the color of the polyline
           strokeOpacity: 1.0, // Set the opacity of the polyline
-          strokeWeight: 2, // Set the width of the polyline
+          strokeWeight: 6, // Set the width of the polyline
         }}
       />
 

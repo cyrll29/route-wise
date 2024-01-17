@@ -28,6 +28,11 @@ const RouteModal = () => {
   const [routes, setRoutes] = useState(null);
   const [error, setError] = useState("");
 
+  const [overviewPolyline, setOverviewPolyline] =  useState('')
+  const addPolyline = (polyline) => {
+    setOverviewPolyline(polyline)
+  }
+
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
 
@@ -161,7 +166,7 @@ const RouteModal = () => {
 
         {error && <div className="error-msg">{error}</div>}
 
-        <div className="route-modal-button">
+        <div className="route-modal-button" onClick={() => console.log(localStorage.getItem("polyline"))}>
           <button className="route-modal-btn" onClick={getRoutes}>
             Find Route
           </button>
@@ -188,7 +193,7 @@ const RouteModal = () => {
                 </div>
               </div>
               <div>
-                <RouteList routes={routes} />
+                <RouteList routes={routes} addPolyline={addPolyline} />
               </div>
             </div>
           )}
