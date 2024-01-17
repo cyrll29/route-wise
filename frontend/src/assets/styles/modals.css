@@ -134,6 +134,9 @@ input {
 .route-modal-combo-box {
   height: 40px;
   width: 290px;
+  padding: 10px;
+  border-color: black;
+  border-width: 1px;
 }
 
 .route-modal-reset-icon {
@@ -400,7 +403,7 @@ input {
 
   border: 2px solid #f8c107;
 
-  border-radius: 5px;
+  border-radius: 15px;
   font-size: 15px;
 
   display: flex;
