@@ -166,7 +166,7 @@ const RouteModal = () => {
 
         {error && <div className="error-msg">{error}</div>}
 
-        <div className="route-modal-button" onClick={() => console.log(localStorage.getItem("polyline"))}>
+        <div className="route-modal-button">
           <button className="route-modal-btn" onClick={getRoutes}>
             Find Route
           </button>

@@ -1,14 +1,37 @@
-import RouteReportModal from '../views/modals/ReportModal'
-import RouteUpdateModal from '../views/modals/HindranceModal'
-import RoutePlannerModal from '../views/modals/PlannerModal'
+import ReportModal from '../views/modals/ReportModal'
+import HindranceModal from '../views/modals/HindranceModal'
+import PlannerModal from '../views/modals/PlannerModal'
+import ListModal from '../views/modals/ListModal'
+import MenuModal from '../views/modals/MenuModal'
 
 
 const HomeModals = (props) => {
   return (
     <>
-      {props.routeReportModal ? <RouteReportModal /> : <></>}
-      {props.routePlannerModal ? <RoutePlannerModal /> : <></>}
-      {props.routeUpdateModal ? <RouteUpdateModal /> : <></>}
+      {props.routeReportModal 
+        ? <ReportModal /> 
+        : <></>
+      }
+
+      {props.routePlannerModal 
+        ? <PlannerModal /> 
+        : <></>
+      }
+
+      {props.routeUpdateModal 
+        ? <HindranceModal /> 
+        : <></>
+      }
+
+      {props.routeListModal 
+        ? <ListModal /> 
+        : <></>
+      }
+
+      {props.routeMenuModal 
+        ? <MenuModal /> 
+        : <></>
+      }
     </>
   )
 }

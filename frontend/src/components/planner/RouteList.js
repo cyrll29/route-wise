@@ -5,7 +5,7 @@ const RouteList = ({routes}) => {
   const handleClick = (index) => {
     window.localStorage.setItem("polyline", routes[index].overview_polyline.points)
   }
-  console.log(routes)
+
   return (
     <div>
       <ul>

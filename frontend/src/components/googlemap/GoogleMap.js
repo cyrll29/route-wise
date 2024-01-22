@@ -13,12 +13,12 @@ const Map = ({ mapOptions }) => {
  
   const overviewPolyline = localStorage.getItem("polyline")
 
-  useEffect(() => {
-    const result = decodePolyline(overviewPolyline)
+  // useEffect(() => {
+  //   const result = decodePolyline(overviewPolyline)
 
-    setResult(result)
-    console.log(result)
-  }, [overviewPolyline])
+  //   setResult(result)
+  //   console.log(result)
+  // }, [overviewPolyline])
   
   // const result = polyline.decode(overviewPolyline, 5)
   // const polylinePath = result.map(([lat, lng]) => ({lat, lng}))
@@ -35,22 +35,22 @@ const Map = ({ mapOptions }) => {
   //   {lat: 14.5991268, lng: 121.0118816}
   // ]
 
-  console.log(result)
+  // console.log(result)
   
   return (
     <GoogleMap 
       options={mapOptions}
       mapContainerClassName="map-container"
-      onClick={() => console.log(localStorage.getItem("polyline"))}
+      onClick={() => console.log("CLICK ON MAP")}
     >
-      <Polyline
+      {/* <Polyline
         path={result}
         options={{
           strokeColor: "#FF0000", // Set the color of the polyline
           strokeOpacity: 1.0, // Set the opacity of the polyline
           strokeWeight: 6, // Set the width of the polyline
         }}
-      />
+      /> */}
 
       {/* soon to implement, conditional component for "walking" and "transit" */}
       {/* <Polyline

@@ -26,6 +26,8 @@ const HomePage = () => {
           routeReportModal={activeModal === "report"}
           routePlannerModal={activeModal === "planner"}
           routeUpdateModal={activeModal === "updates"}
+          routeListModal={activeModal === "list"}
+          routeMenuModal={activeModal === "menu"}
         />
       </div>
 
@@ -36,6 +38,8 @@ const HomePage = () => {
           routeReport = {hasToken}
           routePlanner = {true}
           routeUpdate = {true}
+          routeList = {true}
+          routeMenu = {true}
           btnModalClick={btnModalClick}
         />
       </div>

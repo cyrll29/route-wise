@@ -8,7 +8,6 @@ const client = new Client({});
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
-
   try {
     if (!body.origin || !body.destination || !body.transportation) {
       return res.status(400).json({ 
@@ -16,40 +15,39 @@ routesRouter.post('/', async (req, res) => {
       })
     }
 
-    // Distance Matrix
-    // const apiKey = 'AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM';
-    // const deliveryAddress = 'place_id:ChIJ8cYrcse3lzMRLmWd0Z7Ph9w';
-    // const vendorAddress = 'place_id:ChIJJfn1VGC2lzMRtNhYkEkNokM'
+    // --------- OTP ---------- //
 
-    const reqData = {
-      origin: {
-        "placeId": body.origin,
-      },
-      destination: {
-        "placeId": body.destination,
-      },
-      travelMode: 'TRANSIT',
-      transitPreferences: {
-        "routingPreference": "LESS_WALKING"
-      },
-      computeAlternativeRoutes: true
-    };
+    // OTP server URL and endpoint for a specific query
+    // const otpServerUrl = 'http://localhost:8080/otp';
+    // const otpEndpoint = '/routers/default/plan';
 
-    const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes'
+    // Example query parameters (modify based on your needs)
+    // const queryParams = {
+    //   fromPlace: '14.59772, 121.01144', // Example origin coordinates (latitude,longitude)
+    //   toPlace: '14.64580, 121.00771',  // Example destination coordinates (latitude,longitude)
+    //   date: '2024-01-22',
+    //   time: '12:00:00',
+    //   mode: 'TRANSIT', // Example modes (can be adjusted based on your requirements)
+    //   maxWalkDistance: 1000, // Example maximum walking distance in meters
+    //   numItineraries: 3,     // Example number of itineraries to retrieve
+    // };
 
-    const responseRoute = await axios.post(apiUrl, reqData, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Goog-FieldMask": "routes.legs,routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline",
-        "X-Goog-Api-Key": 'AIzaSyD2e6HZRkqhtf_VtAFeoCmETc0JQXbkdzM'
-      },
-    })
+    // const otpResponse = await axios.get(`${otpServerUrl}${otpEndpoint}`, {
+    //   params: queryParams,
+    // });
+    const otpResponse = await axios.get('http://localhost:8080/otp/routers/default/plan?fromPlace=14.597723678179953%2C121.01144221138274&toPlace=14.645796541227087%2C121.00771461620177&time=11%3A43am&date=01-22-2024&mode=TRANSIT%2CWALK&arriveBy=false&wheelchair=false&showIntermediateStops=true&locale=en')
+    
 
-    console.log(responseRoute.data)
-    const responseRouteData = responseRoute.data
+    const cleanResponse = JSON.stringify(otpResponse.data, (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (value === otpResponse.request) {
+          return undefined; // Exclude circular reference
+        }
+      }
+      return value;
+    });
 
-
-
+    // ------- END OTP --------- //
 
     // Make a request to the Directions API using the client
     const response = await client.directions({
@@ -66,7 +64,6 @@ routesRouter.post('/', async (req, res) => {
 
     // Get the data from the response
     const data = response.data;
-
     const route = new Route ({
       origin: body.origin,
       destination: body.destination,
@@ -79,7 +76,7 @@ routesRouter.post('/', async (req, res) => {
     return res.status(201).json({
       data,
       message: "Route created successfully",
-      responseRouteData
+      cleanResponse
     })
 
   } catch (error) {

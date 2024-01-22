@@ -66,7 +66,7 @@ const ReportModal = () => {
             set proper titles, and describe the situation in the body.
           </p>
         </div>
-        <form className="report-modal-form" onSubmit={handleSubmit}>
+        <div className="report-modal-form">
           <div className="report-modal-mark">
             <button className="report-modal-mark-button">
               Mark Location
@@ -145,9 +145,9 @@ const ReportModal = () => {
           {msg && <div className="success-msg">{msg}</div>}
 
           <div className="report-modal-button">
-            <button className="report-modal-submit">SUBMIT</button>
+            <button onClick={handleSubmit} className="report-modal-submit">SUBMIT</button>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );
