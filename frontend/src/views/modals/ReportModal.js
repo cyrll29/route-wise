@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Select from "react-select";
 import ModalHeader from "../../components/ModalHeader";
 import reportService from '../../services/reportService'
 import "../../assets/styles/modals.css";
 
-const ReportModal = () => {
+const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
   
   const reportCategory = [
     { value: 1, label: "Traffic" },
@@ -26,16 +26,29 @@ const ReportModal = () => {
     setTitle('')
     setCategory(null)
     setBody('')
+    onLocationSelect(null)
   }
+
+  useEffect(() => {
+    if (reportData) {
+      setLocation(reportData.address.results[0].formatted_address)
+    }
+  }, [reportData])
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const latitude = reportData.lat
+    const longitude = reportData.lng
+    const latLng = { lat: latitude, lng: longitude }
     const data = {
       location,
+      latLng,
       title,
       category,
       body
     }
+    console.log(data)
 
     reportService
       .create(data)
@@ -68,9 +81,7 @@ const ReportModal = () => {
         </div>
         <div className="report-modal-form">
           <div className="report-modal-mark">
-            <button className="report-modal-mark-button">
-              Mark Location
-            </button>
+            <button onClick={() => onMarkLocation(true)} className="report-modal-mark-button">Mark Location</button>
             <input
               id="report-location"
               className="report-modal-mark-location"
@@ -82,7 +93,7 @@ const ReportModal = () => {
                 setError('')
               }} 
               placeholder="Location"
-              // disabled
+              disabled
             />
           </div>
 
@@ -123,7 +134,7 @@ const ReportModal = () => {
           </div>
           <div className="report-modal-body-div">
             <div className="report-modal-body">
-              <p><span className='red-asterisk'>*</span>Body:</p>
+              <p><span className='red-asterisk'>*</span>Short Description:</p>
             </div>
             <div className="report-modal-body-input-div">
               <textarea

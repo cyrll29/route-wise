@@ -58,10 +58,10 @@ reportsRouter.get('/:id', async (req, res) => {
 
 
 reportsRouter.post('/', async (req, res) => {
-  const {location, title, category, body} = req.body
+  const {location, latLng, title, category, body} = req.body
 
   try {
-    if (!location || !title || !category || !body) {
+    if (!location || !latLng || !title || !category || !body) {
       return res.status(400).json({ 
         message: "Please provide values for all required fields: location, title, category, and body." 
       })
@@ -79,11 +79,11 @@ reportsRouter.post('/', async (req, res) => {
     const user = await User.findById(decodedToken.id)
     const report = new Report ({
       location: location,
+      latLng: latLng,
       title: title,
       category: category,
       body: body,
       user: user.id,
-      duration: "Just Now"
     })
     const savedReport = await report.save()
 

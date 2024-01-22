@@ -1,70 +1,55 @@
-import { GoogleMap, Polyline, Marker } from "@react-google-maps/api"
-import decodePolyline from 'decode-google-map-polyline'
-import polyline from '@mapbox/polyline'
+import { useState, useEffect } from 'react'
+import { GoogleMap, Marker } from "@react-google-maps/api"
+import { geocode, RequestType } from 'react-geocode'
 import "../../assets/styles/googlemap.css"
-import { useEffect, useState } from "react"
+import reportService from '../../services/reportService'
 
-const Map = ({ mapOptions }) => {
-  const markerPosition = 
-  
-  {lat: 14.6367, lng: 120.98012}
 
-  const [result, setResult] = useState('')
- 
-  const overviewPolyline = localStorage.getItem("polyline")
+const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect }) => {
 
-  // useEffect(() => {
-  //   const result = decodePolyline(overviewPolyline)
+  const [reports, setReports] = useState(null)
 
-  //   setResult(result)
-  //   console.log(result)
-  // }, [overviewPolyline])
-  
-  // const result = polyline.decode(overviewPolyline, 5)
-  // const polylinePath = result.map(([lat, lng]) => ({lat, lng}))
-  // const resulty = [
-  //   {lat: 14.6459429, lng: 121.0078905},
-  //   {lat: 14.65733, lng: 121.00387},
-  //   {lat: 14.65733, lng: 121.00387},
-  //   {lat: 14.60538, lng: 120.98208},
-  //   {lat: 14.60538, lng: 120.98208},
-  //   {lat: 14.6035541, lng: 120.9820877},
-  //   {lat: 14.60357, lng: 120.98209},
-  //   {lat: 14.60064, lng: 121.01331},
-  //   {lat: 14.6006675, lng: 121.0133372},
-  //   {lat: 14.5991268, lng: 121.0118816}
-  // ]
+  useEffect(() => {
+    reportService
+    .getAll()
+    .then((response) => {
+      const reportCoordinates = response.data.map((report) => report.latLng);
+      setReports(reportCoordinates)
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
+  }, []);
 
-  // console.log(result)
-  
+
+  const mapClickHandler = async (event) => {
+    if (isMarkLocation) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+
+      const address = await geocode(
+        RequestType.LATLNG,
+        `${lat},${lng}`,
+        { language: "en", region: "es", key: process.env.REACT_APP_API_KEY }
+      )
+      
+      onLocationSelect({ lat, lng, address });
+      onMarkLocation(false)
+    }
+    console.log(reports)
+  };
+
   return (
     <GoogleMap 
       options={mapOptions}
       mapContainerClassName="map-container"
-      onClick={() => console.log("CLICK ON MAP")}
+      onClick={mapClickHandler}
     >
-      {/* <Polyline
-        path={result}
-        options={{
-          strokeColor: "#FF0000", // Set the color of the polyline
-          strokeOpacity: 1.0, // Set the opacity of the polyline
-          strokeWeight: 6, // Set the width of the polyline
-        }}
-      /> */}
+      {reports &&
+        reports.map((report, index) => (
+          <Marker key={index} position={report} />
+        ))}
 
-      {/* soon to implement, conditional component for "walking" and "transit" */}
-      {/* <Polyline
-        path={resulty}
-        options={{
-          strokeColor: "#FF0000", // Set the color of the polyline
-          strokeOpacity: 1.0, // Set the opacity of the polyline
-          strokeWeight: 2, // Set the width of the polyline
-        }}
-      /> */}
-
-      <Marker 
-        position={markerPosition}
-      />
     </GoogleMap>
   )
 }
