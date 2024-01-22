@@ -6,6 +6,10 @@ const reportSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    latLng: {
+      type: Object,
+      required: true
+    },
     title: {
       type: String,
       required: true

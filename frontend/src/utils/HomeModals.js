@@ -6,10 +6,17 @@ import MenuModal from '../views/modals/MenuModal'
 
 
 const HomeModals = (props) => {
+  const onMarkLocation = props.onMarkLocation
+  const onLocationSelect = props.onLocationSelect
+  const reportData = props.reportData
   return (
     <>
       {props.routeReportModal 
-        ? <ReportModal /> 
+        ? <ReportModal 
+          onMarkLocation={onMarkLocation}
+          onLocationSelect={onLocationSelect}
+          reportData={reportData}
+        /> 
         : <></>
       }
 
