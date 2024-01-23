@@ -1,0 +1,48 @@
+query PlanTrip($fromLat: Float!, $fromLon: Float!, $toLat: Float!, $toLon: Float!, $date: String!, $time: String!) {
+    plan(
+        from: { lat: $fromLat, lon: $fromLon }
+        to: { lat: $toLat, lon: $toLon }
+        date: $date
+        time: $time
+        transportModes: [
+            {
+                mode: WALK
+            },
+            {
+                mode: TRANSIT
+            },
+        ]) {
+        itineraries {
+            duration
+            startTime
+            endTime
+            legs {
+                mode
+                distance
+                duration
+                from {
+                    name
+                    lat
+                    lon
+                }
+                to {
+                    name
+                    lat
+                    lon
+                }
+                route {
+                    gtfsId
+                    longName
+                }
+                legGeometry {
+                    points
+                }
+                steps {
+                    relativeDirection
+                    streetName
+                    distance
+                }
+            }
+        }
+    }
+}

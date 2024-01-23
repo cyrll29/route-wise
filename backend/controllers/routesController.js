@@ -1,10 +1,15 @@
 import express from 'express'
 import Route from '../models/routeModel.js'
 import { Client } from '@googlemaps/google-maps-services-js'
-import axios from 'axios'
+import fs from 'fs'
+import gql from 'graphql-tag'
+import { request } from 'graphql-request'
+
 const routesRouter = express.Router()
 
 const client = new Client({});
+const query = gql(fs.readFileSync('queries.graphql', 'utf8'));
+const otpUrl = "http://localhost:8080/otp/routers/default/index/graphql"
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
@@ -17,35 +22,18 @@ routesRouter.post('/', async (req, res) => {
 
     // --------- OTP ---------- //
 
-    // OTP server URL and endpoint for a specific query
-    // const otpServerUrl = 'http://localhost:8080/otp';
-    // const otpEndpoint = '/routers/default/plan';
+    const variables = {
+      fromLat: 14.645841240358383,
+      fromLon: 121.00777324714129,
+      toLat: 14.649954277487442,
+      toLon: 121.0466559514089,
+      date: "2023-02-15",
+      time: "11:37"
+    };
 
-    // Example query parameters (modify based on your needs)
-    // const queryParams = {
-    //   fromPlace: '14.59772, 121.01144', // Example origin coordinates (latitude,longitude)
-    //   toPlace: '14.64580, 121.00771',  // Example destination coordinates (latitude,longitude)
-    //   date: '2024-01-22',
-    //   time: '12:00:00',
-    //   mode: 'TRANSIT', // Example modes (can be adjusted based on your requirements)
-    //   maxWalkDistance: 1000, // Example maximum walking distance in meters
-    //   numItineraries: 3,     // Example number of itineraries to retrieve
-    // };
+    // Use this query with your GraphQL client
+    const otpResponse = await request(otpUrl, query, variables);
 
-    // const otpResponse = await axios.get(`${otpServerUrl}${otpEndpoint}`, {
-    //   params: queryParams,
-    // });
-    const otpResponse = await axios.get('http://localhost:8080/otp/routers/default/plan?fromPlace=14.597723678179953%2C121.01144221138274&toPlace=14.645796541227087%2C121.00771461620177&time=11%3A43am&date=01-22-2024&mode=TRANSIT%2CWALK&arriveBy=false&wheelchair=false&showIntermediateStops=true&locale=en')
-    
-
-    const cleanResponse = JSON.stringify(otpResponse.data, (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-        if (value === otpResponse.request) {
-          return undefined; // Exclude circular reference
-        }
-      }
-      return value;
-    });
 
     // ------- END OTP --------- //
 
@@ -76,7 +64,7 @@ routesRouter.post('/', async (req, res) => {
     return res.status(201).json({
       data,
       message: "Route created successfully",
-      cleanResponse
+      otpResponse
     })
 
   } catch (error) {
