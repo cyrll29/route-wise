@@ -1,68 +1,46 @@
 import express from 'express'
 import Route from '../models/routeModel.js'
-import { Client } from '@googlemaps/google-maps-services-js'
 import fs from 'fs'
 import gql from 'graphql-tag'
 import { request } from 'graphql-request'
 
 const routesRouter = express.Router()
 
-const client = new Client({});
 const query = gql(fs.readFileSync('queries.graphql', 'utf8'));
 const otpUrl = "http://localhost:8080/otp/routers/default/index/graphql"
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
   try {
-    if (!body.origin || !body.destination || !body.transportation) {
+    if (!body.origin || !body.destination) {
       return res.status(400).json({ 
-        message: "Please provide values for all required fields: origin, destination, and transportation." 
+        message: "Please provide values for all required fields: origin and destination," 
       })
     }
 
-    // --------- OTP ---------- //
+    const date = new Date()
+    const currentDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+    const currentTime = `${date.getHours()}:${date.getMinutes()}`
 
     const variables = {
-      fromLat: 14.645841240358383,
-      fromLon: 121.00777324714129,
-      toLat: 14.649954277487442,
-      toLon: 121.0466559514089,
-      date: "2023-02-15",
-      time: "11:37"
+      fromLat: body.origin.lat,
+      fromLon: body.origin.lng,
+      toLat: body.destination.lat,
+      toLon: body.destination.lng,
+      date: currentDate,
+      time: currentTime
     };
+    console.log(variables)
 
     // Use this query with your GraphQL client
     const otpResponse = await request(otpUrl, query, variables);
 
-
-    // ------- END OTP --------- //
-
-    // Make a request to the Directions API using the client
-    const response = await client.directions({
-      params: {
-        origin: `place_id:${body.origin}`,
-        destination: `place_id:${body.destination}`,
-        mode: 'transit',
-        // transit_routing_preference: 'less_walking',
-        // optimize: true,
-        alternatives: true,
-        key: process.env.REACT_APP_API_KEY
-      },
-    });
-
-    // Get the data from the response
-    const data = response.data;
-    const route = new Route ({
+    new Route ({
       origin: body.origin,
-      destination: body.destination,
-      transportation: body.transportation
-    })
+      destination: body.destination
+    }).save()
 
-    console.log(route)
-
-    const savedRoute = await route.save()
     return res.status(201).json({
-      data,
       message: "Route created successfully",
       otpResponse
     })

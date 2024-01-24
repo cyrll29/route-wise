@@ -1,47 +1,25 @@
 import { useState, useRef } from "react";
 import { Autocomplete, useLoadScript } from "@react-google-maps/api";
-// import Select from 'react-select'
 import ModalHeader from "../../components/ModalHeader";
 import routeIcon from "../../assets/img/route-modal-map-icon.png";
 import routePlaceholder from "../../assets/img/placeholder.png";
 import routeService from "../../services/routeService";
 import config from "../../utils/config";
-import RouteList from "../../components/planner/RouteList.js";
-
 import { library } from "@fortawesome/fontawesome-svg-core";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as Icons from "@fortawesome/free-solid-svg-icons";
 import "../../assets/styles/modals.css";
+import "../../assets/styles/routelist.css"
+import RouteList from '../../components/planner/RouteList.js'
 
 const RouteModal = () => {
-  // const transportationOptions = [
-  //   { value: '0', label: 'Jeepney'},
-  //   { value: '1', label: 'Carousel'},
-  //   { value: '2', label: 'Train'},
-  //   { value: '3', label: 'UV Express'},
-  //   { value: '4', label: 'Walking'}
-  // ]
 
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
-  const [transportation, setTransportation] = useState([]);
   const [routes, setRoutes] = useState(null);
   const [error, setError] = useState("");
-
-  const [overviewPolyline, setOverviewPolyline] =  useState('')
-  const addPolyline = (polyline) => {
-    setOverviewPolyline(polyline)
-  }
-
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
 
-  // API REQUEST
-  const clearInputFields = () => {
-    setTransportation([]);
-    // originInputRef.current.value = "";
-    // destinationInputRef.current.value = "";
-  };
 
   const getRoutes = () => {
     if (!origin && !destination) {
@@ -50,19 +28,23 @@ const RouteModal = () => {
       return;
     }
     const data = {
-      origin: origin.getPlace().place_id,
-      destination: destination.getPlace().place_id,
-      transportation,
+      origin: {
+        lat: origin.getPlace().geometry.location.lat(),
+        lng: origin.getPlace().geometry.location.lng()
+      },
+      destination: {
+        lat: destination.getPlace().geometry.location.lat(),
+        lng: destination.getPlace().geometry.location.lng()
+      }
     };
     console.log(data);
 
     routeService
       .create(data)
       .then((response) => {
-        console.log(response.data);
-        setRoutes(response.data.data.routes);
+        console.log(response.data.otpResponse.plan);
+        setRoutes(response.data.otpResponse.plan);
         setError("");
-        clearInputFields();
       })
       .catch((error) => {
         console.log(error);
@@ -89,16 +71,21 @@ const RouteModal = () => {
 
   const onPlaceChanged = (originOrDestination) => {
     if (originOrDestination !== null) {
-      const places = originOrDestination.getPlace();
+      const places = {
+        lat: originOrDestination.getPlace().geometry.location.lat(),
+        lng: originOrDestination.getPlace().geometry.location.lng()
+      };
       console.log(places);
     }
     setError("");
   };
 
   const options = {
-    componentRestrictions: { country: "ph" },
-    // fields: ["address_components", "geometry", "icon", "name"],
-    fields: ["place_id"],
+    componentRestrictions: { 
+      country: "ph" ,
+      // locality: "quezoncity"
+    },  
+    fields: ["geometry"],
   };
 
   return (
@@ -150,20 +137,6 @@ const RouteModal = () => {
           </div>
         </div>
 
-        {/* <div className='route-modal-top-options'>
-          <FontAwesomeIcon icon="car" className="route-modal-reset-icon"/>
-          <Select
-              id='transportation-options'
-              options={transportationOptions}
-              isSearchable
-              isMulti
-              value={transportation}
-              onChange={(selectedOption) => setTransportation(selectedOption)}
-              placeholder="Select a transportation option"
-              styles={customStyles}
-          />
-        </div> */}
-
         {error && <div className="error-msg">{error}</div>}
 
         <div className="route-modal-button">
@@ -193,7 +166,7 @@ const RouteModal = () => {
                 </div>
               </div>
               <div>
-                <RouteList routes={routes} addPolyline={addPolyline} />
+                <RouteList routes={routes}/>
               </div>
             </div>
           )}

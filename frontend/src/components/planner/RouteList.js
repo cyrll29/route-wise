@@ -1,20 +1,18 @@
-import Route from './Route.js'
-import '../../assets/styles/routelist.css'
-
-const RouteList = ({routes}) => {
-  const handleClick = (index) => {
-    window.localStorage.setItem("polyline", routes[index].overview_polyline.points)
-  }
-
+const RouteList = ({ routes }) => {
+  console.log(routes)
   return (
     <div>
-      <ul>
-        {routes.map((route, index) => (
-          <div key={index} onClick={() => handleClick(index)}>
-            <Route route={route.legs[0]}/>
-          </div>
-        ))}
-      </ul>
+      {routes ? (
+        <ul>
+          {routes.itineraries.map((itinerary, index) => (
+            <div key={index}>
+              {itinerary.duration}
+            </div>
+          ))}
+        </ul>
+      ) : (
+        <></>
+      )}
     </div>
   )
 }

@@ -103,45 +103,6 @@ reportsRouter.post('/', async (req, res) => {
 })
 
 
-reportsRouter.put('/:id', async (req, res) => {
-  const body = req.body
-  const { id } = req.params
-
-  try {
-    if (!body.location || !body.title || !body.category || !body.body) {
-      return res.status(400).json({
-        message: "Please provide values for all required fields: location, title, category, and body." 
-      })
-    }
-
-    const report = {
-      location: body.location,
-      title: body.title,
-      category: body.category,
-      body: body.body,
-    }
-
-    Report.findByIdAndUpdate(id, report, { new: true })
-      .then(updatedReport => {
-        return res.status(200).json({ 
-          message: "Report updated successfully",
-        })
-      })
-      .catch((error) => {
-        console.log(error)
-        return res.status(400).json({ 
-          message: "Report not found" 
-        })
-      })
-
-  } catch (error) {
-    res.status(500).json({ 
-      message: "Internal server error"
-    })
-  }
-})
-
-
 reportsRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
 

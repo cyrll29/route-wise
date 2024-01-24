@@ -13,11 +13,13 @@ query PlanTrip($fromLat: Float!, $fromLon: Float!, $toLat: Float!, $toLon: Float
             },
         ]) {
         itineraries {
-            duration
             startTime
             endTime
+            duration
             legs {
                 mode
+                startTime
+                endTime
                 distance
                 duration
                 from {
