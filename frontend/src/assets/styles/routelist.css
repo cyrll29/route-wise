@@ -9,3 +9,7 @@
   align-items: center;
   justify-content: space-around;
 }
+
+.route-detail-leg {
+  border: 1px solid black;
+}
