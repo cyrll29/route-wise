@@ -10,6 +10,11 @@ const HomeModals = (props) => {
   const onLocationSelect = props.onLocationSelect
   const reportData = props.reportData
   const onItinerarySelect = props.onItinerarySelect
+  const selectCenterLat = props.selectCenterLat
+  const selectCenterLng = props.selectCenterLng
+  const selectOriginMarker = props.selectOriginMarker
+  const selectDestinationMarker = props.selectDestinationMarker
+
   return (
     <>
       {props.routeReportModal 
@@ -23,7 +28,11 @@ const HomeModals = (props) => {
 
       {props.routePlannerModal 
         ? <PlannerModal 
-        onItinerarySelect={onItinerarySelect}
+          onItinerarySelect={onItinerarySelect}
+          selectCenterLat={selectCenterLat}
+          selectCenterLng={selectCenterLng}
+          selectOriginMarker={selectOriginMarker}
+          selectDestinationMarker={selectDestinationMarker}
         /> 
         : <></>
       }

@@ -1,13 +1,12 @@
 import Route from './Route'
 
-const RouteList = ({ routes, onItinerarySelect }) => {
+const RouteList = ({ routes, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
   // ---------Duration Bar------------
   let routesDuration = []
 
   for (let i = 0; i < routes.itineraries.length; i++) {
     routesDuration.push(routes.itineraries[i].duration)
   }
-  const longestDuration = Math.max(...routesDuration)
   // --------------END----------------
 
   return (
@@ -21,6 +20,8 @@ const RouteList = ({ routes, onItinerarySelect }) => {
                 routesDuration={routesDuration} 
                 index={index}
                 onItinerarySelect={onItinerarySelect}
+                selectCenterLat={selectCenterLat}
+                selectCenterLng={selectCenterLng}
               />
             </div>
           ))}

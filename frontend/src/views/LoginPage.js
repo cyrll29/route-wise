@@ -62,7 +62,7 @@ const LoginPage = () => {
       <div className='login-container'>
         <div className='login-logo'>
             <img src= {logo} alt="logo" />
-            <h1><span>R</span>oute<span>W</span>ise</h1>
+            <h1><span>K</span>yusi<span>T</span>rip</h1>
         </div>
 
 

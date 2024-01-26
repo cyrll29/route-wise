@@ -23,7 +23,7 @@ const LandingPage = () => {
         </div>
 
         <div className='landing-title'>
-          <h1><span>R</span>oute<span>W</span>ise</h1>
+          <h1><span>K</span>yusi<span>T</span>rip</h1>
         </div>
 
         <div className='landing-btn'>

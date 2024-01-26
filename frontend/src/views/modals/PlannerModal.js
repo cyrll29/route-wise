@@ -11,7 +11,7 @@ import "../../assets/styles/modals.css";
 import "../../assets/styles/routelist.css"
 import RouteList from '../../components/planner/RouteList.js'
 
-const RouteModal = ({ onItinerarySelect }) => {
+const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selectOriginMarker, selectDestinationMarker }) => {
 
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -22,11 +22,15 @@ const RouteModal = ({ onItinerarySelect }) => {
 
 
   const getRoutes = () => {
-    if (!origin && !destination) {
-      setRoutes([]);
+    setRoutes(null)
+    onItinerarySelect(null)
+
+    if (originInputRef.current.value === '' || destinationInputRef.current.value === '') {
+      setRoutes(null);
       setError("Wrong input");
       return;
     }
+
     const data = {
       origin: {
         lat: origin.getPlace().geometry.location.lat(),
@@ -45,6 +49,9 @@ const RouteModal = ({ onItinerarySelect }) => {
         console.log(response.data.otpResponse.plan);
         setRoutes(response.data.otpResponse.plan);
         setError("");
+        onItinerarySelect(response.data.otpResponse.plan.itineraries[0])
+        selectCenterLat(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lat)
+        selectCenterLng(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lon)
       })
       .catch((error) => {
         console.log(error);
@@ -53,7 +60,7 @@ const RouteModal = ({ onItinerarySelect }) => {
           error.response.status >= 400 &&
           error.response.status <= 500
         ) {
-          setRoutes([]);
+          setRoutes(null);
           setError(error.response.data.message);
         }
       });
@@ -69,13 +76,32 @@ const RouteModal = ({ onItinerarySelect }) => {
     return <div>Loading...</div>;
   }
 
-  const onPlaceChanged = (originOrDestination) => {
-    if (originOrDestination !== null) {
+  const onPlaceOriginChanged = (origin) => {
+    if (origin !== null) {
       const places = {
-        lat: originOrDestination.getPlace().geometry.location.lat(),
-        lng: originOrDestination.getPlace().geometry.location.lng()
+        lat: origin.getPlace().geometry.location.lat(),
+        lng: origin.getPlace().geometry.location.lng()
       };
       console.log(places);
+      selectOriginMarker(places)
+      selectCenterLat(places.lat)
+      selectCenterLng(places.lng)
+
+    }
+    setError("");
+  };
+
+  const onPlaceDestinationChanged = (destination) => {
+    if (destination !== null) {
+      const places = {
+        lat: destination.getPlace().geometry.location.lat(),
+        lng: destination.getPlace().geometry.location.lng()
+      };
+      console.log(places);
+      selectDestinationMarker(places)
+      selectCenterLat(places.lat)
+      selectCenterLng(places.lng)
+      
     }
     setError("");
   };
@@ -87,6 +113,13 @@ const RouteModal = ({ onItinerarySelect }) => {
     },  
     fields: ["geometry"],
   };
+
+  const handleReset = () => {
+    setRoutes(null)
+    onItinerarySelect(null)
+    originInputRef.current.value = null
+    destinationInputRef.current.value = null
+  }
 
   return (
     <>
@@ -107,7 +140,7 @@ const RouteModal = ({ onItinerarySelect }) => {
 
             <div className="route-modal-search-box">
               <Autocomplete
-                onPlaceChanged={() => onPlaceChanged(origin)}
+                onPlaceChanged={() => onPlaceOriginChanged(origin)}
                 options={options}
                 onLoad={(autocomplete) => setOrigin(autocomplete)}
               >
@@ -121,7 +154,7 @@ const RouteModal = ({ onItinerarySelect }) => {
               </Autocomplete>
 
               <Autocomplete
-                onPlaceChanged={() => onPlaceChanged(destination)}
+                onPlaceChanged={() => onPlaceDestinationChanged(destination)}
                 options={options}
                 onLoad={(autocomplete) => setDestination(autocomplete)}
               >
@@ -162,11 +195,16 @@ const RouteModal = ({ onItinerarySelect }) => {
                   Suggested Routes
                 </h4>
                 <div className="route-modal-button-reset">
-                  <button className="route-modal-btn-reset">Reset</button>
+                  <button onClick={handleReset} className="route-modal-btn-reset">Reset</button>
                 </div>
               </div>
               <div>
-                <RouteList routes={routes} onItinerarySelect={onItinerarySelect}/>
+                <RouteList 
+                  routes={routes} 
+                  onItinerarySelect={onItinerarySelect}
+                  selectCenterLat={selectCenterLat}
+                  selectCenterLng={selectCenterLng}
+                />
               </div>
             </div>
           )}

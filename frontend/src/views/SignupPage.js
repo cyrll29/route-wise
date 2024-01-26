@@ -48,7 +48,7 @@ const SignupPage = () => {
       <div className='signup-container'>
         <div className='signup-logo'>
             <img src= {logo} alt="logo" />
-            <h1><span>R</span>oute<span>W</span>ise</h1>
+            <h1><span>K</span>yusi<span>T</span>rip</h1>
         </div>
 
         <h4>Create an Account</h4>

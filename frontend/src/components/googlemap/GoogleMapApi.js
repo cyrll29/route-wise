@@ -5,9 +5,7 @@ import config from "../../utils/config";
 
 import "../../assets/styles/googlemap.css";
 
-const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary }) => {
-
-
+const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary, centerLat, centerLng, originMarker, destinationMarker, selectOriginMarker, selectDestinationMarker }) => {
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
@@ -16,8 +14,8 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
   if (!isLoaded) return <div>Loading...</div>;
 
   const mapOptions = {
-    zoom: 16, 
-    center: { lat: 14.6515, lng: 121.0493 }, 
+    zoom: 15, 
+    center: { lat: centerLat, lng: centerLng }, 
     mapId: process.env.REACT_APP_MAP_ID, 
     disableDefaultUI: true, 
     restriction: {  
@@ -37,6 +35,10 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
       onMarkLocation={onMarkLocation}
       onLocationSelect={onLocationSelect}
       selectedItinerary={selectedItinerary}
+      originMarker={originMarker}
+      destinationMarker={destinationMarker}
+      selectOriginMarker={selectOriginMarker}
+      selectDestinationMarker={selectDestinationMarker}
     />
   )
 };

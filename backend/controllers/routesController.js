@@ -8,7 +8,7 @@ const routesRouter = express.Router()
 
 const query = gql(fs.readFileSync('queries.graphql', 'utf8'));
 // const otpUrl = "https://1s27xj69-8080.asse.devtunnels.ms/otp/routers/default/index/graphql"
-const otpUrl = "https://1s27xj69-8080.asse.devtunnels.ms/otp/routers/default/index/graphql"
+const otpUrl = "http://localhost:8080/otp/routers/default/index/graphql"
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
@@ -29,8 +29,8 @@ routesRouter.post('/', async (req, res) => {
       toLat: body.destination.lat,
       toLon: body.destination.lng,
       date: currentDate,
-      // time: '21:00'
-      time: currentTime
+      time: '18:00'
+      // time: currentTime
     };
     console.log(variables)
 

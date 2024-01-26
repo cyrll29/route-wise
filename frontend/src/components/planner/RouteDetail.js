@@ -4,9 +4,9 @@ const RouteDetail = ({ leg }) => {
 
   const modeContainer = () => {
     let color = 'black'
-    if(leg.mode == 'WALK') {
+    if(leg.mode === 'WALK') {
       color = 'red'
-    } else if (leg.mode == 'BUS') {
+    } else if (leg.mode === 'BUS') {
       color = 'blue'
     }
     return color;

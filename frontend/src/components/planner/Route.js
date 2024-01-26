@@ -2,18 +2,18 @@ import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 import "../../assets/styles/routelist.css"
 
-const Route = ({ itinerary, routesDuration, index, onItinerarySelect }) => {
+const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
 
 
   const [showDetails, setShowDetails] = useState(null)
-  const colors = ['#FF9AA2', '#FFDAC1', '#C7CEEA', '#E2F0CB', '#FFB7B2']
   const longestDuration = Math.max(...routesDuration)
 
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
     console.log(itinerary.legs)
-    
+    selectCenterLat(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lat)
+    selectCenterLng(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lon)
   }
 
   // -------Duration Formatter---------
