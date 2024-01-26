@@ -9,6 +9,7 @@ const HomeModals = (props) => {
   const onMarkLocation = props.onMarkLocation
   const onLocationSelect = props.onLocationSelect
   const reportData = props.reportData
+  const onItinerarySelect = props.onItinerarySelect
   return (
     <>
       {props.routeReportModal 
@@ -21,7 +22,9 @@ const HomeModals = (props) => {
       }
 
       {props.routePlannerModal 
-        ? <PlannerModal /> 
+        ? <PlannerModal 
+        onItinerarySelect={onItinerarySelect}
+        /> 
         : <></>
       }
 

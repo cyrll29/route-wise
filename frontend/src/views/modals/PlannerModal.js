@@ -11,7 +11,7 @@ import "../../assets/styles/modals.css";
 import "../../assets/styles/routelist.css"
 import RouteList from '../../components/planner/RouteList.js'
 
-const RouteModal = () => {
+const RouteModal = ({ onItinerarySelect }) => {
 
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -166,7 +166,7 @@ const RouteModal = () => {
                 </div>
               </div>
               <div>
-                <RouteList routes={routes}/>
+                <RouteList routes={routes} onItinerarySelect={onItinerarySelect}/>
               </div>
             </div>
           )}

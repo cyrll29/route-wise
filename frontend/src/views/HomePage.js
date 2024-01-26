@@ -13,6 +13,7 @@ const HomePage = () => {
   const [isMarkLocation, setIsMarkLocation] = useState(false)
   const [reportData, setReportData] = useState(null)
   const [hasToken, setHasToken] = useState()
+  const [selectedItinerary, setSelectedItinerary] = useState(null)
 
   // Functions
   const btnModalClick = (modal) => {
@@ -24,18 +25,18 @@ const HomePage = () => {
   }, [])
 
   const onLocationSelect = (location) => {
-    // Function to handle the location selected on the map
-    // Update your location state here
     console.log(location)
     setReportData(location)
   };
 
   const onMarkLocation = (isMarking) => {
-    // Function to handle "Mark Location" button click
-    // You can pass this state down to GoogleMapApi
     console.log(isMarking)
     setIsMarkLocation(isMarking)
   };
+
+  const handleItinerarySelect = (itinerary) => {
+    setSelectedItinerary(itinerary)
+  }
     
   return (
     <>
@@ -48,6 +49,7 @@ const HomePage = () => {
           routeMenuModal={activeModal === "menu"}
           onMarkLocation={onMarkLocation}
           reportData={reportData}
+          onItinerarySelect={handleItinerarySelect}
         />
       </div>
 
@@ -55,6 +57,7 @@ const HomePage = () => {
         isMarkLocation={isMarkLocation}
         onMarkLocation={onMarkLocation}
         onLocationSelect={onLocationSelect}
+        selectedItinerary={selectedItinerary}
       />  
 
       <div className="home-buttons">

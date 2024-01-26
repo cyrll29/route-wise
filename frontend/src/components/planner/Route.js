@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 
-const Route = ({ itinerary, routesDuration, index }) => {
+const Route = ({ itinerary, routesDuration, index, onItinerarySelect }) => {
 
-  console.log(itinerary)
 
   const [showDetails, setShowDetails] = useState(null)
   const colors = ['#FF9AA2', '#FFDAC1', '#C7CEEA', '#E2F0CB', '#FFB7B2']
   const longestDuration = Math.max(...routesDuration)
 
-  const handleShowDetails = () => {
+  const handleItineraryClick = () => {
+    onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
+    console.log(itinerary)
   }
 
   // -------Duration Formatter---------
@@ -55,7 +56,7 @@ const Route = ({ itinerary, routesDuration, index }) => {
         <></>
       ) : (
         <div>
-          <div style={styles.mainGrid} onClick={handleShowDetails}>
+          <div style={styles.mainGrid} onClick={handleItineraryClick}>
             <p>{formatDuration(itinerary.duration)}</p>
             <p>{formatTime(itinerary.startTime)}</p>
             <p>{formatTime(itinerary.endTime)}</p>

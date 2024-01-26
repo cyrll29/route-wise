@@ -1,6 +1,6 @@
 import Route from './Route'
 
-const RouteList = ({ routes }) => {
+const RouteList = ({ routes, onItinerarySelect }) => {
   // ---------Duration Bar------------
   let routesDuration = []
 
@@ -17,7 +17,12 @@ const RouteList = ({ routes }) => {
         <ul>
           {routes.itineraries.map((itinerary, index) => (
             <div key={index}>
-              <Route itinerary={itinerary} routesDuration={routesDuration} index={index}/>
+              <Route 
+                itinerary={itinerary} 
+                routesDuration={routesDuration} 
+                index={index}
+                onItinerarySelect={onItinerarySelect}
+              />
             </div>
           ))}
         </ul>

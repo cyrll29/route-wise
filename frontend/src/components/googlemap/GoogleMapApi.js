@@ -5,7 +5,7 @@ import config from "../../utils/config";
 
 import "../../assets/styles/googlemap.css";
 
-const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect }) => {
+const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary }) => {
 
 
 
@@ -22,10 +22,10 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect }) => {
     disableDefaultUI: true, 
     restriction: {  
       latLngBounds: {
-        north: 14.7407,
-        south: 14.5406,
-        west: 120.9512,
-        east: 121.1711
+        north: 14.738183748703542,
+        south: 14.568579001847928,
+        west: 120.9531749965826,
+        east: 121.11127512082325
       }
     }
   };
@@ -36,6 +36,7 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect }) => {
       isMarkLocation={isMarkLocation}
       onMarkLocation={onMarkLocation}
       onLocationSelect={onLocationSelect}
+      selectedItinerary={selectedItinerary}
     />
   )
 };
