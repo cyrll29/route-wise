@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import RouteDetail from './RouteDetail'
+import "../../assets/styles/routelist.css"
 
 const Route = ({ itinerary, routesDuration, index, onItinerarySelect }) => {
 
@@ -11,7 +12,8 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect }) => {
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
-    console.log(itinerary)
+    console.log(itinerary.legs)
+    
   }
 
   // -------Duration Formatter---------
@@ -49,6 +51,29 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect }) => {
 
     return `${formattedHours}:${formattedMinutes} ${amPM}`;
   }
+
+  const adjustedWidth = (itinerary.duration/longestDuration * 100) + '%'
+
+  const markerPosition = (distance) => {
+    // const position = (duration/(itinerary.endTime) * 100) + '%'
+    // return position;
+    let totalDistance = 0;
+    for(let i = 0; i < itinerary.legs.length; i++) {
+      totalDistance += itinerary.legs[i].distance
+    }
+    const position = ((distance/totalDistance) * 100) + '%'
+    return position;
+  }
+
+  const legColors = (leg) => {
+    let legColor = "black"
+    if(leg.mode === "WALK"){
+      legColor = "red"
+    } else if(leg.mode === "BUS") {
+      legColor = "blue"
+    }
+    return legColor
+  }
   
   return (
     <>
@@ -56,12 +81,45 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect }) => {
         <></>
       ) : (
         <div>
-          <div style={styles.mainGrid} onClick={handleItineraryClick}>
-            <p>{formatDuration(itinerary.duration)}</p>
+          <div onClick={handleItineraryClick} className='main-grid'>
+            <div style={styles.mainGridHeader}>
+              <p style={{fontWeight: 'bold'}}>{formatDuration(itinerary.duration)}</p>
+              <ul style={styles.modeOfTranspo}>
+                {itinerary.legs.map((leg, index) => (
+                  <div key={index} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 30,
+                    width: 60,
+                    backgroundColor: legColors(leg),
+                    margin: 2,
+                    padding: 2,
+                    borderRadius: 6,
+                    fontWeight: 'bold',
+                    color: 'white'}}>
+                    {leg.mode}
+                  </div>
+                ))}
+              </ul>
+            </div>
             <p>{formatTime(itinerary.startTime)}</p>
             <p>{formatTime(itinerary.endTime)}</p>
             <div style={styles.grayBar}>
-              <div style={{width: (itinerary.duration/longestDuration * 100)*3, height: '100%', backgroundColor: colors[index], borderRadius: 10}}>
+              <div style={{ 
+                width: adjustedWidth, 
+                height: '100%', 
+                backgroundColor: '#880015', 
+                borderRadius: 10}}>
+                  <ul style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
+                    {itinerary.legs.map((leg, index) => (
+                      <div key={index} style={{width: markerPosition(leg.distance), height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                        <div key={index} style={{width: 10, height: 10, backgroundColor: '#880015', borderRadius: '50%', top: -2, position: 'relative'}}>
+                          &nbsp;
+                        </div>
+                      </div>
+                    ))}
+                  </ul>
               </div>
             </div>
           </div>
@@ -88,27 +146,51 @@ const styles = {
   mainGrid: {
     display: 'flex',
     backgroundColor: 'lightblue',
+    padding: 10,
     marginTop: 5,
     marginBottom: 5,
 
-    height: 70,
+    height: 120,
     width: '100%',
 
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+
+    borderRadius: 10
   },
+
+  modeOfTranspo: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+
+  mainGridHeader: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+
   grayBar: {
     backgroundColor: "gray",
 
-    height: '20%',
+    height: '5%',
     width: '90%',
 
     borderRadius: 10
   },
 
-  durationBar: {
+  circleMarker: {
+    width: 20,
     height: '100%',
-    width: ''
+    backgroundColor: 'white',
+
+    borderRadius: '50%',
+
+    position: 'relative',
+    right: 0
   }
 }

@@ -8,7 +8,6 @@ const RouteList = ({ routes, onItinerarySelect }) => {
     routesDuration.push(routes.itineraries[i].duration)
   }
   const longestDuration = Math.max(...routesDuration)
-  console.log(longestDuration)
   // --------------END----------------
 
   return (

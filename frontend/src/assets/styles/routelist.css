@@ -11,5 +11,42 @@
 }
 
 .route-detail-leg {
-  border: 1px solid black;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+
+  transition: 0.5s;
+
+  background: #fcfcfc;
+  box-shadow:  8px 8px 14px #e4e4e4,
+              -8px -8px 14px #ffffff;
+} 
+
+.route-detail-leg:hover{
+  background-color: lightgray;
+}
+
+.main-grid {
+  cursor: pointer;
+  display: flex;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 25px;
+
+  height: 120px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+  transition: 0.5s;
+
+  border-radius: 15px;
+  background: #fcfcfc;
+  box-shadow:  8px 8px 14px #e4e4e4,
+              -8px -8px 14px #ffffff;
+}
+
+.main-grid:hover {
+  background-color: lightgray;
 }

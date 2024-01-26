@@ -1,6 +1,16 @@
 import '../../assets/styles/routelist.css'
 
 const RouteDetail = ({ leg }) => {
+
+  const modeContainer = () => {
+    let color = 'black'
+    if(leg.mode == 'WALK') {
+      color = 'red'
+    } else if (leg.mode == 'BUS') {
+      color = 'blue'
+    }
+    return color;
+  }
   // -------Duration Formatter---------
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
@@ -41,9 +51,20 @@ const RouteDetail = ({ leg }) => {
   return (
     <>
       <div className="route-detail-leg">
+        <p style={{
+            display: 'flex',
+            flexDirection: 'row',
+            backgroundColor: modeContainer(), 
+            width: 60,
+            height: 25,
+            color: 'white',
+            fontWeight: 'bold',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5
+            }}>{leg.mode}</p>
         <p>{formatTime(leg.startTime)}</p>
         <p>{formatTime(leg.endTime)}</p>
-        <p>{leg.mode}</p>
         <p>{leg.distance}</p>
         <p>{formatDuration(leg.duration)}</p>
         <p>{leg.from.name}</p>

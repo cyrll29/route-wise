@@ -35,7 +35,13 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
     if (selectedItinerary && selectedItinerary.legs) {
       return selectedItinerary.legs.map((leg, index) => {
         const path = decodePolyline(leg.legGeometry.points); // Implement or import decodePolyline
-        return <Polyline key={index} path={path} /* styling props here */ />;
+        let color = "black"
+        if(leg.mode == "WALK"){
+          color = "red"
+        } else if (leg.mode == "BUS") {
+          color = "blue"
+        }
+        return <Polyline key={index} path={path} options={{strokeColor: color}}/* styling props here */ />;
       });
     }
     return null;

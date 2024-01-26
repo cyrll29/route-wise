@@ -1,15 +1,15 @@
 .home-modal {
     position: absolute;
     left: 0;
-    width: 350px;
+    width: 30rem;
     height: 100vh;
     overflow: auto;
     background-color: white;
-
+    scrollbar-width: 1px;
 }
 
 .map-container {
-    width: calc(100% - 350px);
+    width: calc(100% - 30rem);
     height: 100vh;
     position: absolute;
     float: right;
