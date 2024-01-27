@@ -62,15 +62,40 @@ const RouteDetail = ({ leg }) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 5
-            }}>{leg.mode}</p>
-        <p>{formatTime(leg.startTime)}</p>
-        <p>{formatTime(leg.endTime)}</p>
-        <p>{leg.distance}</p>
-        <p>{formatDuration(leg.duration)}</p>
-        <p>{leg.from.name}</p>
-        <p>{leg.to.name}</p>
+        }}>
+          {leg.mode}
+        </p>
+        <div className="distance-bar-div">
+          <div className="distance-bar">
+            <div className="distance-marker">
+            
+            </div>
+            <div className="distance-marker">
+
+            </div>
+          </div>
+        </div>
+        <div className='distance-time'>
+          <p>{formatTime(leg.startTime)}</p>
+          <p style={{fontSize: 12}}>{leg.distance} M</p>
+          <p>{formatTime(leg.endTime)}</p>
+        </div>
+        <div className='time-and-fare'>
+          <p>{formatDuration(leg.duration)}</p>
+          <p>P XX.XX</p>
+        </div>
+        <div className='origin-and-destination'>
+          <p>{leg.from.name}</p>
+          <div className='dot-dot-dot'>
+            <div className='dot'></div>
+            <div className='dot'></div>
+            <div className='dot'></div>
+          </div>
+          <p>{leg.to.name}</p>
+        </div>
+        
         {leg.mode !== "WALK" ? (
-          <p>{leg.route.longName}</p>
+          <p style={{fontWeight: 'bold'}}>{leg.route.longName}</p>
         ) : (
           <></>
         )}

@@ -103,8 +103,10 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCent
                 ))}
               </ul>
             </div>
-            <p>{formatTime(itinerary.startTime)}</p>
-            <p>{formatTime(itinerary.endTime)}</p>
+            <div className='distance-time' style={{fontSize: 13, marginBottom: 5, marginTop: 5}}>
+              <p>{formatTime(itinerary.startTime)}</p>
+              <p>{formatTime(itinerary.endTime)}</p>
+            </div>
             <div style={styles.grayBar}>
               <div style={{ 
                 width: adjustedWidth, 
