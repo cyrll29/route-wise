@@ -5,7 +5,9 @@ import config from '../utils/config.js'
 import "../assets/styles/forgetpassword.css"
 
 const ForgotPassword = () => {
+
 	const navigate = useNavigate()
+	
 	const [email, setEmail] = useState("");
 	const [msg, setMsg] = useState("");
 	const [error, setError] = useState("");

@@ -6,11 +6,10 @@ import success from "../assets/img/success.png";
 import "../assets/styles/emailverify.css";
 
 const EmailVerify = () => {
-	const [validUrl, setValidUrl] = useState(true);
 	const navigate = useNavigate()
 	const param = useParams();
-  console.log(param.id)
-  console.log(param.token)
+
+	const [validUrl, setValidUrl] = useState(true);
 
 	useEffect(() => {
 		const verifyEmailUrl = async () => {

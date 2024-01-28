@@ -2,21 +2,23 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../assets/styles/passwordreset.css"
+import config from '../utils/config'
 
 const PasswordReset = () => {
+
+	const param = useParams();
+	const navigate = useNavigate();
+	const url = `${config.URL_USED}/api/password-reset/${param.id}/${param.token}`;
+	
 	const [validUrl, setValidUrl] = useState(false);
 	const [password, setPassword] = useState("");
 	const [msg, setMsg] = useState("");
 	const [error, setError] = useState("");
-	const param = useParams();
-	const navigate = useNavigate();
-	const url = `http://localhost:3001/api/password-reset/${param.id}/${param.token}`;
-	console.log(url)
+
+
 	useEffect(() => {
 		const verifyUrl = async () => {
-			console.log(url)
 			try {
-				console.log("run boi")
 				await axios.get(url);
 				setValidUrl(true);
 			} catch (error) {
@@ -25,6 +27,7 @@ const PasswordReset = () => {
 		};
 		verifyUrl();
 	}, [param, url]);
+	
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -44,6 +47,7 @@ const PasswordReset = () => {
 			}
 		}
 	};
+
 
 	return (
 		<>

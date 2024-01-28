@@ -2,6 +2,7 @@
 import { useLoadScript } from "@react-google-maps/api";
 import GoogleMap from "./GoogleMap";
 import config from "../../utils/config";
+// import mapStyle from "./mapStyle.json"
 
 import "../../assets/styles/googlemap.css";
 
@@ -14,18 +15,21 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
   if (!isLoaded) return <div>Loading...</div>;
 
   const mapOptions = {
-    zoom: 15, 
+    zoom: 14, 
+    minZoom: 13,
+    maxZoom: 18,
     center: { lat: centerLat, lng: centerLng }, 
     mapId: process.env.REACT_APP_MAP_ID, 
     disableDefaultUI: true, 
     restriction: {  
       latLngBounds: {
         north: 14.738183748703542,
-        south: 14.568579001847928,
-        west: 120.9531749965826,
+        south: 14.58923182582537,
+        west: 120.98522186279297,
         east: 121.11127512082325
       }
-    }
+    },
+    // styles: mapStyle
   };
 
   return (

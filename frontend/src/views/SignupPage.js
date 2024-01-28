@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import userService from '../services/userService'
-
 import logo from '../assets/img/logo.png'
 import '../assets/styles/signup.css'
 
 
 const SignupPage = () => {
+
   const navigate = useNavigate()
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState("");
   const [error, setError] = useState('')
 
-  // Functions
+
   const clearInputFields = () => {
     setName('')
     setEmail('')
@@ -22,8 +23,9 @@ const SignupPage = () => {
   }
 
   const handleSignupClick = (e) => {
-    // e.preventDefault()
+
     const data = {name, password, email}
+
     userService
       .create(data)
       .then((response) => {
