@@ -3,13 +3,13 @@ import GoogleMapApi from '../components/googlemap/GoogleMapApi'
 import HomeButtons from '../utils/HomeButtons'
 import HomeModals from '../utils/HomeModals' 
 import reportService from '../services/reportService'
-
 import '../assets/styles/home.css'
+
+
 
 const HomePage = () => {
 
-  // Declarations
-  const [activeModal, setActiveModal] = useState("planner");
+  const [activeModal, setActiveModal] = useState("planner")
   const [isMarkLocation, setIsMarkLocation] = useState(false)
   const [reportData, setReportData] = useState(null)
   const [hasToken, setHasToken] = useState()

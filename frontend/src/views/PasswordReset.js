@@ -1,49 +1,52 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import axios from "axios"
 import "../assets/styles/passwordreset.css"
 import config from '../utils/config'
 
+
+
 const PasswordReset = () => {
 
-	const param = useParams();
-	const navigate = useNavigate();
-	const url = `${config.URL_USED}/api/password-reset/${param.id}/${param.token}`;
+	const param = useParams()
+	const navigate = useNavigate()
+	const url = `${config.URL_USED}/api/password-reset/${param.id}/${param.token}`
 	
-	const [validUrl, setValidUrl] = useState(false);
-	const [password, setPassword] = useState("");
-	const [msg, setMsg] = useState("");
-	const [error, setError] = useState("");
+
+	const [validUrl, setValidUrl] = useState(false)
+	const [password, setPassword] = useState("")
+	const [msg, setMsg] = useState("")
+	const [error, setError] = useState("")
 
 
 	useEffect(() => {
 		const verifyUrl = async () => {
 			try {
-				await axios.get(url);
-				setValidUrl(true);
+				await axios.get(url)
+				setValidUrl(true)
 			} catch (error) {
-				setValidUrl(false);
+				setValidUrl(false)
 			}
 		};
-		verifyUrl();
-	}, [param, url]);
+		verifyUrl()
+	}, [param, url])
 	
 
 	const handleSubmit = async (e) => {
-		e.preventDefault();
+		e.preventDefault()
 		try {
-			const { data } = await axios.post(url, { password });
-			setMsg(data.message);
-			setError("");
-			window.location = "/LoginPage";
+			const { data } = await axios.post(url, { password })
+			setMsg(data.message)
+			setError("")
+			window.location = "/LoginPage"
 		} catch (error) {
 			if (
 				error.response &&
 				error.response.status >= 400 &&
 				error.response.status <= 500
 			) {
-				setError(error.response.data.message);
-				setMsg("");
+				setError(error.response.data.message)
+				setMsg("")
 			}
 		}
 	};

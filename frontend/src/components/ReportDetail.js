@@ -3,13 +3,18 @@ import imagePlaceholder from "../assets/img/img-placeholder.png";
 import personIcon from "../assets/img/person-icon.png";
 import "../assets/styles/reportdetail.css";
 
+
+
 const ReportDetail = ({ report, onClose }) => {
+
   const [img, setImg] = useState(null);
+
 
   if (report.image) {
     setImg(report.image);
   }
 
+  
   return (
     <div className="report-detail-modal">
       <div className="report-detail-content">

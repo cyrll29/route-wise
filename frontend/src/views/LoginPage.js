@@ -7,9 +7,11 @@ import '../assets/styles/login.css'
 import logo from '../assets/img/logo.png'
 
 
+
 const LoginPage = () => {
 
   const navigate = useNavigate()
+
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,19 +20,16 @@ const LoginPage = () => {
   const [modalMessage, setModalMessage] = useState('')
   const [error, setError] = useState('')
 
+
   const handleLoginClick = async (event) => {
     try {
-
       const user = await login({
         email, password
       })
 
-      // For Modal Showing of "Login Successful"
       setModalMessage("Log in Succesful")
       setShowModal(true)
       setUser(user) // End
-
-      // Set Token
       reportService.setToken(user.token)
 
     } catch (error) {
@@ -39,7 +38,7 @@ const LoginPage = () => {
         error.response.status >= 400 &&
         error.response.status <= 500
       ) {
-        setError(error.response.data.message);
+        setError(error.response.data.message)
       }
     }
   }
@@ -108,7 +107,7 @@ const LoginPage = () => {
             onClose={() => {
               setShowModal(false)
               setModalMessage('')
-              navigate('/')
+              navigate('/HomePage')
             }}/>
           : <></>
         }

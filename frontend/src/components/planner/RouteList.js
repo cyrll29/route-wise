@@ -1,6 +1,9 @@
 import Route from './Route'
 
+
+
 const RouteList = ({ routes, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
+
   // ---------Duration Bar------------
   let routesDuration = []
 

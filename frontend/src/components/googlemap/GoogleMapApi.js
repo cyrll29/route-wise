@@ -3,8 +3,9 @@ import { useLoadScript } from "@react-google-maps/api";
 import GoogleMap from "./GoogleMap";
 import config from "../../utils/config";
 // import mapStyle from "./mapStyle.json"
-
 import "../../assets/styles/googlemap.css";
+
+
 
 const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary, centerLat, centerLng, originMarker, destinationMarker, selectOriginMarker, selectDestinationMarker }) => {
 
@@ -13,6 +14,7 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
     libraries: config.libraries,
   });
   if (!isLoaded) return <div>Loading...</div>;
+
 
   const mapOptions = {
     zoom: 14, 
@@ -32,6 +34,7 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
     // styles: mapStyle
   };
 
+  
   return (
     <GoogleMap 
       mapOptions={mapOptions} 

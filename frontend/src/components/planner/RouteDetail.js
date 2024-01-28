@@ -1,5 +1,7 @@
 import '../../assets/styles/routelist.css'
 
+
+
 const RouteDetail = ({ leg }) => {
 
   const modeContainer = () => {
@@ -11,6 +13,8 @@ const RouteDetail = ({ leg }) => {
     }
     return color;
   }
+
+
   // -------Duration Formatter---------
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
@@ -48,6 +52,7 @@ const RouteDetail = ({ leg }) => {
     return `${formattedHours}:${formattedMinutes} ${amPM}`;
   }
 
+  
   return (
     <>
       <div className="route-detail-leg">

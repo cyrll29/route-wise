@@ -12,6 +12,7 @@ import walkIcon from '../../assets/img/map-walk.png'
 import railIcon from '../../assets/img/map-rail.png'
 
 
+
 const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary, originMarker, destinationMarker, selectOriginMarker, selectDestinationMarker }) => {
 
   const modeIcons = {
@@ -20,6 +21,8 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
     "RAIL": `${railIcon}`,
   };
   const [reports, setReports] = useState(null)
+
+
 
   useEffect(() => {
     reportService
@@ -32,6 +35,8 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
       console.log(error)
     })
   }, []);
+
+
 
   const renderLegStartMarkers = () => {
     if (selectedItinerary && selectedItinerary.legs) {
@@ -50,6 +55,8 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
     }
     return null;
   };
+
+
 
   const renderPolylines = () => {
     if (selectedItinerary && selectedItinerary.legs) {
@@ -79,6 +86,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
   };
 
 
+
   const renderDestinationMarker = () => {
     if (selectedItinerary && selectedItinerary.legs.length > 0) {
       const lastLeg = selectedItinerary.legs[selectedItinerary.legs.length - 1];
@@ -95,20 +103,24 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
     return null;
   };
 
+
+
   const renderStartMarker = () => {
-      if (originMarker) {
-        return (
-          <Marker
-            position={{ lat: originMarker.lat, lng: originMarker.lng }}
-            icon={{
-              url: `${originIcon}`,
-              scaledSize: new google.maps.Size(35, 45)
-            }}
-          />
-        );
-      }
+    if (originMarker) {
+      return (
+        <Marker
+          position={{ lat: originMarker.lat, lng: originMarker.lng }}
+          icon={{
+            url: `${originIcon}`,
+            scaledSize: new google.maps.Size(35, 45)
+          }}
+        />
+      );
+    }
     return null;
   };
+
+
 
   const renderEndMarker = () => {
     if (destinationMarker) {
@@ -122,8 +134,10 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
         />
       );
     }
-  return null;
-};
+    return null;
+  };
+
+
 
   const mapClickHandler = async (event) => {
     if (isMarkLocation) {
@@ -142,6 +156,8 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
     console.log(reports)
   };
 
+
+  
   return (
     <GoogleMap 
       options={mapOptions}

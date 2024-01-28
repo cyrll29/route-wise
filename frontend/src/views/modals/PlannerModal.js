@@ -1,24 +1,26 @@
-import { useState, useRef } from "react";
-import { Autocomplete, useLoadScript } from "@react-google-maps/api";
-import ModalHeader from "../../components/ModalHeader";
-import routeIcon from "../../assets/img/route-modal-map-icon.png";
-import routePlaceholder from "../../assets/img/placeholder.png";
-import routeService from "../../services/routeService";
-import config from "../../utils/config";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import * as Icons from "@fortawesome/free-solid-svg-icons";
-import "../../assets/styles/modals.css";
+import { useState, useRef } from "react"
+import { Autocomplete, useLoadScript } from "@react-google-maps/api"
+import ModalHeader from "../../components/ModalHeader"
+import routeIcon from "../../assets/img/route-modal-map-icon.png"
+import routePlaceholder from "../../assets/img/placeholder.png"
+import routeService from "../../services/routeService"
+import config from "../../utils/config"
+import { library } from "@fortawesome/fontawesome-svg-core"
+import * as Icons from "@fortawesome/free-solid-svg-icons"
+import "../../assets/styles/modals.css"
 import "../../assets/styles/routelist.css"
 import RouteList from '../../components/planner/RouteList.js'
 
+
+
 const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selectOriginMarker, selectDestinationMarker }) => {
 
-  const [origin, setOrigin] = useState(null);
-  const [destination, setDestination] = useState(null);
-  const [routes, setRoutes] = useState(null);
-  const [error, setError] = useState("");
-  const originInputRef = useRef(null);
-  const destinationInputRef = useRef(null);
+  const [origin, setOrigin] = useState(null)
+  const [destination, setDestination] = useState(null)
+  const [routes, setRoutes] = useState(null)
+  const [error, setError] = useState("")
+  const originInputRef = useRef(null)
+  const destinationInputRef = useRef(null)
 
 
   const getRoutes = () => {
@@ -26,8 +28,8 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
     onItinerarySelect(null)
 
     if (originInputRef.current.value === '' || destinationInputRef.current.value === '') {
-      setRoutes(null);
-      setError("Wrong input");
+      setRoutes(null)
+      setError("Wrong input")
       return;
     }
 
@@ -41,14 +43,14 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
         lng: destination.getPlace().geometry.location.lng()
       }
     };
-    console.log(data);
+    console.log(data)
 
     routeService
       .create(data)
       .then((response) => {
-        console.log(response.data.otpResponse.plan);
-        setRoutes(response.data.otpResponse.plan);
-        setError("");
+        console.log(response.data.otpResponse.plan)
+        setRoutes(response.data.otpResponse.plan)
+        setError("")
         onItinerarySelect(response.data.otpResponse.plan.itineraries[0])
         selectCenterLat(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lat)
         selectCenterLng(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lon)
@@ -61,20 +63,22 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
           error.response.status <= 500
         ) {
           setRoutes(null);
-          setError(error.response.data.message);
+          setError(error.response.data.message)
         }
       });
   };
 
-  // SEARCH BOX OF ORIGIN AND DESTINATION
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
     libraries: config.libraries,
   });
 
+
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
+
 
   const onPlaceOriginChanged = (origin) => {
     if (origin !== null) {
@@ -91,6 +95,7 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
     setError("");
   };
 
+
   const onPlaceDestinationChanged = (destination) => {
     if (destination !== null) {
       const places = {
@@ -106,13 +111,14 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
     setError("");
   };
 
+
   const options = {
     componentRestrictions: { 
       country: "ph" ,
-      // locality: "quezoncity"
     },  
     fields: ["geometry"],
   };
+
 
   const handleReset = () => {
     setRoutes(null)
@@ -120,6 +126,7 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
     originInputRef.current.value = null
     destinationInputRef.current.value = null
   }
+
 
   return (
     <>

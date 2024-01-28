@@ -1,6 +1,8 @@
 import '../assets/styles/modals.css'
 import logoBG from '../assets/img/logo-test.png'
 
+
+
 const ModalHeader = ({ title, isRoute = true }) => {
   return (
     <>

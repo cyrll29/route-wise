@@ -5,7 +5,9 @@ import ListModal from '../views/modals/ListModal'
 import MenuModal from '../views/modals/MenuModal'
 
 
+
 const HomeModals = (props) => {
+  
   const onMarkLocation = props.onMarkLocation
   const onLocationSelect = props.onLocationSelect
   const reportData = props.reportData

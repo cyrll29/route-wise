@@ -2,11 +2,13 @@ import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 import "../../assets/styles/routelist.css"
 
-const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
 
+
+const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
 
   const [showDetails, setShowDetails] = useState(null)
   const longestDuration = Math.max(...routesDuration)
+
 
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
@@ -16,7 +18,7 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCent
     selectCenterLng(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lon)
   }
 
-  // -------Duration Formatter---------
+  
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
     seconds %= 3600
@@ -43,16 +45,14 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCent
     const minutes = new Date(date).getMinutes();
     const amPM = hours >= 12 ? 'PM' : 'AM';
 
-    // Convert hours to 12-hour format
     const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
 
-    // Formatting with leading zeros for minutes
     const formattedMinutes = ('0' + minutes).substr(-2);
-
     return `${formattedHours}:${formattedMinutes} ${amPM}`;
   }
 
   const adjustedWidth = (itinerary.duration/longestDuration * 100) + '%'
+
 
   const markerPosition = (distance) => {
     // const position = (duration/(itinerary.endTime) * 100) + '%'
@@ -65,6 +65,7 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCent
     return position;
   }
 
+
   const legColors = (leg) => {
     let legColor = "black"
     if(leg.mode === "WALK"){
@@ -74,6 +75,7 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCent
     }
     return legColor
   }
+  
   
   return (
     <>

@@ -1,6 +1,8 @@
 import "../../assets/styles/modals.css";
 import Reports from "./Reports"
 
+
+
 const ReportList = ({reports}) =>  {
   
   return (

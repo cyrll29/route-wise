@@ -4,9 +4,13 @@ import notif from '../../assets/img/notif.png'
 import maximize from '../../assets/img/maximize.png'
 import ReportDetail from '../ReportDetail'
 
+
+
 const Reports = ({ report }) => {
+
   const [showModal, setShowModal] = useState(false)
 
+  
   return (
     <div>
       <div className="hindrance-modal-reportlist">

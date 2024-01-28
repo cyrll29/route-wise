@@ -1,30 +1,36 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import axios from "axios"
 import config from '../utils/config.js'
-import success from "../assets/img/success.png";
-import "../assets/styles/emailverify.css";
+import success from "../assets/img/success.png"
+import "../assets/styles/emailverify.css"
+
+
 
 const EmailVerify = () => {
-	const navigate = useNavigate()
-	const param = useParams();
 
-	const [validUrl, setValidUrl] = useState(true);
+	const navigate = useNavigate()
+	const param = useParams()
+
+
+	const [validUrl, setValidUrl] = useState(true)
+
 
 	useEffect(() => {
 		const verifyEmailUrl = async () => {
 			try {
-				const url = `${config.URL_USED}/api/users/${param.id}/verify/${param.token}`;
-				const { data } = await axios.get(url);
-				console.log(data);
-				setValidUrl(true);
+				const url = `${config.URL_USED}/api/users/${param.id}/verify/${param.token}`
+				const { data } = await axios.get(url)
+				console.log(data)
+				setValidUrl(true)
 			} catch (error) {
-				console.log(error);
-				setValidUrl(false);
+				console.log(error)
+				setValidUrl(false)
 			}
 		};
 		verifyEmailUrl();
 	}, [param]);
+
 
 	return (
 		<>

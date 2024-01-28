@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import Select from "react-select";
-import ModalHeader from "../../components/ModalHeader";
+import Select from "react-select"
+import ModalHeader from "../../components/ModalHeader"
 import reportService from '../../services/reportService'
-import "../../assets/styles/modals.css";
+import "../../assets/styles/modals.css"
+
+
 
 const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
   
@@ -13,6 +15,7 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
     { value: 4, label: "Flood" },
   ]
 
+
   const [location, setLocation] = useState('')
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState(null)
@@ -20,7 +23,7 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState('')
 
-  // Functions
+
   const clearInputFields = () => {
     setLocation('')
     setTitle('')
@@ -29,15 +32,16 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
     onLocationSelect(null)
   }
 
+
   useEffect(() => {
     if (reportData) {
       setLocation(reportData.address.results[0].formatted_address)
     }
   }, [reportData])
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const latitude = reportData.lat
     const longitude = reportData.lng
     const latLng = { lat: latitude, lng: longitude }
@@ -48,7 +52,6 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
       category,
       body
     }
-    console.log(data)
 
     reportService
       .create(data)
@@ -63,11 +66,12 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
           error.response.status >= 400 &&
           error.response.status <= 500
         ) {
-          setError(error.response.data.message);
-          setMsg("");
+          setError(error.response.data.message)
+          setMsg("")
         }
       })
   }
+
 
   return (
     <>

@@ -1,4 +1,8 @@
+
+
+
 const CmnPopupModal = ({ message, onClose, textBtn }) => {
+
   return (
     <div className="common-popup-modal">
       <div className="common-popup-modal-container">

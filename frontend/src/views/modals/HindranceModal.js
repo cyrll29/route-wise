@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
-import ModalHeader from "../../components/ModalHeader";
+import ModalHeader from "../../components/ModalHeader"
 import ReportList from "../../components/hindrance/ReportList"
 import reportService from '../../services/reportService'
+import "../../assets/styles/modals.css"
 
-import "../../assets/styles/modals.css";
+
 
 const HindranceModal = () => {
+
   const [reports, setReports] = useState([])
   const [count, setCount] = useState(0)
 
-  // Time comparison
+  
   const timeComparison = (dateCreated) => {
     const now = new Date()
     const createdAt = new Date(dateCreated)
@@ -28,13 +30,15 @@ const HindranceModal = () => {
     }
   }
 
+  
   useEffect(() => {
     let timer = setInterval(() => {
-    setCount((count) => count + 1);
-  }, 60000);
+      setCount((count) => count + 1);
+    }, 60000);
 
-  return () => clearTimeout(timer)
-  }, []);
+    return () => clearTimeout(timer)
+    }, []);
+
 
   useEffect(() => {
     reportService
@@ -53,6 +57,7 @@ const HindranceModal = () => {
     })
   }, [count]);
 
+  
   return (
     <>
       <ModalHeader title="Hindrance" />

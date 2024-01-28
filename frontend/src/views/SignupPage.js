@@ -5,9 +5,11 @@ import logo from '../assets/img/logo.png'
 import '../assets/styles/signup.css'
 
 
+
 const SignupPage = () => {
 
   const navigate = useNavigate()
+
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -22,16 +24,15 @@ const SignupPage = () => {
     setPassword('')
   }
 
+
   const handleSignupClick = (e) => {
-
     const data = {name, password, email}
-
     userService
       .create(data)
       .then((response) => {
-        setMsg(response.message);
-        setError("");
-        clearInputFields();
+        setMsg(response.message)
+        setError("")
+        clearInputFields()
       })
       .catch((error) => {
         if (
@@ -39,11 +40,12 @@ const SignupPage = () => {
           error.response.status >= 400 &&
           error.response.status <= 500
         ) {
-          setError(error.response.data.message);
-          setMsg("");
+          setError(error.response.data.message)
+          setMsg("")
         }
       })
   } 
+
 
   return (
     <div className="signup-page">
