@@ -1,6 +1,6 @@
 /*global google*/
 import { useState, useEffect } from 'react'
-import { GoogleMap, Marker, Polyline } from "@react-google-maps/api"
+import { GoogleMap, Marker, Polyline, InfoWindow } from "@react-google-maps/api"
 import decodePolyline from 'decode-google-map-polyline'
 import { geocode, RequestType } from 'react-geocode'
 import "../../assets/styles/googlemap.css"
@@ -24,7 +24,7 @@ const Map = (props) => {
     onMarkLocation,
     onLocationSelect,
     reportMarker,
-    
+
     // PlannerModal
     selectedItinerary,
     originMarker,
@@ -49,13 +49,14 @@ const Map = (props) => {
     reportService
     .getAll()
     .then((response) => {
-      const reportCoordinates = response.data.map((report) => report.latLng);
-      setReports(reportCoordinates)
+      console.log(response.data)
+      // const reportCoordinates = response.data.map((report) => report.latLng);
+      setReports(response.data)
     })
     .catch ((error) => {
       console.log(error)
     })
-  }, []);
+  }, [reportMarker]);
 
 
 
@@ -182,6 +183,61 @@ const Map = (props) => {
   };
 
 
+  const [selectedReport, setSelectedReport] = useState(null);
+  // ReportModal - Render reports
+  const renderReports = () => {
+
+    const handleMarkerClick = (report) => {
+      setSelectedReport(report);
+    };
+    const handleInfoWindowClose = () => {
+      setSelectedReport(null);
+    };
+
+    if (reports) {
+      return reports.map((report, index) => {
+        let marker = warningIcon
+
+        if(report.category.label === 'Accident'){
+          marker = originIcon
+        } else if (report.category.label === 'Traffic') {
+          marker = destinationIcon
+        } else if (report.category.label === 'Road Blockage') {
+          marker = railIcon
+        } else if (report.category.label === 'Flood') {
+          marker = walkIcon
+        }
+
+        return (
+          <Marker
+            key={index}
+            position={report.latLng}
+            icon={{
+              url: marker,
+              scaledSize: new google.maps.Size(35, 35)
+            }}
+            onClick={() => handleMarkerClick(report)}
+          >
+            {selectedReport === report && (
+              <InfoWindow
+                position={report.latLng}
+                onCloseClick={handleInfoWindowClose}
+              >
+                <div>
+                  {/* Content of the InfoWindow */}
+                  <h3>{report.title}</h3>
+                  <p>{report.body}</p>
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        )
+      });
+    }
+    return null;
+  };
+
+
 
   // ReportModal - Mark Location callback function
   const mapClickHandler = async (event) => {
@@ -208,19 +264,21 @@ const Map = (props) => {
       mapContainerClassName="map-container"
       onClick={mapClickHandler}
     >
-      {reports &&
+      {/* {reports &&
         reports.map((report, index) => (
           <Marker key={index} position={report} />
         ))
-      }
+      } */}
 
       {renderReportMarker()}
-      {renderDestinationMarker()}
-      {renderLegStartMarkers()}
-      {renderPolylines()}
+      {renderReports()}
+
       {renderStartMarker()}
       {renderEndMarker()}
 
+      {renderDestinationMarker()}
+      {renderLegStartMarkers()}
+      {renderPolylines()}
     </GoogleMap>
   )
 }

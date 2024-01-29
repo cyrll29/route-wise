@@ -61,11 +61,11 @@ const HindranceModal = () => {
   return (
     <>
       <ModalHeader title="Hindrance" />
-      {/* <div className="hindrance-modal-search">
+      <div className="hindrance-modal-search">
         <div>
           <input className="hindrance-modal-searchbar" />
         </div>
-      </div> */}
+      </div>
       <div className="hindrance-modal-buttons">
         <button className="hindrance-modal-newpost">NEW POSTS</button>
       </div>
