@@ -19,6 +19,7 @@ const HomePage = () => {
     setCenterLat(14.6515)
     setCenterLng(121.0493)
     setMapZoom(14)
+    setSelectedItinerary(null)
   }
 
 
@@ -30,7 +31,7 @@ const HomePage = () => {
 
 
   // ----------------FOR GENERAL USE------------------
-  const [mapZoom, setMapZoom] = useState(14)
+  const [mapZoom, setMapZoom] = useState(15)
   const [centerLat, setCenterLat] = useState(14.6515)
   const [centerLng, setCenterLng] = useState(121.0493)
 
@@ -78,14 +79,16 @@ const HomePage = () => {
     setSelectedItinerary(itinerary)
   }
 
-  const selectPlannerCenterLat = (latitude) => {
-    console.log(latitude)
-    setCenterLat(latitude)
+  const selectPlannerCenter = (latlng) => {
+    console.log(latlng)
+    setCenterLat(latlng.lat)
+    setCenterLng(latlng.lng)
   }
 
-  const selectPlannerCenterLng = (longitude) => {
-    console.log(longitude)
-    setCenterLng(longitude)
+  const selectRouteDetailCenter = (latlng) => {
+    console.log(latlng)
+    setCenterLat(latlng.lat)
+    setCenterLng(latlng.lng)
   }
 
   const [originMarker, setOriginMarker] = useState(null)
@@ -123,10 +126,10 @@ const HomePage = () => {
 
           // Planner Modal
           onItinerarySelect={onItinerarySelect}
-          selectPlannerCenterLat={selectPlannerCenterLat}
-          selectPlannerCenterLng={selectPlannerCenterLng}
+          selectPlannerCenter={selectPlannerCenter}
           selectOriginMarker={selectOriginMarker}
           selectDestinationMarker={selectDestinationMarker}
+          selectRouteDetailCenter={selectRouteDetailCenter}
 
         />
       </div>

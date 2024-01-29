@@ -7,8 +7,8 @@ const RouteList = (props) => {
   const {
     routes,
     onItinerarySelect,
-    selectPlannerCenterLat,
-    selectPlannerCenterLng
+    selectPlannerCenter,
+    selectRouteDetailCenter
   } = props
 
   // ---------Duration Bar------------
@@ -30,8 +30,8 @@ const RouteList = (props) => {
                 routesDuration={routesDuration} 
                 index={index}
                 onItinerarySelect={onItinerarySelect}
-                selectPlannerCenterLat={selectPlannerCenterLat}
-                selectPlannerCenterLng={selectPlannerCenterLng}
+                selectPlannerCenter={selectPlannerCenter}
+                selectRouteDetailCenter={selectRouteDetailCenter}
               />
             </div>
           ))}

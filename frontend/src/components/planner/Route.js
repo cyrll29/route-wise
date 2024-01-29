@@ -6,23 +6,21 @@ import "../../assets/styles/routelist.css"
 
 const Route = (props) => {
 
-  const itinerary = props.itinerary
-  const routesDuration = props.routesDuration
-  // const index = props.index
-  const onItinerarySelect = props.onItinerarySelect
-  const selectPlannerCenterLat = props.selectPlannerCenterLat
-  const selectPlannerCenterLng = props.selectPlannerCenterLng
+  const {
+    itinerary,
+    routesDuration,
+    onItinerarySelect,
+    selectPlannerCenter,
+    selectRouteDetailCenter
+  } = props
 
   const [showDetails, setShowDetails] = useState(null)
   const longestDuration = Math.max(...routesDuration)
 
-
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
-    console.log(itinerary.legs)
-    selectPlannerCenterLat(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lat)
-    selectPlannerCenterLng(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lon)
+    selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon})
   }
 
   
@@ -76,9 +74,11 @@ const Route = (props) => {
   const legColors = (leg) => {
     let legColor = "black"
     if(leg.mode === "WALK"){
-      legColor = "red"
+      legColor = "#FF7F7F"
     } else if(leg.mode === "BUS") {
-      legColor = "blue"
+      legColor = "#45B6FE"
+    } else if(leg.mode === "RAIL") {
+      legColor = "#FFA756"
     }
     return legColor
   }
@@ -138,7 +138,11 @@ const Route = (props) => {
             <div>
               <ul>
                 {itinerary.legs.map((leg, index) => (
-                  <RouteDetail key={index} leg={leg}/>
+                  <RouteDetail 
+                    key={index} 
+                    leg={leg}
+                    selectRouteDetailCenter={selectRouteDetailCenter}
+                  />
                 ))}
               </ul>
             </div>

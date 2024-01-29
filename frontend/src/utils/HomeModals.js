@@ -25,10 +25,10 @@ const HomeModals = (props) => {
       {props.routePlannerModal 
         ? <PlannerModal 
           onItinerarySelect={props.onItinerarySelect}
-          selectPlannerCenterLat={props.selectPlannerCenterLat}
-          selectPlannerCenterLng={props.selectPlannerCenterLng}
+          selectPlannerCenter={props.selectPlannerCenter}
           selectOriginMarker={props.selectOriginMarker}
           selectDestinationMarker={props.selectDestinationMarker}
+          selectRouteDetailCenter={props.selectRouteDetailCenter}
         /> 
         : <></>
       }

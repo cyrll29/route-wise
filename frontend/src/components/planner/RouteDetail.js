@@ -2,14 +2,16 @@ import '../../assets/styles/routelist.css'
 
 
 
-const RouteDetail = ({ leg }) => {
+const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
 
   const modeContainer = () => {
     let color = 'black'
     if(leg.mode === 'WALK') {
-      color = 'red'
+      color = '#FF7F7F'
     } else if (leg.mode === 'BUS') {
-      color = 'blue'
+      color = '#45B6FE'
+    } else if (leg.mode === 'RAIL') {
+      color = '#FFA756'
     }
     return color;
   }
@@ -52,21 +54,26 @@ const RouteDetail = ({ leg }) => {
     return `${formattedHours}:${formattedMinutes} ${amPM}`;
   }
 
+
+  const handleDetailClick = () => {
+    selectRouteDetailCenter({lat: leg.from.lat, lng: leg.from.lon})
+  }
+
   
   return (
-    <>
+    <div onClick={handleDetailClick}>
       <div className="route-detail-leg">
         <p style={{
-            display: 'flex',
-            flexDirection: 'row',
-            backgroundColor: modeContainer(), 
-            width: 60,
-            height: 25,
-            color: 'white',
-            fontWeight: 'bold',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 5
+          display: 'flex',
+          flexDirection: 'row',
+          backgroundColor: modeContainer(), 
+          width: 60,
+          height: 25,
+          color: 'white',
+          fontWeight: 'bold',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 5
         }}>
           {leg.mode}
         </p>
@@ -105,7 +112,7 @@ const RouteDetail = ({ leg }) => {
           <></>
         )}
       </div>
-  </>
+  </div>
   )
 }
 

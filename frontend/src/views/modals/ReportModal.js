@@ -51,6 +51,8 @@ const ReportModal = (props) => {
   }, [reportData])
 
   const handleMarkLocation = () => {
+    setError('')
+    setMsg('')
     onMarkLocation(true)
     setLocation("Mark a Road Incident on the map")
   }
@@ -58,34 +60,38 @@ const ReportModal = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const latitude = reportData.lat
-    const longitude = reportData.lng
-    const latLng = { lat: latitude, lng: longitude }
-    const data = {
-      location,
-      latLng,
-      title,
-      category,
-      body
-    }
+    if (reportData) {
+      const latitude = reportData.lat
+      const longitude = reportData.lng
+      const latLng = { lat: latitude, lng: longitude }
+      const data = {
+        location,
+        latLng,
+        title,
+        category,
+        body
+      }
 
-    reportService
-      .create(data)
-      .then((response) => {
-        setMsg(response.message)
-        setError('')
-        clearInputFields()
-      })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.status >= 400 &&
-          error.response.status <= 500
-        ) {
-          setError(error.response.data.message)
-          setMsg("")
-        }
-      })
+      reportService
+        .create(data)
+        .then((response) => {
+          setMsg(response.message)
+          setError('')
+          clearInputFields()
+        })
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.status >= 400 &&
+            error.response.status <= 500
+          ) {
+            setError(error.response.data.message)
+            setMsg("")
+          }
+        })
+    } else {
+      setError('Mark a location before submitting')
+    }
   }
 
 

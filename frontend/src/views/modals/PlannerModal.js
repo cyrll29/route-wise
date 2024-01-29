@@ -17,10 +17,10 @@ const RouteModal = (props) => {
 
   const {
     onItinerarySelect,
-    selectPlannerCenterLat,
-    selectPlannerCenterLng,
+    selectPlannerCenter,
     selectOriginMarker,
-    selectDestinationMarker
+    selectDestinationMarker,
+    selectRouteDetailCenter
   } = props
 
 
@@ -61,8 +61,10 @@ const RouteModal = (props) => {
         setRoutes(response.data.otpResponse.plan)
         setError("")
         onItinerarySelect(response.data.otpResponse.plan.itineraries[0])
-        selectPlannerCenterLat(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lat)
-        selectPlannerCenterLng(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lon)
+        selectPlannerCenter({
+          lat: response.data.otpResponse.plan.itineraries[0].legs[0].from.lat,
+          lng: response.data.otpResponse.plan.itineraries[0].legs[0].from.lon
+        })
       })
       .catch((error) => {
         console.log(error);
@@ -97,9 +99,7 @@ const RouteModal = (props) => {
       };
       console.log(places);
       selectOriginMarker(places)
-      selectPlannerCenterLat(places.lat)
-      selectPlannerCenterLng(places.lng)
-
+      selectPlannerCenter({lat: places.lat, lng: places.lng})
     }
     setError("");
   };
@@ -113,9 +113,7 @@ const RouteModal = (props) => {
       };
       console.log(places);
       selectDestinationMarker(places)
-      selectPlannerCenterLat(places.lat)
-      selectPlannerCenterLng(places.lng)
-      
+      selectPlannerCenter({lat: places.lat, lng: places.lng})
     }
     setError("");
   };
@@ -218,8 +216,8 @@ const RouteModal = (props) => {
                 <RouteList 
                   routes={routes} 
                   onItinerarySelect={onItinerarySelect}
-                  selectPlannerCenterLat={selectPlannerCenterLat}
-                  selectPlannerCenterLng={selectPlannerCenterLng}
+                  selectPlannerCenter={selectPlannerCenter}
+                  selectRouteDetailCenter={selectRouteDetailCenter}
                 />
               </div>
             </div>
