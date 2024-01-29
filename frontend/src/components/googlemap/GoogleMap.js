@@ -10,10 +10,30 @@ import originIcon from '../../assets/img/map-origin.png'
 import destinationIcon from '../../assets/img/map-destination.png'
 import walkIcon from '../../assets/img/map-walk.png'
 import railIcon from '../../assets/img/map-rail.png'
+import warningIcon from '../../assets/img/map-warning.png'
 
 
 
-const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary, originMarker, destinationMarker, selectOriginMarker, selectDestinationMarker }) => {
+const Map = (props) => {
+
+  const {
+    mapOptions,
+
+    // ReportModal
+    isMarkLocation,
+    onMarkLocation,
+    onLocationSelect,
+    reportMarker,
+    
+    // PlannerModal
+    selectedItinerary,
+    originMarker,
+    destinationMarker,
+    selectOriginMarker,
+    selectDestinationMarker
+  } = props
+  
+
 
   const modeIcons = {
     "WALK": `${walkIcon}`,
@@ -24,6 +44,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // Get all the reports from database
   useEffect(() => {
     reportService
     .getAll()
@@ -38,6 +59,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // PlannerModal - Render markers itinerary's leg start
   const renderLegStartMarkers = () => {
     if (selectedItinerary && selectedItinerary.legs) {
       selectOriginMarker(null)
@@ -58,6 +80,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // PlannerModal - Render itinerary polylines
   const renderPolylines = () => {
     if (selectedItinerary && selectedItinerary.legs) {
       return selectedItinerary.legs.map((leg, index) => {
@@ -87,6 +110,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // PlannerModal - Render itinerary destination marker
   const renderDestinationMarker = () => {
     if (selectedItinerary && selectedItinerary.legs.length > 0) {
       const lastLeg = selectedItinerary.legs[selectedItinerary.legs.length - 1];
@@ -105,6 +129,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // PlannerModal - Render origin marker
   const renderStartMarker = () => {
     if (originMarker) {
       return (
@@ -122,6 +147,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // PlannerModal - Render destination marker
   const renderEndMarker = () => {
     if (destinationMarker) {
       return (
@@ -139,6 +165,25 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
 
 
 
+  // ReportModal - Render marker for Mark Location 
+  const renderReportMarker = () => {
+    if (reportMarker) {
+      return (
+        <Marker
+          position={{ lat: reportMarker.lat, lng: reportMarker.lng }}
+          icon={{
+            url: `${warningIcon}`,
+            scaledSize: new google.maps.Size(40, 40)
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
+
+
+  // ReportModal - Mark Location callback function
   const mapClickHandler = async (event) => {
     if (isMarkLocation) {
       const lat = event.latLng.lat();
@@ -153,7 +198,6 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
       onLocationSelect({ lat, lng, address });
       onMarkLocation(false)
     }
-    console.log(reports)
   };
 
 
@@ -170,6 +214,7 @@ const Map = ({ mapOptions, isMarkLocation, onMarkLocation, onLocationSelect, sel
         ))
       }
 
+      {renderReportMarker()}
       {renderDestinationMarker()}
       {renderLegStartMarkers()}
       {renderPolylines()}

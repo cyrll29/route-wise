@@ -9,81 +9,142 @@ import '../assets/styles/home.css'
 
 const HomePage = () => {
 
-  const [activeModal, setActiveModal] = useState("planner")
-  const [isMarkLocation, setIsMarkLocation] = useState(false)
-  const [reportData, setReportData] = useState(null)
-  const [hasToken, setHasToken] = useState()
-  const [selectedItinerary, setSelectedItinerary] = useState(null)
-  const [centerLat, setCenterLat] = useState(14.6515)
-  const [centerLng, setCenterLng] = useState(121.0493)
-  const [originMarker, setOriginMarker] = useState(null)
-  const [destinationMarker, setDestinationMarker] = useState(null)
 
-  // Functions
+  // -----------------FOR SHOW MODAL-------------------
+  const [activeModal, setActiveModal] = useState("planner")
   const btnModalClick = (modal) => {
     setActiveModal(modal);
+    setReportMarker(null)
+    setReportData(null)
+    setCenterLat(14.6515)
+    setCenterLng(121.0493)
+    setMapZoom(14)
   }
 
+
+  // -----------------FOR USER TOKEN--------------------
+  const [hasToken, setHasToken] = useState()
   useEffect(() => {
     setHasToken(reportService.getToken())
   }, [])
 
-  const onLocationSelect = (location) => {
-    console.log(location)
-    setReportData(location)
-  };
 
+  // ----------------FOR GENERAL USE------------------
+  const [mapZoom, setMapZoom] = useState(14)
+  const [centerLat, setCenterLat] = useState(14.6515)
+  const [centerLng, setCenterLng] = useState(121.0493)
+
+  const selectMapZoom = (zoom) => {
+    console.log(zoom)
+    setMapZoom(zoom)
+  }
+
+
+  // ----------------FOR REPORT MODAL------------------
+  const [isMarkLocation, setIsMarkLocation] = useState(false)
   const onMarkLocation = (isMarking) => {
-    console.log(isMarking)
+    console.log("isMarkLocation: " + isMarking)
     setIsMarkLocation(isMarking)
   };
 
-  const handleItinerarySelect = (itinerary) => {
+  const [reportData, setReportData] = useState(null)
+  const onLocationSelect = (location) => {
+    console.log("Report Data: ")
+    console.log(reportData)
+    setReportData(location)
+  };
+
+  const [reportMarker, setReportMarker] = useState(null)
+  const selectReportMarker = (isMarking) => {
+    console.log(isMarking)
+    setReportMarker(isMarking)
+  }
+
+  useEffect(() => {
+    if (reportData) {
+      setMapZoom(16)
+      setCenterLat(reportData.lat)
+      setCenterLng(reportData.lng)
+      setReportMarker({lat: reportData.lat, lng: reportData.lng})
+    } 
+  }, [reportData])
+
+
+
+  // --------------FOR PLANNER MODAL--------------------
+  const [selectedItinerary, setSelectedItinerary] = useState(null)
+  const onItinerarySelect = (itinerary) => {
+    console.log(itinerary)
     setSelectedItinerary(itinerary)
   }
 
-  const selectCenterLat = (latitude) => {
+  const selectPlannerCenterLat = (latitude) => {
+    console.log(latitude)
     setCenterLat(latitude)
   }
 
-  const selectCenterLng = (longitude) => {
+  const selectPlannerCenterLng = (longitude) => {
+    console.log(longitude)
     setCenterLng(longitude)
   }
 
+  const [originMarker, setOriginMarker] = useState(null)
   const selectOriginMarker = (origin) => {
+    console.log(origin)
     setOriginMarker(origin)
   }
 
+  const [destinationMarker, setDestinationMarker] = useState(null)
   const selectDestinationMarker = (destination) => {
+    console.log(destination)
     setDestinationMarker(destination)
   }
+
     
   return (
     <>
       <div className='home-modal'>
         <HomeModals 
+
+          // Show Modal
           routeReportModal={activeModal === "report"}
           routePlannerModal={activeModal === "planner"}
           routeUpdateModal={activeModal === "updates"}
           routeListModal={activeModal === "list"}
           routeMenuModal={activeModal === "menu"}
+
+          // Report Modal
           onMarkLocation={onMarkLocation}
+          onLocationSelect={onLocationSelect}
           reportData={reportData}
-          onItinerarySelect={handleItinerarySelect}
-          selectCenterLat={selectCenterLat}
-          selectCenterLng={selectCenterLng}
+          selectReportMarker={selectReportMarker}
+          selectMapZoom={selectMapZoom}
+
+
+          // Planner Modal
+          onItinerarySelect={onItinerarySelect}
+          selectPlannerCenterLat={selectPlannerCenterLat}
+          selectPlannerCenterLng={selectPlannerCenterLng}
           selectOriginMarker={selectOriginMarker}
           selectDestinationMarker={selectDestinationMarker}
+
         />
       </div>
 
       <GoogleMapApi 
-        isMarkLocation={isMarkLocation}
-        onMarkLocation={onMarkLocation}
-        onLocationSelect={onLocationSelect}
-        selectedItinerary={selectedItinerary}
+
+        mapZoom={mapZoom}
         centerLat={centerLat}
-        centerLng={centerLng}
+        centerLng={centerLng}      
+
+        // Report Modal
+        isMarkLocation={isMarkLocation} // boolean variable
+        onMarkLocation={onMarkLocation} // function that will setIsMarkLocation
+        onLocationSelect={onLocationSelect}
+        reportMarker={reportMarker}
+
+        // Planner Modal
+        selectedItinerary={selectedItinerary}
         originMarker={originMarker}
         destinationMarker={destinationMarker}
         selectOriginMarker={selectOriginMarker}

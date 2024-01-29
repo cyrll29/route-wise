@@ -4,7 +4,14 @@ import "../../assets/styles/routelist.css"
 
 
 
-const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
+const Route = (props) => {
+
+  const itinerary = props.itinerary
+  const routesDuration = props.routesDuration
+  // const index = props.index
+  const onItinerarySelect = props.onItinerarySelect
+  const selectPlannerCenterLat = props.selectPlannerCenterLat
+  const selectPlannerCenterLng = props.selectPlannerCenterLng
 
   const [showDetails, setShowDetails] = useState(null)
   const longestDuration = Math.max(...routesDuration)
@@ -14,8 +21,8 @@ const Route = ({ itinerary, routesDuration, index, onItinerarySelect, selectCent
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
     console.log(itinerary.legs)
-    selectCenterLat(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lat)
-    selectCenterLng(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lon)
+    selectPlannerCenterLat(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lat)
+    selectPlannerCenterLng(itinerary.legs[Math.round(itinerary.legs.length / 2)].from.lon)
   }
 
   

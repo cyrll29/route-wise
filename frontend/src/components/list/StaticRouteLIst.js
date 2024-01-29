@@ -1,4 +1,5 @@
 import '../../assets/styles/routelist.css'
+import StaticRoute from './StaticRoute'
 
 const StaticRouteList = () => {
   const RouteList = [
@@ -6,36 +7,19 @@ const StaticRouteList = () => {
       origin: "SM NORTH",
       destination: "KALAW",
       stops: [
-        {
-          start: "xxx",
-          end: "xxx"
-        },
-        {
-          start: "xxx",
-          end: "xxx"
-        },
-        {
-          start: "xxx",
-          end: "xxx"
-        }
+        "xxx",
+        "xxx",
+        "xxx",
+        "xxx",
       ]
     },
     {
       origin: "SM NORTH",
       destination: "MONUMENTO",
       stops: [
-        {
-          start: "xxx",
-          end: "xxx"
-        },
-        {
-          start: "xxx",
-          end: "xxx"
-        },
-        {
-          start: "xxx",
-          end: "xxx"
-        }
+        "xxx",
+        "xxx",
+        "xxx",
       ]
     }, 
     {
@@ -58,10 +42,8 @@ const StaticRouteList = () => {
         <p>ROUTES</p>
         <ul className='static-routes-div'>
           {RouteList.map((points, index) => (
-            <div key={index} className='static-routes-modal'>
-              <h3>{points.origin}</h3>
-              &nbsp; - &nbsp; 
-              <h3>{points.destination}</h3>
+            <div key={index}>
+              <StaticRoute points={points}/>
             </div>
           ))}
         </ul>

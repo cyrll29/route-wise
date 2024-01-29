@@ -13,7 +13,16 @@ import RouteList from '../../components/planner/RouteList.js'
 
 
 
-const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selectOriginMarker, selectDestinationMarker }) => {
+const RouteModal = (props) => {
+
+  const {
+    onItinerarySelect,
+    selectPlannerCenterLat,
+    selectPlannerCenterLng,
+    selectOriginMarker,
+    selectDestinationMarker
+  } = props
+
 
   const [origin, setOrigin] = useState(null)
   const [destination, setDestination] = useState(null)
@@ -52,8 +61,8 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
         setRoutes(response.data.otpResponse.plan)
         setError("")
         onItinerarySelect(response.data.otpResponse.plan.itineraries[0])
-        selectCenterLat(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lat)
-        selectCenterLng(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lon)
+        selectPlannerCenterLat(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lat)
+        selectPlannerCenterLng(response.data.otpResponse.plan.itineraries[0].legs[Math.round(response.data.otpResponse.plan.itineraries[0].legs.length / 2)].from.lon)
       })
       .catch((error) => {
         console.log(error);
@@ -88,8 +97,8 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
       };
       console.log(places);
       selectOriginMarker(places)
-      selectCenterLat(places.lat)
-      selectCenterLng(places.lng)
+      selectPlannerCenterLat(places.lat)
+      selectPlannerCenterLng(places.lng)
 
     }
     setError("");
@@ -104,8 +113,8 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
       };
       console.log(places);
       selectDestinationMarker(places)
-      selectCenterLat(places.lat)
-      selectCenterLng(places.lng)
+      selectPlannerCenterLat(places.lat)
+      selectPlannerCenterLng(places.lng)
       
     }
     setError("");
@@ -209,8 +218,8 @@ const RouteModal = ({ onItinerarySelect, selectCenterLat, selectCenterLng, selec
                 <RouteList 
                   routes={routes} 
                   onItinerarySelect={onItinerarySelect}
-                  selectCenterLat={selectCenterLat}
-                  selectCenterLng={selectCenterLng}
+                  selectPlannerCenterLat={selectPlannerCenterLat}
+                  selectPlannerCenterLng={selectPlannerCenterLng}
                 />
               </div>
             </div>

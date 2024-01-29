@@ -7,34 +7,28 @@ import MenuModal from '../views/modals/MenuModal'
 
 
 const HomeModals = (props) => {
-  
-  const onMarkLocation = props.onMarkLocation
-  const onLocationSelect = props.onLocationSelect
-  const reportData = props.reportData
-  const onItinerarySelect = props.onItinerarySelect
-  const selectCenterLat = props.selectCenterLat
-  const selectCenterLng = props.selectCenterLng
-  const selectOriginMarker = props.selectOriginMarker
-  const selectDestinationMarker = props.selectDestinationMarker
+
 
   return (
     <>
       {props.routeReportModal 
         ? <ReportModal 
-          onMarkLocation={onMarkLocation}
-          onLocationSelect={onLocationSelect}
-          reportData={reportData}
+          onMarkLocation={props.onMarkLocation}
+          onLocationSelect={props.onLocationSelect}
+          reportData={props.reportData}
+          selectReportMarker={props.selectReportMarker}
+          selectMapZoom={props.selectMapZoom}
         /> 
         : <></>
       }
 
       {props.routePlannerModal 
         ? <PlannerModal 
-          onItinerarySelect={onItinerarySelect}
-          selectCenterLat={selectCenterLat}
-          selectCenterLng={selectCenterLng}
-          selectOriginMarker={selectOriginMarker}
-          selectDestinationMarker={selectDestinationMarker}
+          onItinerarySelect={props.onItinerarySelect}
+          selectPlannerCenterLat={props.selectPlannerCenterLat}
+          selectPlannerCenterLng={props.selectPlannerCenterLng}
+          selectOriginMarker={props.selectOriginMarker}
+          selectDestinationMarker={props.selectDestinationMarker}
         /> 
         : <></>
       }

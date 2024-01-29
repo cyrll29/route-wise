@@ -7,7 +7,27 @@ import "../../assets/styles/googlemap.css";
 
 
 
-const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, selectedItinerary, centerLat, centerLng, originMarker, destinationMarker, selectOriginMarker, selectDestinationMarker }) => {
+const GoogleMapApi = (props) => {
+
+  const {
+    centerLat,
+    centerLng,
+    mapZoom,
+
+    // ReportModal
+    isMarkLocation,
+    onMarkLocation,
+    onLocationSelect,
+    reportMarker,
+
+    // PlannerModal
+    selectedItinerary,
+    originMarker,
+    destinationMarker,
+    selectOriginMarker,
+    selectDestinationMarker
+  } = props
+
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
@@ -17,8 +37,8 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
 
 
   const mapOptions = {
-    zoom: 14, 
-    minZoom: 13,
+    zoom: mapZoom, 
+    minZoom: 12,
     maxZoom: 18,
     center: { lat: centerLat, lng: centerLng }, 
     mapId: process.env.REACT_APP_MAP_ID, 
@@ -41,6 +61,8 @@ const GoogleMapApi = ({ isMarkLocation, onMarkLocation, onLocationSelect, select
       isMarkLocation={isMarkLocation}
       onMarkLocation={onMarkLocation}
       onLocationSelect={onLocationSelect}
+      reportMarker={reportMarker}
+
       selectedItinerary={selectedItinerary}
       originMarker={originMarker}
       destinationMarker={destinationMarker}

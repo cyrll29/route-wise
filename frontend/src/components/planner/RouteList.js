@@ -2,7 +2,14 @@ import Route from './Route'
 
 
 
-const RouteList = ({ routes, onItinerarySelect, selectCenterLat, selectCenterLng }) => {
+const RouteList = (props) => {
+
+  const {
+    routes,
+    onItinerarySelect,
+    selectPlannerCenterLat,
+    selectPlannerCenterLng
+  } = props
 
   // ---------Duration Bar------------
   let routesDuration = []
@@ -23,8 +30,8 @@ const RouteList = ({ routes, onItinerarySelect, selectCenterLat, selectCenterLng
                 routesDuration={routesDuration} 
                 index={index}
                 onItinerarySelect={onItinerarySelect}
-                selectCenterLat={selectCenterLat}
-                selectCenterLng={selectCenterLng}
+                selectPlannerCenterLat={selectPlannerCenterLat}
+                selectPlannerCenterLng={selectPlannerCenterLng}
               />
             </div>
           ))}

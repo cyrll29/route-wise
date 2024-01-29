@@ -6,8 +6,16 @@ import "../../assets/styles/modals.css"
 
 
 
-const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
-  
+const ReportModal = (props) => {
+
+  const {
+    onMarkLocation,
+    onLocationSelect,
+    reportData,
+    selectReportMarker,
+    selectMapZoom,
+  } = props
+
   const reportCategory = [
     { value: 1, label: "Traffic" },
     { value: 2, label: "Accident" },
@@ -30,6 +38,8 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
     setCategory(null)
     setBody('')
     onLocationSelect(null)
+    selectReportMarker(null)
+    selectMapZoom(14)
   }
 
 
@@ -38,6 +48,11 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
       setLocation(reportData.address.results[0].formatted_address)
     }
   }, [reportData])
+
+  const handleMarkLocation = () => {
+    onMarkLocation(true)
+    setLocation("Mark a Road Incident on the map")
+  }
 
 
   const handleSubmit = (e) => {
@@ -76,16 +91,19 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
   return (
     <>
       <ModalHeader title="Report" />
+
       <div className="report-modal-main">
         <div className="report-modal-instruction">
           <p>
-            Submit traffic and road reports for other users. Mark the location,
-            set proper titles, and describe the situation in the body.
+            Report traffic and road incidents. Make sure to mark the location,
+            set proper titles, select a category, and describe the situation.
           </p>
         </div>
+
+
         <div className="report-modal-form">
           <div className="report-modal-mark">
-            <button onClick={() => onMarkLocation(true)} className="report-modal-mark-button">Mark Location</button>
+            <button onClick={handleMarkLocation} className="report-modal-mark-button">Mark Location</button>
             <input
               id="report-location"
               className="report-modal-mark-location"
@@ -121,6 +139,7 @@ const ReportModal = ({ onMarkLocation, onLocationSelect, reportData }) => {
               />
             </div>
           </div>
+
           <div className="report-modal-category-div">
             <div className="report-modal-category">
               <p><span className='red-asterisk'>*</span>Category:</p>

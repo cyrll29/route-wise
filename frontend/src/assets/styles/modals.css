@@ -256,10 +256,11 @@ input {
 }
 .report-modal-mark-location {
   height: 35px;
-  width: 200px;
+  width: 300px;
   border-color: black;
   font-size: 12px;
   border-width: 1px;
+  border-radius: 5px;
 }
 .report-modal-title {
   display: flex;
@@ -274,6 +275,7 @@ input {
   padding: 3px;
   border-color: black;
   border-width: 1px;
+  border-radius: 5px;
   font-size: 12px;
   resize: none;
 }
@@ -296,6 +298,7 @@ input {
   width: 100%;
   border-color: black;
   border-width: 1px;
+  border-radius: 5px;
   font-size: 12px;
 }
 .report-modal-body-div {
@@ -314,6 +317,7 @@ input {
   padding: 10px;
   border-color: 1px solid black;
   /* border-width: 1px; */
+  border-radius: 5px;
   font-size: 12px;
   resize: none;
 }
