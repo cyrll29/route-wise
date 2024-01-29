@@ -102,7 +102,7 @@ input {
 }
 
 .route-modal-top-title p {
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .route-modal-search {
@@ -228,12 +228,16 @@ input {
 .report-modal-main {
   position: relative;
 
-  padding: 15px;
+  padding: 15px 25px 0 25px;
+}
+.report-modal-main-title {
+  margin: 20px 0 0 10px;
 }
 .report-modal-instruction {
   text-align: justify;
   font-size: 16px;
 }
+
 
 .report-modal-mark {
   display: flex;
@@ -247,24 +251,31 @@ input {
   color: #f8c107;
   border: none;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  height: 35px;
-  width: 100px;
+  height: 50px;
+  width: 200px;
   padding: 5px;
   transition: opacity 0.3s;
 }
 .report-modal-mark-location {
-  height: 35px;
-  width: 300px;
+  height: 70px;
+  width: 200px;
+  display: flex;
   border-color: black;
   font-size: 12px;
   border-width: 1px;
   border-radius: 5px;
+  resize: none;
+  padding: 10px;
+  /* overflow: hidden; */
+}
+.report-modal-title-div {
+  margin: 0 0 10px 0;
 }
 .report-modal-title {
   display: flex;
-  padding: 20px 0 0 0;
+  padding: 20px 0 8px 0;
   font-size: 14px;
   font-weight: 600;
 }
@@ -282,7 +293,7 @@ input {
 
 .report-modal-category-div {
   display: flex;
-  padding: 20px 0 0 0;
+  padding: 20px 0 10px 0;
   align-items: left;
   flex-direction: column;
   justify-content: space-between;
@@ -292,6 +303,7 @@ input {
   display: flex;
   font-size: 14px;
   font-weight: 600;
+  margin: 0 0 8px 0;
 }
 
 .report-modal-select {
@@ -306,7 +318,7 @@ input {
 }
 .report-modal-body {
   display: flex;
-  padding: 20px 0 0 0;
+  padding: 20px 0 8px 0;
   font-size: 14px;
   font-weight: 600;
 }
@@ -336,6 +348,7 @@ input {
   padding: 7px 40px;
   transition: opacity 0.3s;
   font-size: 12;
+  font-weight: 600;
 }
 
 .report-modal-submit:hover {

@@ -17,10 +17,11 @@ const ReportModal = (props) => {
   } = props
 
   const reportCategory = [
-    { value: 1, label: "Traffic" },
+    { value: 1, label: "Traffic Jam" },
     { value: 2, label: "Accident" },
-    { value: 3, label: "Road Blockage" },
+    { value: 3, label: "Road Repair" },
     { value: 4, label: "Flood" },
+    { value: 5, label: "Road Closure" }
   ]
 
 
@@ -91,11 +92,11 @@ const ReportModal = (props) => {
   return (
     <>
       <ModalHeader title="Report" />
-
+      <h3 className='report-modal-main-title'>Report Road Incidents</h3>
       <div className="report-modal-main">
         <div className="report-modal-instruction">
           <p>
-            Report traffic and road incidents. Make sure to mark the location,
+            Report traffic and other road incidents. Make sure to mark the location,
             set proper titles, select a category, and describe the situation.
           </p>
         </div>
@@ -103,8 +104,8 @@ const ReportModal = (props) => {
 
         <div className="report-modal-form">
           <div className="report-modal-mark">
-            <button onClick={handleMarkLocation} className="report-modal-mark-button">Mark Location</button>
-            <input
+            <button onClick={handleMarkLocation} className="report-modal-mark-button">Click Here to Mark Location</button>
+            <textarea
               id="report-location"
               className="report-modal-mark-location"
               type="text"
@@ -116,7 +117,7 @@ const ReportModal = (props) => {
               }} 
               placeholder="Location"
               disabled
-            />
+            ></textarea>
           </div>
 
           <div className="report-modal-title-div">

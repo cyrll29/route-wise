@@ -143,7 +143,7 @@ const RouteModal = (props) => {
 
       <div className="route-modal-top">
         <div className="route-modal-top-title">
-          <h4>Find your Public Transportation Route</h4>
+          <h3>Find your Public Transportation Route</h3>
         </div>
 
         <div className="route-modal-search">

@@ -11,6 +11,11 @@ import destinationIcon from '../../assets/img/map-destination.png'
 import walkIcon from '../../assets/img/map-walk.png'
 import railIcon from '../../assets/img/map-rail.png'
 import warningIcon from '../../assets/img/map-warning.png'
+import trafficIcon from '../../assets/img/traffic-jam-icon.png'
+import accidentIcon from '../../assets/img/accident-icon.png'
+import repairIcon from '../../assets/img/road-repair-icon.png'
+import floodIcon from '../../assets/img/flood-icon.png'
+import closureIcon from '../../assets/img/closure-icon.png'
 
 
 
@@ -174,7 +179,7 @@ const Map = (props) => {
           position={{ lat: reportMarker.lat, lng: reportMarker.lng }}
           icon={{
             url: `${warningIcon}`,
-            scaledSize: new google.maps.Size(40, 40)
+            scaledSize: new google.maps.Size(25, 25)
           }}
         />
       );
@@ -199,13 +204,15 @@ const Map = (props) => {
         let marker = warningIcon
 
         if(report.category.label === 'Accident'){
-          marker = originIcon
-        } else if (report.category.label === 'Traffic') {
-          marker = destinationIcon
-        } else if (report.category.label === 'Road Blockage') {
-          marker = railIcon
+          marker = accidentIcon
+        } else if (report.category.label === 'Traffic Jam') {
+          marker = trafficIcon
+        } else if (report.category.label === 'Road Repair') {
+          marker = repairIcon
         } else if (report.category.label === 'Flood') {
-          marker = walkIcon
+          marker = floodIcon
+        } else if (report.category.label === 'Road Closure') {
+          marker = closureIcon
         }
 
         return (
@@ -214,7 +221,7 @@ const Map = (props) => {
             position={report.latLng}
             icon={{
               url: marker,
-              scaledSize: new google.maps.Size(35, 35)
+              scaledSize: new google.maps.Size(45, 45)
             }}
             onClick={() => handleMarkerClick(report)}
           >
