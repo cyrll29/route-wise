@@ -1,40 +1,72 @@
 import '../../assets/styles/routelist.css'
 import StaticRoute from './StaticRoute'
 
-const StaticRouteList = () => {
+const StaticRouteList = (props) => {
+
+  const {testHandleClick} = props
+
+  const handleClick = (index) => {
+    testHandleClick(index)
+    console.log(index)
+  }
+
   const RouteList = [
     {
-      origin: "SM NORTH",
-      destination: "KALAW",
+      origin: "MRT Line 3",
+      destination: "North Avenue - Taft Avenue",
       stops: [
-        "xxx",
-        "xxx",
-        "xxx",
-        "xxx",
+        "North Avenue",
+        "Quezon Avenue",
+        "GMA-Kamuning",
+        "Araneta-Cubao",
+        "Santolan-Annapolis",
+        "Ortigas",
+        "Shaw Boulevard",
+        "Boni",
+        "Guadalupe",
+        "Buendia",
+        "Ayala",
+        "Magallanes",
+        "Taft Avenue"
       ]
     },
     {
-      origin: "SM NORTH",
-      destination: "MONUMENTO",
+      origin: "LRT Line 1",
+      destination: "Fernando Poe Jr. - Baclaran",
       stops: [
-        "xxx",
-        "xxx",
-        "xxx",
+        "Fernando Poe Jr.",
+        "Balintawak",
+        "YAMAHA Monumento",
+        "5th Avenue",
+        "R. Papa",
+        "Abad Santos",
+        "Blumentritt",
+        "Tayuman",
+        "Bambang",
+        "Doroteo Jose"
       ]
     }, 
     {
-      origin: "SM NORTH",
-      destination: "NIA-NPC",
+      origin: "MRT Line 7",
+      destination: "North Avenue - San Jose Del Monte",
       stops: [
-        "xxx",
-        "xxx",
-        "xxx",
-        "xxx",
-        "xxx",
+        "North Avenue",
+        "Quezon Memorial Circle",
+        "University Avenue",
+        "Tandang Sora",
+        "Don Antonio",
+        "Batasan",
+        "Manggahan",
+        "Dona Carmen",
+        "Regalado",
+        "Mindanao Avenue",
+        "Quirino",
+        "Sacred Heart",
+        "Tala",
+        "San Jose Del Monte",
       ]
     }
   ]
-
 
   return (
     <>
@@ -42,8 +74,9 @@ const StaticRouteList = () => {
         <p>ROUTES</p>
         <ul className='static-routes-div'>
           {RouteList.map((points, index) => (
-            <div key={index}>
-              <StaticRoute points={points}/>
+            <div key={index} onClick={() => handleClick(index)}>
+              <StaticRoute 
+              points={points}/>
             </div>
           ))}
         </ul>

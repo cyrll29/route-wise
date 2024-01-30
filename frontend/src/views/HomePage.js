@@ -95,10 +95,109 @@ const HomePage = () => {
     setDestinationMarker(destination)
   }
 
+  const [someCoords, setSomeCoords] = useState([])
+
+  const testHandleClick = (index) => {
+    const mrtLine3 = [
+      {
+        lat: 14.652271,
+        lng: 121.032348
+      },
+      {
+        lat: 14.642875309888428,
+        lng: 121.03840027831687
+      },
+      {
+        lat: 14.635085821818052, 
+        lng: 121.04339669515498
+      },
+      {
+        lat: 14.619505867519198, 
+        lng: 121.05112873828345
+      },
+      {
+        lat: 14.607812679153275, 
+        lng: 121.05652961704355
+      },
+      {
+        lat: 14.587853625822573, 
+        lng: 121.05672617427332
+      }
+    ]
+
+    const lrtLine1 = [
+      {
+        lat: 14.657610798082027, 
+        lng: 121.02108217193692
+      },
+      {
+        lat: 14.657483249746225, 
+        lng: 121.00406251771098
+      },
+      {
+        lat: 14.657018374655037, 
+        lng: 120.98433298453908
+      },
+      {
+        lat: 14.656790848372182, 
+        lng: 120.98395366291186
+      },
+      {
+        lat: 14.654354100438272, 
+        lng: 120.98389297145171
+      },
+    ]
+
+    const mrtLine7 = [
+      {
+        lat: 14.655521050513967, 
+        lng: 121.03082224805006
+      },
+      {
+        lat: 14.651765049853578, 
+        lng: 121.04928446648793
+      },
+      {
+        lat: 14.669017980079666, 
+        lng: 121.07600613614227
+      },
+      {
+        lat: 14.674132394287836, 
+        lng: 121.08080575487973
+      },
+    ]
+
+    if (index == 0) {
+      setSomeCoords(mrtLine3);
+      setCenterLat(mrtLine3[2].lat)
+      setCenterLng(mrtLine3[2].lng)
+    } else if (index == 1) {
+      setSomeCoords(lrtLine1)
+      setCenterLat(lrtLine1[2].lat)
+      setCenterLng(lrtLine1[2].lng)
+    } else if (index == 2) {
+      setSomeCoords(mrtLine7)
+      setCenterLat(mrtLine7[2].lat)
+      setCenterLng(mrtLine7[2].lng)
+    }
+    setMapZoom(12)
+  }
+
+  const testHandleClickTwo = () => {
+    setSomeCoords([])
+    console.log("I am clicked too")
+  }
+
     
   return (
     <>
       <div className='home-modal'>
+        <button onClick={testHandleClickTwo}>
+          Test
+        </button>
+        <button onClick={testHandleClick}>
+          Test 2
+        </button>
         <HomeModals 
 
           // Show Modal
@@ -123,11 +222,15 @@ const HomePage = () => {
           selectDestinationMarker={selectDestinationMarker}
           selectRouteDetailCenter={selectRouteDetailCenter}
 
+          // Static Route Modal
+          testHandleClick={testHandleClick}
+
         />
       </div>
 
       <GoogleMapApi 
-
+        
+        someCoords={someCoords}
         mapZoom={mapZoom}
         centerLat={centerLat}
         centerLng={centerLng}      
@@ -146,7 +249,7 @@ const HomePage = () => {
         selectDestinationMarker={selectDestinationMarker}
       />  
 
-      <div className="home-buttons">
+      <div className="home-buttons" onClick={() => {setSomeCoords([])}}>
         <HomeButtons 
           routeReport = {hasToken}
           routePlanner = {true}

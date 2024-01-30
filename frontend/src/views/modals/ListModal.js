@@ -4,9 +4,9 @@ import StaticRouteList from "../../components/list/StaticRouteLIst"
 import TerminalRouteList from "../../components/list/TerminalRouteList"
 import "../../assets/styles/routelist.css"
 
+const ListModal = (props) => {
 
-
-const ListModal = () => {
+  const {testHandleClick} = props
 
   const [openModal, setOpenModal] = useState('')
 
@@ -32,7 +32,7 @@ const ListModal = () => {
           <TerminalRouteList/>
         ) : 
         (
-          <StaticRouteList/>
+          <StaticRouteList testHandleClick={testHandleClick}/>
         )}
       </div>
     </>

@@ -39,7 +39,9 @@ const HomeModals = (props) => {
       }
 
       {props.routeListModal 
-        ? <ListModal /> 
+        ? <ListModal 
+        testHandleClick={props.testHandleClick}
+        /> 
         : <></>
       }
 

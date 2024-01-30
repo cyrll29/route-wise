@@ -35,7 +35,10 @@ const Map = (props) => {
     originMarker,
     destinationMarker,
     selectOriginMarker,
-    selectDestinationMarker
+    selectDestinationMarker,
+
+    // For Test
+    someCoords
   } = props
   
 
@@ -262,14 +265,13 @@ const Map = (props) => {
       onMarkLocation(false)
     }
   };
-
-
   
   return (
     <GoogleMap 
       options={mapOptions}
       mapContainerClassName="map-container"
       onClick={mapClickHandler}
+      center={{lat: 14.657641, lng: 121.021579}}
     >
       {/* {reports &&
         reports.map((report, index) => (
@@ -286,6 +288,13 @@ const Map = (props) => {
       {renderDestinationMarker()}
       {renderLegStartMarkers()}
       {renderPolylines()}
+      
+      {someCoords ? someCoords.map((coord, index) => (
+        <Marker key={index} position={{ lat: coord.lat, lng: coord.lng}}/>
+      )):<></>}
+      {someCoords ? 
+        <Polyline path={someCoords} options={{strokeColor:'#006FB9', strokeWeight: 6}}/>
+      :<></>}
     </GoogleMap>
   )
 }

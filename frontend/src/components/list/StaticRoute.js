@@ -2,7 +2,7 @@ import { useState } from "react"
 import "../../assets/styles/routelist.css"
 import StaticRouteDetail from "./StaticRouteDetail"
 
-const  StaticRoute = ({ points }) => {
+const  StaticRoute = ({ points}) => {
   const [showDetails, setShowDetails] = useState(null)
 
   const handleClick = () => {
@@ -12,7 +12,12 @@ const  StaticRoute = ({ points }) => {
   return(
     <>
       <div className="static-routes-modal" onClick={handleClick}>
-        {points.origin}
+        <div>
+          {points.origin}
+        </div>
+        <div>
+          {points.destination}
+        </div>
       </div>
       {showDetails ? (
         <div>
