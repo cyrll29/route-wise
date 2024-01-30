@@ -20,7 +20,7 @@ const Route = (props) => {
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
-    selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon})
+    selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon, zoom: 15})
   }
 
   

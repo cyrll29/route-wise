@@ -55,28 +55,49 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
   }
 
 
+  // -------Distance Formatter---------
+  const formatDistance = (distance) => {
+    if (distance < 1000) {
+      return `${Math.round(distance)} m`
+    } else if (distance > 1000) {
+      return `${(distance/1000).toFixed(2)} km`
+    }
+  }
+
+
   const handleDetailClick = () => {
-    selectRouteDetailCenter({lat: leg.from.lat, lng: leg.from.lon})
+    selectRouteDetailCenter({lat: leg.from.lat, lng: leg.from.lon, zoom: 18})
   }
 
   
   return (
     <div onClick={handleDetailClick}>
       <div className="route-detail-leg">
-        <p style={{
-          display: 'flex',
-          flexDirection: 'row',
-          backgroundColor: modeContainer(), 
-          width: 60,
-          height: 25,
-          color: 'white',
-          fontWeight: 'bold',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 5
-        }}>
-          {leg.mode}
-        </p>
+        <div className='route-detail-top'>
+          <div>
+            <p style={{
+              display: 'flex',
+              flexDirection: 'row',
+              backgroundColor: modeContainer(), 
+              width: 60,
+              height: 25,
+              color: 'white',
+              fontWeight: 'bold',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5
+            }}>
+              {leg.mode}
+            </p>
+          </div>
+          <div>
+            <p style={{
+              fontWeight: 'bold'
+            }}>
+              {formatDuration(leg.duration)}
+            </p>
+          </div>
+        </div>
         <div className="distance-bar-div">
           <div className="distance-bar">
             <div className="distance-marker">
@@ -89,28 +110,58 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
         </div>
         <div className='distance-time'>
           <p>{formatTime(leg.startTime)}</p>
-          <p style={{fontSize: 12}}>{leg.distance} M</p>
+          <p style={{fontSize: 12}}>{formatDistance(leg.distance)}</p>
           <p>{formatTime(leg.endTime)}</p>
         </div>
-        <div className='time-and-fare'>
-          <p>{formatDuration(leg.duration)}</p>
-          <p>P XX.XX</p>
-        </div>
         <div className='origin-and-destination'>
-          <p>{leg.from.name}</p>
+
+          <div className='origin-and-destination-from'>
+            <div>
+              <p className='origin-and-destination-subtitle'>FROM: </p>
+            </div>
+            <div>
+              <p className='origin-and-destination-name'>{leg.from.name}</p>
+            </div>
+          </div>
+
           <div className='dot-dot-dot'>
             <div className='dot'></div>
             <div className='dot'></div>
-            <div className='dot'></div>
           </div>
-          <p>{leg.to.name}</p>
+
+          <div className='origin-and-destination-from'>
+            <div>
+              <p className='origin-and-destination-subtitle'>TO: </p>
+            </div>
+            <div>
+              <p className='origin-and-destination-name'>{leg.to.name}</p>
+            </div>
+          </div>
+
+          {leg.mode !== "WALK" ? (
+            <div className='dot-dot-dot'>
+              <div className='dot'></div>
+              <div className='dot'></div>
+            </div>
+          ) : (
+            <></>
+          )}
+  
+            {leg.mode !== "WALK" ? (
+              <div className='route-detail-route'>
+                <div>
+                  <p className='route-detail-route-subtitle'>ROUTE:</p>
+                </div>
+                <div>
+                  <p className='route-detail-route-name'>{leg.route.longName}</p>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+
+
         </div>
-        
-        {leg.mode !== "WALK" ? (
-          <p style={{fontWeight: 'bold'}}>{leg.route.longName}</p>
-        ) : (
-          <></>
-        )}
       </div>
   </div>
   )

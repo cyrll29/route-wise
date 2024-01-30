@@ -39,7 +39,7 @@ const GoogleMapApi = (props) => {
   const mapOptions = {
     zoom: mapZoom, 
     minZoom: 14,
-    maxZoom: 16,
+    maxZoom: 18,
     center: { lat: centerLat, lng: centerLng }, 
     mapId: process.env.REACT_APP_MAP_ID, 
     disableDefaultUI: true, 

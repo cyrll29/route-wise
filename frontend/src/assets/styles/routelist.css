@@ -24,6 +24,12 @@
               -8px -8px 14px #ffffff;
 } 
 
+.route-detail-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .route-detail-leg:hover{
   background-color: lightgray;
 }
@@ -86,6 +92,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  margin: 0 0 20px 0;
 
   justify-content: space-between;
   align-items: center;
@@ -110,10 +117,44 @@
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  padding: 0 20px 0 20px;
 
   justify-content: space-around;
 
   font-weight: bold;
+}
+
+.origin-and-destination-subtitle {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.origin-and-destination-name {
+  font-weight: lighter;
+  font-size: 13px;
+}
+
+
+.origin-and-destination-from {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.route-detail-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.route-detail-route-subtitle {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.route-detail-route-name {
+  font-weight: lighter;
+  font-size: 13px;
 }
 
 .dot-dot-dot {
@@ -123,7 +164,7 @@
   margin-left: 5px;
 
   justify-content: space-between;
-  height: 50px;
+  height: 30px;
 }
 
 .dot {

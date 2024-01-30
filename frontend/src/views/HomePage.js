@@ -83,12 +83,14 @@ const HomePage = () => {
     console.log(latlng)
     setCenterLat(latlng.lat)
     setCenterLng(latlng.lng)
+    setMapZoom(latlng.zoom)
   }
 
   const selectRouteDetailCenter = (latlng) => {
     console.log(latlng)
     setCenterLat(latlng.lat)
     setCenterLng(latlng.lng)
+    setMapZoom(latlng.zoom)
   }
 
   const [originMarker, setOriginMarker] = useState(null)
