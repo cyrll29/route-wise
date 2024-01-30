@@ -17,28 +17,10 @@ const SendEmailModal = (props) => {
   const [error, setError] = useState("")
 
   // --------Duration Formatter----------
-  const formatDuration = (seconds) => {
-    const hours = Math.floor(seconds / 3600)
-    seconds %= 3600
-    const minutes = Math.floor(seconds / 60)
   
-    let formattedDuration = ''
-  
-    if (hours > 0) {
-        formattedDuration += `${hours} hr`
-        if (hours > 1) formattedDuration += 's'
-    }
-  
-    if (minutes > 0) {
-        if (formattedDuration !== '') formattedDuration += ' '
-        formattedDuration += `${minutes} min`
-        if (minutes > 1) formattedDuration += 's'
-    }
-    return formattedDuration;
-  }
 
   const details = {
-    duration: formatDuration(itinerary.duration),
+    duration: itinerary.duration,
     origin: origin,
     destination: destination,
     legs: itinerary.legs

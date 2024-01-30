@@ -176,6 +176,8 @@ const Route = (props) => {
         <SendSmsModal 
           onClose={() => setSendSmsPopup(false)}
           itinerary={itinerary}
+          origin={origin}
+          destination={destination}
         />
       }
       

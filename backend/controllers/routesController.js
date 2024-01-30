@@ -2,15 +2,18 @@ import express from 'express'
 import Route from '../models/routeModel.js'
 import fs from 'fs'
 import gql from 'graphql-tag'
-import validator from 'validator'
 import { request } from 'graphql-request'
+import twilio from 'twilio'
 import sendRoutesEmail from '../utils/sendRoutesEmail.js'
+import config from '../utils/config.js'
+
 
 const routesRouter = express.Router()
 
 const query = gql(fs.readFileSync('queries.graphql', 'utf8'));
 // const otpUrl = "https://1s27xj69-8080.asse.devtunnels.ms/otp/routers/default/index/graphql"
 const otpUrl = "http://localhost:8080/otp/routers/default/index/graphql"
+const client = new twilio(config.TWILIO_SID, config.TWILIO_AUTH_TOKEN)
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
@@ -84,7 +87,39 @@ routesRouter.post('/sendemail', async (req, res) => {
       message: "Internal server error"
     })
   }
+})
 
+routesRouter.post('/sendsms', async (req, res) => {
+  const { phoneNumber, details } = req.body
+  console.log(phoneNumber)
+  console.log(typeof phoneNumber)
+  try {
+    client.messages
+      .create({
+        body: "Hey from twilio",
+        messagingServiceSid: "MG529e2428d82333e3ffad801218ea7a38",
+        from: '+16416663715',
+        to: `${phoneNumber}`
+      })
+      .then((message) => {
+        console.log(message)
+        res.status(200).json({
+          message: "Route details sent to your number"
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+        res.status(500).json({
+          message: "Internal server error"
+        })
+      })
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: "Internal server error"
+    })
+  }
 })
 
 routesRouter.get('/', async (req, res) => {

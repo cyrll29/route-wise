@@ -88,7 +88,7 @@ const routesEmailContent = (email, origin, destination, duration, legs) => {
         <h1>Your Public Transit Itinerary Details</h1>
         <p>Origin: ${origin}</p>
         <p>Destination: ${destination}</p>
-        <p>Duration: ${duration}</p>
+        <p>Duration: ${formatDuration(duration)}</p>
         ${legDetails}
         <p>Thank you for using KyusiTrip,</p>
         <p>The KyusiTrip team</p>
