@@ -3,12 +3,16 @@ import Reports from "./Reports"
 
 
 
-const ReportList = ({reports}) =>  {
+const ReportList = ({reports, searchQuery}) =>  {
   
+  const filteredReports = reports.filter(report =>
+    report.location.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <div className="hindrance-modal-reports">
       <ul>
-        {reports.map((report, index) => (
+        {filteredReports.map((report, index) => (
           <Reports key={index} report={report} />
         ))}
       </ul>

@@ -10,6 +10,7 @@ const HindranceModal = () => {
 
   const [reports, setReports] = useState([])
   const [count, setCount] = useState(0)
+  const [searchQuery, setSearchQuery] = useState('')
 
   
   const timeComparison = (dateCreated) => {
@@ -37,7 +38,7 @@ const HindranceModal = () => {
     }, 60000);
 
     return () => clearTimeout(timer)
-    }, []);
+  }, []);
 
 
   useEffect(() => {
@@ -63,14 +64,22 @@ const HindranceModal = () => {
       <ModalHeader title="Hindrance" />
       <div className="hindrance-modal-search">
         <div>
-          <input className="hindrance-modal-searchbar" />
+          <input 
+            className="hindrance-modal-searchbar" 
+            placeholder='Search places...'
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
         </div>
       </div>
       <div className="hindrance-modal-buttons">
         <button className="hindrance-modal-newpost">NEW POSTS</button>
       </div>
       <div>
-        <ReportList reports={reports}/>
+        <ReportList 
+          reports={reports}
+          searchQuery={searchQuery}
+        />
       </div>
     </>
   );
