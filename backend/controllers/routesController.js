@@ -2,7 +2,9 @@ import express from 'express'
 import Route from '../models/routeModel.js'
 import fs from 'fs'
 import gql from 'graphql-tag'
+import validator from 'validator'
 import { request } from 'graphql-request'
+import sendRoutesEmail from '../utils/sendRoutesEmail.js'
 
 const routesRouter = express.Router()
 
@@ -55,6 +57,35 @@ routesRouter.post('/', async (req, res) => {
   }
 })
 
+routesRouter.post('/sendemail', async (req, res) => {
+  const emailValidation = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+  const { email, details } = req.body
+
+  try {
+    if (!emailValidation.test(email)) {
+      return res.status(400).json({
+        message: "Invalid Email"
+      })
+    }
+
+    await sendRoutesEmail(
+      email,
+      details.origin,
+      details.destination,
+      details.duration,
+      details.legs,
+    )
+
+    res.status(200).json({
+      message: "Route details sent to your email"
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error"
+    })
+  }
+
+})
 
 routesRouter.get('/', async (req, res) => {
   try {

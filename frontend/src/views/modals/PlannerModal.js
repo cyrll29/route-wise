@@ -24,6 +24,7 @@ const RouteModal = (props) => {
   } = props
 
 
+  const [loading, setLoading] = useState(false)
   const [origin, setOrigin] = useState(null)
   const [destination, setDestination] = useState(null)
   const [routes, setRoutes] = useState(null)
@@ -33,6 +34,7 @@ const RouteModal = (props) => {
 
 
   const getRoutes = () => {
+    setLoading(true)
     setRoutes(null)
     onItinerarySelect(null)
 
@@ -58,6 +60,7 @@ const RouteModal = (props) => {
       .create(data)
       .then((response) => {
         console.log(response.data.otpResponse.plan)
+        setLoading(false)
         setRoutes(response.data.otpResponse.plan)
         setError("")
         onItinerarySelect(response.data.otpResponse.plan.itineraries[0])
@@ -193,34 +196,49 @@ const RouteModal = (props) => {
         </div>
 
         <div className="route-modal-bottom">
-          {!routes ? (
+          {loading ? (
             <div className="route-modal-bottom-nonexist">
               <img
                 className="route-modal-bottom-placeholder"
                 src={routePlaceholder}
                 alt="route"
               ></img>
-              <p>Please enter both origin and destination.</p>
+              <p>Calculating your route, just a moment...</p>
             </div>
           ) : (
-            <div className="route-modal-list">
-              <div>
-                <h4 className="route-modal-suggestedroutes">
-                  Suggested Routes
-                </h4>
-                <div className="route-modal-button-reset">
-                  <button onClick={handleReset} className="route-modal-btn-reset">Reset</button>
+            <>
+              {!routes ? (
+                <div className="route-modal-bottom-nonexist">
+                  <img
+                    className="route-modal-bottom-placeholder"
+                    src={routePlaceholder}
+                    alt="route"
+                  ></img>
+                  <p>Please enter both origin and destination.</p>
                 </div>
-              </div>
-              <div>
-                <RouteList 
-                  routes={routes} 
-                  onItinerarySelect={onItinerarySelect}
-                  selectPlannerCenter={selectPlannerCenter}
-                  selectRouteDetailCenter={selectRouteDetailCenter}
-                />
-              </div>
-            </div>
+              ) : (
+                <div className="route-modal-list">
+                  <div>
+                    <h4 className="route-modal-suggestedroutes">
+                      Suggested Routes
+                    </h4>
+                    <div className="route-modal-button-reset">
+                      <button onClick={handleReset} className="route-modal-btn-reset">Reset</button>
+                    </div>
+                  </div>
+                  <div>
+                    <RouteList 
+                      routes={routes} 
+                      origin={originInputRef.current.value}
+                      destination={destinationInputRef.current.value}
+                      onItinerarySelect={onItinerarySelect}
+                      selectPlannerCenter={selectPlannerCenter}
+                      selectRouteDetailCenter={selectRouteDetailCenter}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

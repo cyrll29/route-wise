@@ -49,7 +49,7 @@ const emailContent = (subject, text, url, introduction, button, name, ending) =>
     <p> ${ending} </p>
     <br>
     <p> Thanks, </p>
-    <p> The RouteWise team </p>
+    <p> The KyusiTrip team </p>
   </div>
 </body>
 </html>

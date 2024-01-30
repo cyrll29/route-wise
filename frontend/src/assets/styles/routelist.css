@@ -14,7 +14,9 @@
   border-top: 3px solid #f8c107;
   cursor: pointer;
   border-radius: 10px;
-  margin: 10px;
+  width: 80%;
+  
+  margin: 10px auto;
   padding: 10px;
 
   transition: 0.5s;
@@ -98,6 +100,36 @@
   align-items: center;
 
   font-weight: bold;
+}
+
+.send-route-div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.send-route-sms {
+  background-color: #f8c107;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  width: 140px;
+  height: 30px;
+  padding: auto;
+  transition: opacity 0.3s;
+  font-size: 12;
+}
+
+.send-route-email {
+  background-color: #f8c107;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  width: 140px;
+  height: 30px;
+  padding: auto;
+  transition: opacity 0.3s;
+  font-size: 12;
 }
 
 .time-and-fare {

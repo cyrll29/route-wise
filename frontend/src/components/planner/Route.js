@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 import "../../assets/styles/routelist.css"
-
+import SendEmailModal from './SendEmailModal'
+import SendSmsModal from './SendSmsModal'
 
 
 const Route = (props) => {
@@ -11,10 +12,14 @@ const Route = (props) => {
     routesDuration,
     onItinerarySelect,
     selectPlannerCenter,
-    selectRouteDetailCenter
+    selectRouteDetailCenter,
+    origin,
+    destination
   } = props
 
   const [showDetails, setShowDetails] = useState(null)
+  const [sendEmailPopup, setSendEmailPopup] = useState(null)
+  const [sendSmsPopup, setSendSmsPopup] = useState(null)
   const longestDuration = Math.max(...routesDuration)
 
   const handleItineraryClick = () => {
@@ -23,7 +28,9 @@ const Route = (props) => {
     selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon, zoom: 15})
   }
 
+
   
+  // -------Duration Formatter---------
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
     seconds %= 3600
@@ -136,6 +143,10 @@ const Route = (props) => {
           </div>
           {showDetails ? (
             <div>
+              <div className='send-route-div'>
+                <button onClick={() => setSendSmsPopup(true)} className='send-route-sms'>Send route via SMS</button>
+                <button onClick={() => setSendEmailPopup(true)} className='send-route-email'>Send route via Email</button>
+              </div>
               <ul>
                 {itinerary.legs.map((leg, index) => (
                   <RouteDetail 
@@ -151,6 +162,23 @@ const Route = (props) => {
           )}
         </div>
       )}
+
+      {sendEmailPopup && 
+        <SendEmailModal 
+          onClose={() => setSendEmailPopup(false)}
+          itinerary={itinerary}
+          origin={origin}
+          destination={destination}
+        />
+      }
+
+      {sendSmsPopup && 
+        <SendSmsModal 
+          onClose={() => setSendSmsPopup(false)}
+          itinerary={itinerary}
+        />
+      }
+      
     </>
   )
 }

@@ -36,7 +36,6 @@ const HomePage = () => {
   const [centerLng, setCenterLng] = useState(121.0493)
 
   const selectMapZoom = (zoom) => {
-    console.log(zoom)
     setMapZoom(zoom)
   }
 
@@ -44,20 +43,16 @@ const HomePage = () => {
   // ----------------FOR REPORT MODAL------------------
   const [isMarkLocation, setIsMarkLocation] = useState(false)
   const onMarkLocation = (isMarking) => {
-    console.log("isMarkLocation: " + isMarking)
     setIsMarkLocation(isMarking)
   };
 
   const [reportData, setReportData] = useState(null)
   const onLocationSelect = (location) => {
-    console.log("Report Data: ")
-    console.log(reportData)
     setReportData(location)
   };
 
   const [reportMarker, setReportMarker] = useState(null)
   const selectReportMarker = (isMarking) => {
-    console.log(isMarking)
     setReportMarker(isMarking)
   }
 
@@ -75,19 +70,16 @@ const HomePage = () => {
   // --------------FOR PLANNER MODAL--------------------
   const [selectedItinerary, setSelectedItinerary] = useState(null)
   const onItinerarySelect = (itinerary) => {
-    console.log(itinerary)
     setSelectedItinerary(itinerary)
   }
 
   const selectPlannerCenter = (latlng) => {
-    console.log(latlng)
     setCenterLat(latlng.lat)
     setCenterLng(latlng.lng)
     setMapZoom(latlng.zoom)
   }
 
   const selectRouteDetailCenter = (latlng) => {
-    console.log(latlng)
     setCenterLat(latlng.lat)
     setCenterLng(latlng.lng)
     setMapZoom(latlng.zoom)
@@ -95,13 +87,11 @@ const HomePage = () => {
 
   const [originMarker, setOriginMarker] = useState(null)
   const selectOriginMarker = (origin) => {
-    console.log(origin)
     setOriginMarker(origin)
   }
 
   const [destinationMarker, setDestinationMarker] = useState(null)
   const selectDestinationMarker = (destination) => {
-    console.log(destination)
     setDestinationMarker(destination)
   }
 

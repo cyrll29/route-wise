@@ -223,6 +223,123 @@ input {
   float: left;
 }
 
+.route-send {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-send-content {
+  width: 500px;
+  height: 280px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+    0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.route-send-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 0 0;
+}
+
+.route-send-body {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+}
+
+.route-send-body-title {
+  margin: 5px auto;
+}
+
+.route-send-input {
+	outline: none;
+	border: none;
+	width: 370px;
+	padding: 15px;
+	border-radius: 10px;
+	background-color: #edf5f3;
+	margin: 5px 0 0 0;
+	font-size: 14px;
+}
+
+.route-send-error-msg,
+.route-send-success-msg {
+	width: 370px;
+	padding: 15px;
+	margin: 5px 0;
+	font-size: 14px;
+	background-color: #f34646;
+	color: white;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.route-send-success-msg {
+	background-color: #5cdd5c;
+}
+
+.route-send-btm {
+  margin: 0px auto;
+}
+
+.route-send-submit {
+	border: none;
+	outline: none;
+	padding: 12px 0;
+	background-color: #880015;
+	color: white;
+	border-radius: 10px;
+	width: 180px;
+	font-weight: bold;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.route-send-sms {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-send-sms-content {
+  width: 500px;
+  height: 250px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
+    0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
+
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+
 /* --------------------REPORT MODAL-------------------- */
 
 .report-modal-main {
