@@ -28,7 +28,7 @@ const GoogleMapApi = (props) => {
     selectDestinationMarker,
 
     // For Test
-    someCoords
+    staticRoute
   } = props
 
 
@@ -59,7 +59,7 @@ const GoogleMapApi = (props) => {
   
   return (
     <GoogleMap 
-      someCoords={someCoords}
+      staticRoute={staticRoute}
       mapOptions={mapOptions} 
       isMarkLocation={isMarkLocation}
       onMarkLocation={onMarkLocation}

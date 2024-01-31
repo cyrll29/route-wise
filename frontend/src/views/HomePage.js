@@ -4,6 +4,7 @@ import HomeButtons from '../utils/HomeButtons'
 import HomeModals from '../utils/HomeModals' 
 import reportService from '../services/reportService'
 import '../assets/styles/home.css'
+import decodePolyline from 'decode-google-map-polyline'
 
 
 
@@ -108,92 +109,78 @@ const HomePage = () => {
   }
 
 
-  const [someCoords, setSomeCoords] = useState([])
+  const [staticRoute, setStaticRoute] = useState([])
 
   const testHandleClick = (index) => {
-    const mrtLine3 = [
-      {
-        lat: 14.652271,
-        lng: 121.032348
-      },
-      {
-        lat: 14.642875309888428,
-        lng: 121.03840027831687
-      },
-      {
-        lat: 14.635085821818052, 
-        lng: 121.04339669515498
-      },
-      {
-        lat: 14.619505867519198, 
-        lng: 121.05112873828345
-      },
-      {
-        lat: 14.607812679153275, 
-        lng: 121.05652961704355
-      },
-      {
-        lat: 14.587853625822573, 
-        lng: 121.05672617427332
-      }
+    const mrtLine3Encoded = [
+      "gwlxAucvaV|y@ae@",
+      "i|jxAwiwaVhn@e]",
+      "_mixA}gxaVxPkJloAgd@",
+      "wjfxAqxyaV|gAe`@",
+      "yadxAwyzaVve@oPxL}A`MNrMpCrj@vL"
     ]
 
-    const lrtLine1 = [
-      {
-        lat: 14.657610798082027, 
-        lng: 121.02108217193692
-      },
-      {
-        lat: 14.657483249746225, 
-        lng: 121.00406251771098
-      },
-      {
-        lat: 14.657018374655037, 
-        lng: 120.98433298453908
-      },
-      {
-        lat: 14.656790848372182, 
-        lng: 120.98395366291186
-      },
-      {
-        lat: 14.654354100438272, 
-        lng: 120.98389297145171
-      },
+    const lrtLine1Encoded = [
+      "_ymxA_}saVOvEl@tbB",
+      "axmxAqrpaVx@bzBt@tAxNJ"
     ]
 
-    const mrtLine7 = [
-      {
-        lat: 14.655521050513967, 
-        lng: 121.03082224805006
-      },
-      {
-        lat: 14.651765049853578, 
-        lng: 121.04928446648793
-      },
-      {
-        lat: 14.669017980079666, 
-        lng: 121.07600613614227
-      },
-      {
-        lat: 14.674132394287836, 
-        lng: 121.08080575487973
-      },
+    const proj6SMNorthEDSA = [
+      "ijmxAw~uaVvC_U",
+      "qemxAwtvaVch@}GoFUsELyBVw@sF",
+      "kboxAydwaVyB}ODwBN{Aj@_BbAuAnAiArAw@hB_@[gC",
+      "mznxAkkxaVxRqCb@dDeHvk@"
+    ]
+
+    const SMNorthEDSAMonumento = [
+      "{mmxA_|uaV|@HQfAs@hBEr@Lr@qJfs@S~D?fC",
+      "azmxAktsaVVhu@",
+      "iymxAa~qaV`@nk@",
+      "gxmxAqqpaV?xd@",
+      "gxmxAwkoaVn@ziA"
+    ]
+
+    const SMNorthEDSAFairview = [
+      "{mmxA_|uaV|@HQfAs@hBEr@Lr@qJfs@S~D?fC",
+      "czmxAwtsaVkYqAiB_@oAw@s@aAgQwcA_A_CuHwG",
+      "{yoxAsmvaVoGbEgDdAgDn@}BH}qAvA{E\\eEf@eAV_Bn@gAz@kMpR",
+      "sftxA{fuaVsU_Rgd@{UgEcCcI_GcMoGuHqCwr@oJmEM}c@tD",
+      "yizxAepwaV_A}J]g@QEaDb@cPz@eO}BoM{SeBmQkIyMo@cBwF_W",
     ]
 
     if (index === 0) {
-      setSomeCoords(mrtLine3);
-      setCenterLat(mrtLine3[2].lat)
-      setCenterLng(mrtLine3[2].lng)
+      setStaticRoute(mrtLine3Encoded)
+      const decoded = decodePolyline(mrtLine3Encoded[2])
+      setCenterLat(decoded[0].lat)
+      setCenterLng(decoded[0].lng)
+      setMapZoom(12)
     } else if (index === 1) {
-      setSomeCoords(lrtLine1)
-      setCenterLat(lrtLine1[2].lat)
-      setCenterLng(lrtLine1[2].lng)
+      setStaticRoute(lrtLine1Encoded)
+      const decoded = decodePolyline(lrtLine1Encoded[1])
+      setCenterLat(decoded[0].lat)
+      setCenterLng(decoded[0].lng)
     } else if (index === 2) {
-      setSomeCoords(mrtLine7)
-      setCenterLat(mrtLine7[2].lat)
-      setCenterLng(mrtLine7[2].lng)
+      // setCenterLat(mrtLine7[2].lat)
+      // setCenterLng(mrtLine7[2].lng)
+    } else if (index === 3) {
+      setStaticRoute(proj6SMNorthEDSA)
+      const decoded = decodePolyline(proj6SMNorthEDSA[1])
+      setCenterLat(decoded[0].lat)
+      setCenterLng(decoded[0].lng)
+      setMapZoom(16)
+    } else if (index === 4) {
+      setStaticRoute(SMNorthEDSAMonumento)
+      const decoded = decodePolyline(SMNorthEDSAMonumento[1])
+      setCenterLat(decoded[0].lat)
+      setCenterLng(decoded[0].lng)
+      setMapZoom(16)
+    } else if (index === 5) {
+      setStaticRoute(SMNorthEDSAFairview)
+      const decoded = decodePolyline(SMNorthEDSAFairview[2])
+      setCenterLat(decoded[0].lat)
+      setCenterLng(decoded[0].lng)
+      setMapZoom(16)
     }
-    setMapZoom(12)
   }
 
 
@@ -236,7 +223,7 @@ const HomePage = () => {
 
       <GoogleMapApi 
         
-        someCoords={someCoords}
+        // someCoords={someCoords}
         mapZoom={mapZoom}
         centerLat={centerLat}
         centerLng={centerLng}      
@@ -254,9 +241,12 @@ const HomePage = () => {
         selectOriginMarker={selectOriginMarker}
         selectDestinationMarker={selectDestinationMarker}
 
+        // List Modal
+        staticRoute={staticRoute}
+
       />  
 
-      <div className="home-buttons" onClick={() => {setSomeCoords([])}}>
+      <div className="home-buttons" onClick={() => setStaticRoute()}>
         <HomeButtons 
           routeReport = {hasToken}
           routePlanner = {true}

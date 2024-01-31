@@ -266,7 +266,7 @@
 }
 
 .static-routes-modal:hover {
-  background-color: lightgray;
+  opacity: 0.4;
 }
 
 .static-routes-modal-text {

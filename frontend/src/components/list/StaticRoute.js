@@ -2,16 +2,29 @@ import { useState } from "react"
 import "../../assets/styles/routelist.css"
 import StaticRouteDetail from "./StaticRouteDetail"
 
-const  StaticRoute = ({ points}) => {
+const  StaticRoute = ({ points }) => {
   const [showDetails, setShowDetails] = useState(null)
 
   const handleClick = () => {
     setShowDetails(!showDetails)
   }
 
+  let color = () => {
+    let temporaryColor  = 'white'
+    if(points.type === "Train") {
+      temporaryColor  = 'Lightgray'
+    } else if(points.type  ===  'Jeep') {
+      temporaryColor = 'lightblue'
+    } else if(points.type === "Bus") {
+      temporaryColor= 'lightpink'
+    }
+
+    return temporaryColor
+  }
+
   return(
     <>
-      <div className="static-routes-modal" onClick={handleClick}>
+      <div className="static-routes-modal" onClick={handleClick} style={{backgroundColor: color()}}>
         <div>
           {points.origin}
         </div>

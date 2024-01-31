@@ -38,7 +38,7 @@ const Map = (props) => {
     selectDestinationMarker,
 
     // For Test
-    someCoords
+    staticRoute
   } = props
   
 
@@ -87,8 +87,6 @@ const Map = (props) => {
     return null;
   };
 
-
-
   // PlannerModal - Render itinerary polylines
   const renderPolylines = () => {
     if (selectedItinerary && selectedItinerary.legs) {
@@ -116,6 +114,36 @@ const Map = (props) => {
     }
     return null;
   };
+
+  const testPolylineHandler = () => {
+    if(staticRoute) {
+      return staticRoute.map((encoded, index) => {
+        const decoded = decodePolyline(encoded)
+        return <Polyline
+          key={index}
+          path={decoded}
+          options={{
+            strokeColor: 'blue',
+            strokeWeight: 8
+          }}
+        />
+      })
+    }
+    return null;
+  }
+
+  const testMarkerHandler = () => {
+    if(staticRoute) {
+      return staticRoute.map((encoded, index) => {
+        const decoded = decodePolyline(encoded)
+        return <Marker
+          key={index}
+          position={{ lat: decoded[0].lat, lng: decoded[0].lng }}
+        />
+      })
+    }
+    return null;
+  }
 
 
 
@@ -153,8 +181,6 @@ const Map = (props) => {
     }
     return null;
   };
-
-
 
   // PlannerModal - Render destination marker
   const renderEndMarker = () => {
@@ -288,12 +314,11 @@ const Map = (props) => {
       {renderLegStartMarkers()}
       {renderPolylines()}
       
-      {someCoords ? someCoords.map((coord, index) => (
+      {/* {someCoords ? someCoords.map((coord, index) => (
         <Marker key={index} position={{ lat: coord.lat, lng: coord.lng}}/>
-      )):<></>}
-      {someCoords ? 
-        <Polyline path={someCoords} options={{strokeColor:'#006FB9', strokeWeight: 6}}/>
-      :<></>}
+      )):<></>} */}
+      {testPolylineHandler()}
+      {testMarkerHandler()}
     </GoogleMap>
   )
 }
