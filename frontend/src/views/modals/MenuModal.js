@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalHeader from "../../components/ModalHeader";
 import reportService from '../../services/reportService.js'
+import '../../assets/styles/modals.css'
 
 
 const MenuModal = () => {
@@ -18,7 +19,9 @@ const MenuModal = () => {
   return (
     <>
       <ModalHeader title="Menu" />
-      <button onClick={handleLogoutClick}>Logout</button>
+      <div className='menu-modal'>
+        <button className='menu-modal-logout' onClick={handleLogoutClick}>Logout</button>
+      </div>
     </>
   )
 }

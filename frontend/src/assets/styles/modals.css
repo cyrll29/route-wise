@@ -749,3 +749,31 @@ input {
   cursor: pointer;
   margin: 10px auto;
 }
+
+
+/* Menu Modal */
+.menu-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 600px;
+}
+
+.menu-modal-logout {
+
+  background-color: #f8c107;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  width: 100px;
+  height: 40px;
+  padding: auto;
+  margin: auto;
+  transition: opacity 0.3s;
+  font-size: 12;
+  /* float: right; */
+}
+
+.menu-modal-logout:hover {
+  background-color: #ffd23f;
+}
