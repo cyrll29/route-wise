@@ -34,7 +34,9 @@ const HomeModals = (props) => {
       }
 
       {props.routeUpdateModal 
-        ? <HindranceModal /> 
+        ? <HindranceModal 
+          selectHindranceCenter={props.selectHindranceCenter}
+        /> 
         : <></>
       }
 

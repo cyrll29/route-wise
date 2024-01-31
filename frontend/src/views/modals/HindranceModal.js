@@ -6,7 +6,11 @@ import "../../assets/styles/modals.css"
 
 
 
-const HindranceModal = () => {
+const HindranceModal = (props) => {
+
+  const {
+    selectHindranceCenter
+  } = props
 
   const [reports, setReports] = useState([])
   const [count, setCount] = useState(0)
@@ -79,6 +83,7 @@ const HindranceModal = () => {
         <ReportList 
           reports={reports}
           searchQuery={searchQuery}
+          selectHindranceCenter={selectHindranceCenter}
         />
       </div>
     </>

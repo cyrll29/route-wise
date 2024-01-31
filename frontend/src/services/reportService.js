@@ -11,6 +11,10 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
+const setLogoutToken = logoutToken => {
+  token = logoutToken
+}
+
 const getToken = () => {
   if (token !== null) {
     return true
@@ -44,6 +48,7 @@ const reportService = {
   create,
   update,
   setToken,
+  setLogoutToken,
   getToken
 }
 

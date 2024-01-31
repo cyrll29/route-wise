@@ -48,7 +48,7 @@ const SendEmailModal = (props) => {
             <p></p>
           </div>
           <div>
-            <button onClick={onClose}>Close</button>
+            <button className='route-send-close' onClick={onClose}>Close</button>
           </div>
         </div>
 

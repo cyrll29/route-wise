@@ -4,10 +4,8 @@ query PlanTrip($fromLat: Float!, $fromLon: Float!, $toLat: Float!, $toLon: Float
         to: { lat: $toLat, lon: $toLon }
         date: $date
         time: $time
+        walkReluctance: 4
         transportModes: [
-            {
-                mode: WALK
-            },
             {
                 mode: TRANSIT
             },

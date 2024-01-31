@@ -128,7 +128,7 @@ const ReportModal = (props) => {
 
           <div className="report-modal-title-div">
             <div className="report-modal-title">
-              <p><span className='red-asterisk'>*</span>Title:</p>
+              <p><span className='red-asterisk'>*</span>Place:</p>
             </div>
             <div className="report-modal-title-input-div">
               <input
@@ -141,7 +141,7 @@ const ReportModal = (props) => {
                   setMsg('')
                   setError('')
                 }} 
-                placeholder="Report TItle"
+                placeholder="State the specific place..."
                 maxLength={50}
               />
             </div>

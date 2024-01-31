@@ -257,6 +257,23 @@ input {
   margin: 0 0 0 0;
 }
 
+.route-send-close{
+  background-color: #f8c107;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  width: 55px;
+  height: 25px;
+  padding: auto;
+  transition: opacity 0.3s;
+  font-size: 12;
+  float: right;
+}
+
+.route-send-close:hover {
+  opacity: 0.7;
+}
+
 .route-send-body {
   display: flex;
   flex-direction: column;
@@ -544,6 +561,14 @@ input {
   flex-direction: column;
   justify-content: center;
   /* align-items: center; */
+}
+
+.hindrance-modal-reportlist:hover {
+  background-color: rgb(233, 233, 233);
+}
+
+.hindrance-modal-reportlist:active {
+  background-color: rgb(180, 180, 180);
 }
 
 .hindrance-modal-reportlist-top {

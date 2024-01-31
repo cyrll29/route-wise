@@ -62,6 +62,7 @@ const HomePage = () => {
       setCenterLat(reportData.lat)
       setCenterLng(reportData.lng)
       setReportMarker({lat: reportData.lat, lng: reportData.lng})
+      console.log("run")
     } 
   }, [reportData])
 
@@ -87,13 +88,25 @@ const HomePage = () => {
 
   const [originMarker, setOriginMarker] = useState(null)
   const selectOriginMarker = (origin) => {
+    console.log(origin)
     setOriginMarker(origin)
   }
 
   const [destinationMarker, setDestinationMarker] = useState(null)
   const selectDestinationMarker = (destination) => {
+    console.log(destination)
     setDestinationMarker(destination)
   }
+
+
+
+  // --------------FOR HINDRANCE MODAL--------------------
+  const selectHindranceCenter = (latlng) => {
+    setCenterLat(latlng.lat)
+    setCenterLng(latlng.lng)
+    setMapZoom(latlng.zoom)
+  }
+
 
   const [someCoords, setSomeCoords] = useState([])
 
@@ -167,15 +180,15 @@ const HomePage = () => {
       },
     ]
 
-    if (index == 0) {
+    if (index === 0) {
       setSomeCoords(mrtLine3);
       setCenterLat(mrtLine3[2].lat)
       setCenterLng(mrtLine3[2].lng)
-    } else if (index == 1) {
+    } else if (index === 1) {
       setSomeCoords(lrtLine1)
       setCenterLat(lrtLine1[2].lat)
       setCenterLng(lrtLine1[2].lng)
-    } else if (index == 2) {
+    } else if (index === 2) {
       setSomeCoords(mrtLine7)
       setCenterLat(mrtLine7[2].lat)
       setCenterLng(mrtLine7[2].lng)
@@ -183,21 +196,11 @@ const HomePage = () => {
     setMapZoom(12)
   }
 
-  const testHandleClickTwo = () => {
-    setSomeCoords([])
-    console.log("I am clicked too")
-  }
 
     
   return (
     <>
       <div className='home-modal'>
-        <button onClick={testHandleClickTwo}>
-          Test
-        </button>
-        <button onClick={testHandleClick}>
-          Test 2
-        </button>
         <HomeModals 
 
           // Show Modal
@@ -225,6 +228,9 @@ const HomePage = () => {
           // Static Route Modal
           testHandleClick={testHandleClick}
 
+          // Hindrance Modal
+          selectHindranceCenter={selectHindranceCenter}
+
         />
       </div>
 
@@ -247,6 +253,7 @@ const HomePage = () => {
         destinationMarker={destinationMarker}
         selectOriginMarker={selectOriginMarker}
         selectDestinationMarker={selectDestinationMarker}
+
       />  
 
       <div className="home-buttons" onClick={() => {setSomeCoords([])}}>

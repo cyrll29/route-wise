@@ -271,7 +271,6 @@ const Map = (props) => {
       options={mapOptions}
       mapContainerClassName="map-container"
       onClick={mapClickHandler}
-      center={{lat: 14.657641, lng: 121.021579}}
     >
       {/* {reports &&
         reports.map((report, index) => (

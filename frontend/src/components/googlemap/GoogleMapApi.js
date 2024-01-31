@@ -2,7 +2,7 @@
 import { useLoadScript } from "@react-google-maps/api";
 import GoogleMap from "./GoogleMap";
 import config from "../../utils/config";
-// import mapStyle from "./mapStyle.json"
+import mapStyle from "./mapStyle.json"
 import "../../assets/styles/googlemap.css";
 
 
@@ -44,7 +44,6 @@ const GoogleMapApi = (props) => {
     minZoom: 14,
     maxZoom: 18,
     center: { lat: centerLat, lng: centerLng }, 
-    mapId: process.env.REACT_APP_MAP_ID, 
     disableDefaultUI: true, 
     restriction: {  
       latLngBounds: {
@@ -54,7 +53,7 @@ const GoogleMapApi = (props) => {
         east: 121.11127512082325
       }
     },
-    // styles: mapStyle
+    styles: mapStyle
   };
 
   
