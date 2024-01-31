@@ -1,6 +1,6 @@
 /*global google*/
 import { useState, useEffect } from 'react'
-import { GoogleMap, Marker, Polyline, InfoWindow } from "@react-google-maps/api"
+import { GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "@react-google-maps/api"
 import decodePolyline from 'decode-google-map-polyline'
 import { geocode, RequestType } from 'react-geocode'
 import "../../assets/styles/googlemap.css"
@@ -49,6 +49,7 @@ const Map = (props) => {
     "RAIL": `${railIcon}`,
   };
   const [reports, setReports] = useState(null)
+  // const [showTrafficLayer, setShowTrafficLayer] = useState(true)
 
 
 
@@ -298,11 +299,7 @@ const Map = (props) => {
       mapContainerClassName="map-container"
       onClick={mapClickHandler}
     >
-      {/* {reports &&
-        reports.map((report, index) => (
-          <Marker key={index} position={report} />
-        ))
-      } */}
+      <TrafficLayer />
 
       {renderReportMarker()}
       {renderReports()}
