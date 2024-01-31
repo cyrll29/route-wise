@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalHeader from "../../components/ModalHeader";
 import reportService from '../../services/reportService.js'
@@ -8,10 +7,8 @@ import '../../assets/styles/modals.css'
 const MenuModal = () => {
 
   const navigate = useNavigate()
-  const [showModal, setShowModal] = useState(null)
 
   const handleLogoutClick = () => {
-    setShowModal(true)
     navigate('/')
     reportService.setLogoutToken(null)
   }

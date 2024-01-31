@@ -62,3 +62,17 @@
 .home-btn:active {
     opacity: 0.7;
 }
+
+.home-page-layers {
+    position: absolute;
+    float: right;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+}
+
+.gmap-layer-button {
+    padding: 10px 15px 10px 15px;
+    margin-left: 2px;
+    font-weight: bold;
+}

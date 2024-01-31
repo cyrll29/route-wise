@@ -11,7 +11,6 @@ const  StaticRoute = ({ points }) => {
 
   let color = () => {
     let temporaryColor  = 'white'
-    let anotherTemporaryColor  = 'white'
     if(points.type === "Train") {
       temporaryColor  = '#f8c107'
     } else if(points.type  ===  'Jeep') {

@@ -109,6 +109,9 @@ const HomePage = () => {
   }
 
 
+  const [showTrafficLayer, setShowTrafficLayer] = useState(true)
+
+
   const [staticRoute, setStaticRoute] = useState([])
 
   const testHandleClick = (index) => {
@@ -263,6 +266,7 @@ const HomePage = () => {
 
         // List Modal
         staticRoute={staticRoute}
+        showTrafficLayer={showTrafficLayer}
 
       />  
 
@@ -275,6 +279,11 @@ const HomePage = () => {
           routeMenu = {true}
           btnModalClick={btnModalClick}
         />
+      </div>
+
+      <div className='home-page-layers'>
+        <button className='gmap-layer-button' onClick={() => setShowTrafficLayer(true)}>Traffic</button>
+        <button className='gmap-layer-button' onClick={() => setShowTrafficLayer(null)}>Terrain</button>
       </div>
     </>
   )

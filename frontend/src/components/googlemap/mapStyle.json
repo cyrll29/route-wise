@@ -217,5 +217,17 @@
               "gamma": "0.79"
           }
       ]
-  }
+  },
+  {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#fac9a9"
+            },
+            {
+                "visibility": "simplified"
+            }
+        ]
+    }
 ]

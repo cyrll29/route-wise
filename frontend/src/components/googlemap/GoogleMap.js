@@ -38,7 +38,8 @@ const Map = (props) => {
     selectDestinationMarker,
 
     // For Test
-    staticRoute
+    staticRoute,
+    showTrafficLayer
   } = props
   
 
@@ -299,7 +300,11 @@ const Map = (props) => {
       mapContainerClassName="map-container"
       onClick={mapClickHandler}
     >
-      <TrafficLayer />
+      {showTrafficLayer && 
+        <TrafficLayer 
+          
+        />
+      }
 
       {renderReportMarker()}
       {renderReports()}
