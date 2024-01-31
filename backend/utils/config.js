@@ -17,8 +17,8 @@ const {
   PASS
 } = process.env
 
-const URL_USED = 'http://localhost:3000'
-// const URL_USED = 'https://1s27xj69-3000.asse.devtunnels.ms'
+// const URL_USED = 'http://localhost:3000'
+const URL_USED = 'https://dz8b7rmv-3000.asse.devtunnels.ms'
 
 const config = {
   PORT,

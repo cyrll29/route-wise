@@ -215,8 +215,6 @@
 }
 
 .list-modal-buttons {
-  background-color: lightblue;
-
   display: flex;
   flex-direction: row;
   column-gap: 5px;
@@ -237,8 +235,14 @@
   height: 2rem;
 
   border-radius: 20px;
+  border: none;
 
   cursor: pointer;
+
+  background-color: #f8c107;
+  color: white;
+
+  font-weight: bold;
 }
 
 .static-routes-div {

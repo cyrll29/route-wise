@@ -11,20 +11,30 @@ const  StaticRoute = ({ points }) => {
 
   let color = () => {
     let temporaryColor  = 'white'
+    let anotherTemporaryColor  = 'white'
     if(points.type === "Train") {
-      temporaryColor  = 'Lightgray'
+      temporaryColor  = '#f8c107'
     } else if(points.type  ===  'Jeep') {
-      temporaryColor = 'lightblue'
+      temporaryColor = '#880015'
     } else if(points.type === "Bus") {
-      temporaryColor= 'lightpink'
+      temporaryColor= '#F8ECC4'
     }
-
     return temporaryColor
+  }
+
+  const textColor  = () => {
+    let temporaryColor = 'white'
+
+    if(points.type === "Jeep") {
+      return temporaryColor
+    } else {
+      return temporaryColor = 'black'
+    }
   }
 
   return(
     <>
-      <div className="static-routes-modal" onClick={handleClick} style={{backgroundColor: color()}}>
+      <div className="static-routes-modal" onClick={handleClick} style={{backgroundColor: color(), color:  textColor()}}>
         <div>
           {points.origin}
         </div>

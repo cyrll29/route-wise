@@ -148,6 +148,19 @@ const HomePage = () => {
       "yizxAepwaV_A}J]g@QEaDb@cPz@eO}BoM{SeBmQkIyMo@cBwF_W",
     ]
 
+    const carouselEncoded = [
+      "ovmxA_cmaVg@_iA",
+      "wwmxA_moaVQgi@",
+      "ixmxAgwpaVMwh@",
+      "wxmxA_araVY}q@",
+      "qymxA}ssaV@aBr@uJvIuo@Vo@`@i@`XiO",
+      "grlxAofvaVh|@{f@",
+      "}tjxAknwaVvt@wa@pNgFrM_F",
+      "_ahxAk_yaV|uA{f@",
+      "ajexAggzaVhb@mO",
+      "yadxAwyzaVve@oPxL}A`MNrMpCrj@vL"
+    ]
+
     if (index === 0) {
       setStaticRoute(mrtLine3Encoded)
       const decoded = decodePolyline(mrtLine3Encoded[2])
@@ -177,6 +190,13 @@ const HomePage = () => {
     } else if (index === 5) {
       setStaticRoute(SMNorthEDSAFairview)
       const decoded = decodePolyline(SMNorthEDSAFairview[2])
+      setCenterLat(decoded[0].lat)
+      setCenterLng(decoded[0].lng)
+      setMapZoom(16)
+    }
+    else if (index === 6) {
+      setStaticRoute(carouselEncoded)
+      const decoded = decodePolyline(carouselEncoded[2])
       setCenterLat(decoded[0].lat)
       setCenterLng(decoded[0].lng)
       setMapZoom(16)

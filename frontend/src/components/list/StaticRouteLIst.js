@@ -70,7 +70,7 @@ const StaticRouteList = (props) => {
       ]
     },
     {
-      origin: "SM North EDSA",
+      origin: "SM North EDSA -",
       destination: "PROJ 6",
       type: "Jeep",
       stops: [
@@ -83,7 +83,7 @@ const StaticRouteList = (props) => {
       ]
     },
     {
-      origin: "SM North EDSA",
+      origin: "SM North EDSA  -",
       destination: "Monumento",
       type: "Jeep",
       stops: [
@@ -97,7 +97,7 @@ const StaticRouteList = (props) => {
       ]
     },
     {
-      origin: "SM North EDSA",
+      origin: "SM North EDSA -",
       destination: "Fairview",
       type: "Bus",
       stops: [
@@ -105,13 +105,12 @@ const StaticRouteList = (props) => {
         "Munoz",
         "Mindanao Avenue",
         "Quirino Avenue",
-        "SM Novaliches",
         "Novaliches Bayan",
         "Fairview",
       ]
     },
     {
-      origin: "Monumento",
+      origin: "Monumento -",
       destination: "PITX",
       type: "Bus",
       stops: [
@@ -140,7 +139,7 @@ const StaticRouteList = (props) => {
 
   return (
     <>
-      <div>
+      <div style={{fontWeight:'bold'}}>
         <p>ROUTES</p>
         <ul className='static-routes-div'>
           {RouteList.map((points, index) => (
