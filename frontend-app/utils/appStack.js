@@ -5,11 +5,6 @@ import LoginPage from '../components/pages/LoginPage';
 import SignupPage from '../components/pages/SignupPage';
 import Home from '../components/pages/Home';
 import RouteFinder from '../components/pages/RouteFinder';
-import Notification from '../components/pages/Notification';
-import RouteList from '../components/pages/RouteList';
-import RoadCondition from '../components/pages/RoadCondition';
-import Hindrances from '../components/pages/Hindrances'
-//<Stack.Screen name='' component={} />
 
 export default function AppStack() {
     const Stack = createNativeStackNavigator();
@@ -20,10 +15,6 @@ export default function AppStack() {
             <Stack.Screen name='LoginPage' component={LoginPage} />
             <Stack.Screen name='SignupPage' component={SignupPage} />
             <Stack.Screen name='RouteFinder' component={RouteFinder} />
-            <Stack.Screen name='Notification' component={Notification} />
-            <Stack.Screen name='RouteList' component={RouteList} />
-            <Stack.Screen name='RoadCondition' component={RoadCondition} />
-            <Stack.Screen name='Hindrances' component={Hindrances} />
         </Stack.Navigator>
     )
 }
