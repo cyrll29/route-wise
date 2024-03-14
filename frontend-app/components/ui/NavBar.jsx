@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,46 +12,40 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function NavBar() {
   const navigation = useNavigation();
+  const [viewedModal, setViewedModal] = useState("")
+  const onNavPress = (modal) => {
+    setViewedModal(modal)
+  }
 
   return (
     <View style={styles.navBar}>
       <TouchableOpacity
         style={styles.navBarItems}
-        onPress={() => navigation.navigate("RouteList")}
+        onPress={() => onNavPress("Routes")}
       >
-        <IconFA5 name="route" size={20} color="#880015"></IconFA5>
-        <Text style={styles.textStyle}>Routes</Text>
+        <IconFA5 name="route" size={20} color={(viewedModal === "Routes") ? "#880015" : "#858585"}></IconFA5>
+        {/* <Text style={[styles.textStyle, (viewedModal === "Routes") ? styles.navBarOn : styles.navBarOff]}>Routes</Text> */}
       </TouchableOpacity>
-      <Text style={{ fontSize: 40, fontWeight: 100, color: "#880015" }}>|</Text>
+      <Text style={{ fontSize: 40, fontWeight: 100, color: "#a2a2a2" }}>|</Text>
 
 
       <TouchableOpacity
         style={styles.navBarItems}
-        onPress={() => navigation.navigate("RoadCondition")}
+        onPress={() => onNavPress("Hindrances")}
       >
-        <IconFA5 name="road" size={20} color="#880015"></IconFA5>
-        <Text style={styles.textStyle}>Road</Text>
+        <IconFA5 name="road" size={20} color={(viewedModal === "Hindrances") ? "#880015" : "#858585"}></IconFA5>
+        {/* <Text style={[styles.textStyle, (viewedModal === "Hindrances") ? styles.navBarOn : styles.navBarOff]}>Hindrances</Text> */}
       </TouchableOpacity>
-      <Text style={{ fontSize: 40, fontWeight: 100, color: "#880015" }}>|</Text>
+      <Text style={{ fontSize: 40, fontWeight: 100, color: "#a2a2a2" }}>|</Text>
 
 
       <TouchableOpacity
         style={styles.navBarItems}
-        onPress={() => navigation.navigate("Hindrances")}
+        onPress={() => onNavPress("Report")}
       >
-        <IconFA5 name="bullhorn" size={20} color="#880015"></IconFA5>
-        <Text style={styles.textStyle}>Report</Text>
+        <IconFA5 name="bullhorn" size={20} color={(viewedModal === "Report") ? "#880015" : "#858585"}></IconFA5>
+        {/* <Text style={[styles.textStyle, (viewedModal === "Report") ? styles.navBarOn : styles.navBarOff]}>Report</Text> */}
       </TouchableOpacity>
-      {/* <Text style={{ fontSize: 40, fontWeight: 100, color: "#880015" }}>|</Text>
-
-
-      <TouchableOpacity
-        style={styles.navBarItems}
-        onPress={() => navigation.navigate("Hindrances")}
-      >
-        <IconFA5 name="bars" size={20} color="#880015"></IconFA5>
-        <Text style={styles.textStyle}>Menu</Text>
-      </TouchableOpacity> */}
     </View>
   );
 }
@@ -59,12 +53,14 @@ export default function NavBar() {
 const styles = StyleSheet.create({
   navBar: {
     paddingHorizontal: 30,
+    paddingBottom: 20,
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    backgroundColor: "#f8c107",
-    borderRadius: 20,
-    width: "85%",
+    backgroundColor: "#ffffff",
+    borderTopWidth: 0.2,
+    borderColor: '#a2a2a2',
+    width: "100%",
     height: 100,
   },
 
@@ -74,8 +70,16 @@ const styles = StyleSheet.create({
     width: "25%",
   },
 
+  navBarOn: {
+    color: "#880015"
+  },
+
+  navBarOff: {
+    color: "#858585"
+  },
+
   textStyle: {
-    color: "#880015", 
+    color: "#a2a2a2", 
     fontWeight: "500",
     marginTop: 5,
   }

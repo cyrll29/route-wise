@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,8 +11,10 @@ import {
 import MapView, { Marker, Callout } from "react-native-maps";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
+
 import NavBar from "../ui/NavBar.jsx"
 import Sidebar from "../ui/Sidebar.jsx";
+
 
 export default function RouteFinder({ navigation }) {
 
@@ -23,6 +25,7 @@ export default function RouteFinder({ navigation }) {
 
   return (
     <View style={styles.container}>
+
       <Modal
         isVisible={sidebarVisible}
         animationIn="slideInLeft"
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
     zIndex: 99,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f8c107",
+    backgroundColor: "#880015",
 
     width: 50,
     height: 50,
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
 
   navBar: {
     position: "absolute",
-    bottom: 30,
+    bottom: 0,
     justifyContent: "center",
     alignItems: "center",
 
