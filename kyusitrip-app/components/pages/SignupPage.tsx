@@ -10,6 +10,14 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { NavigationProp } from '@react-navigation/native';
+import config from '../../utils/config'
+import axios from 'axios'
+
+interface NewObject {
+  name: string;
+  password: string;
+  email: string;
+}
 
 interface SignupPageProps {
   navigation: NavigationProp<any>;
@@ -18,16 +26,36 @@ interface SignupPageProps {
 const SignupPage: FC<SignupPageProps> = ( { navigation } ) => {
   const [hidden, setHidden] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [error, setError] = useState("");
+  const [wait, setWait] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  const checkSignup = () => {
-    if (email == "Admin@email.com" && password == "admin") {
-      navigation.navigate("Home");
-    } else {
+
+  const handleSignupClick = async() => {
+
+    const data: NewObject = {name, password, email}
+    console.log(data)
+    setWait(true)
+    try {
+      const response = await axios.post(`${config.URL_USED}/api/users`, data)
+      setMsg(response.data.message)
+      setError("")
       setModalOpen(true);
+      setWait(false)
+    } catch(error: any) {
+      setModalOpen(true);
+      setWait(false)
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setError(error.response.data.message)
+        setMsg("")
+      }
     }
   };
 
@@ -39,14 +67,34 @@ const SignupPage: FC<SignupPageProps> = ( { navigation } ) => {
         statusBarTranslucent={true}
         animationType="fade"
       >
-        <Pressable style={styles.modal} onPress={() => setModalOpen(false)}>
+        <Pressable 
+          style={styles.modal} 
+          onPress={() => {
+            if (msg) {
+              setModalOpen(false)
+              navigation.navigate("StartingPage")
+            } else {
+              setModalOpen(false)
+            }
+          }}
+        >
           <View style={styles.modalContainer}>
             <View style={{ height: "35%", justifyContent: "center" }}>
-              <Text
-                style={{ color: "#c23e34", fontWeight: "bold", fontSize: 20 }}
-              >
-                INVALID SIGNUP
-              </Text>
+
+              {msg && 
+                <Text style={{ color: "#c23e34", fontWeight: "bold", fontSize: 20 }}>
+                  SUCCESSFUL
+                </Text> 
+              }
+
+              {error && 
+                <Text style={{ color: "#c23e34", fontWeight: "bold", fontSize: 20 }}>
+                  INVALID SIGNUP
+                </Text> 
+              }
+
+
+
             </View>
             <View
               style={{
@@ -56,10 +104,12 @@ const SignupPage: FC<SignupPageProps> = ( { navigation } ) => {
                 justifyContent: "center",
                 borderTopWidth: 1,
                 borderColor: "#c7c7c7",
+                paddingRight: 10,
+                paddingLeft: 10
               }}
             >
-              <Text>You have entered an invalid</Text>
-              <Text>Email or Password</Text>
+              {msg && <Text>{msg}</Text>}
+              {error && <Text>{error}</Text>}
             </View>
           </View>
         </Pressable>
@@ -132,12 +182,17 @@ const SignupPage: FC<SignupPageProps> = ( { navigation } ) => {
               </View>
             </View>
 
-            <TouchableOpacity style={styles.loginButton} onPress={checkSignup}>
+            <TouchableOpacity style={styles.loginButton} onPress={handleSignupClick}>
               <Text style={styles.defText}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+
+      <View style={styles.bottomView}>
+        {wait && <Text style={styles.bottomText}>Please Wait...</Text>}
+      </View>
+
     </>
   );
 }
@@ -256,6 +311,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  bottomView: {
+    width: '100%',
+    height: "auto",
+    // backgroundColor: '#EE5407',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute', //Here is the trick
+    bottom: 50, //Here is the trick
+  },
+
+  bottomText: {
+    fontWeight: "bold"
+  }
 });
 
 export default SignupPage;

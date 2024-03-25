@@ -14,38 +14,32 @@ import { NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
 import config from '../../utils/config'
 
-interface LoginPageProps {
+interface ForgetPasswordProps {
   navigation: NavigationProp<any>;
 }
 
-interface UserObject {
-  email: string;
-  password: string;
+interface EmailObject {
+  email: string
 }
 
-const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
+const ForgetPassword: FC<ForgetPasswordProps> = ({ navigation }) => {
   const [hidden, setHidden] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [msg, setMsg] = useState("")
   const [error, setError] = useState("")
   const [wait, setWait] = useState(false);
-
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleLoginClick = async() => {
-    const user: UserObject = {email, password}
-    console.log(user)
+  const handleSendClick = async() => {
+    const data: EmailObject = {email}
     setWait(true)
     try {
-      const response = await axios.post(`${config.URL_USED}/api/login`, user)
-      setMsg("Click on the background to proceed")
+      const response = await axios.post(`${config.URL_USED}/api/password-reset`, data)
+      setMsg(response.data.message)
       setError("")
       setModalOpen(true)
       setWait(false)
     } catch (error: any) {
-      console.log("catch running")
-      console.log(error)
       setModalOpen(true)
       setWait(false)
       if (
@@ -57,7 +51,7 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
         setMsg("")
       }
     }
-  };
+  }
 
   return (
     <>
@@ -72,7 +66,7 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
           onPress={() => {
             if (msg) {
               setModalOpen(false)
-              navigation.navigate("RouteFinder")
+              navigation.navigate("LoginPage")
             } else {
               setModalOpen(false)
             }
@@ -84,13 +78,13 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
               
               {msg && 
                 <Text style={{ color: "#c23e34", fontWeight: "bold", fontSize: 20 }}>
-                  LOGIN SUCCESSFUL
+                  EMAIL SENT
                 </Text> 
               }
 
               {error && 
                 <Text style={{ color: "#c23e34", fontWeight: "bold", fontSize: 20 }}>
-                  INVALID LOGIN
+                  INVALID EMAIL
                 </Text> 
               }
 
@@ -118,14 +112,14 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
       <View style={styles.container}>
         <Pressable
           style={styles.backButton}
-          onPress={() => navigation.navigate("StartingPage")}
+          onPress={() => navigation.navigate("LoginPage")}
         >
           <Icon name="arrow-left" size={20} color="#f8ecc4"></Icon>
         </Pressable>
 
 
         <View style={styles.loginItems}>
-          <Text style={styles.loginPageHeader}>Login to your account</Text>
+          <Text style={styles.loginPageHeader}>Change Password</Text>
 
           <View style={styles.loginForm}>
             <View style={styles.formsItems}>
@@ -138,50 +132,8 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
               />
             </View>
 
-            <View style={styles.passwordFormsItems}>
-              <Text>Password:</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  padding: 10,
-                  borderColor: "#818181",
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  width: "100%",
-                  height: 45,
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <TextInput
-                  style={{ width: "80%" }}
-                  secureTextEntry={hidden}
-                  onChangeText={(newPassword) => setPassword(newPassword)}
-                  defaultValue={password}
-                />
-                <TouchableOpacity
-                  style={{
-                    width: "20%",
-                    alignItems: "flex-end",
-                    justifyContent: "center",
-                  }}
-                  onPress={() => setHidden(!hidden)}
-                >
-                  <Text>Show</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View style={{width: "100%", marginBottom: 10}}>
-              <Pressable onPress={() => navigation.navigate("ForgetPassword")}>
-                <Text style={{textAlign: "right"}}>
-                  Forget Password?
-                </Text>
-              </Pressable>
-            </View>
-
-            <TouchableOpacity style={styles.loginButton} onPress={handleLoginClick}>
-              <Text style={styles.defText}>Login</Text>
+            <TouchableOpacity style={styles.loginButton} onPress={handleSendClick}>
+              <Text style={styles.defText}>Send Email</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -208,6 +160,7 @@ const styles = StyleSheet.create({
     height: 150,
 
     borderRadius: 12,
+    padding: 10,
 
     alignItems: "center",
     justifyContent: "center",
@@ -330,4 +283,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default LoginPage;
+export default ForgetPassword;
