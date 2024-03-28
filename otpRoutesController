@@ -1,14 +1,18 @@
 import express from 'express'
 import Route from '../models/routeModel.js'
+import fs from 'fs'
+import gql from 'graphql-tag'
 import { request } from 'graphql-request'
+import twilio from 'twilio'
 import sendRoutesEmail from '../utils/sendRoutesEmail.js'
-import { Client } from '@googlemaps/google-maps-services-js'
 import config from '../utils/config.js'
 
 
 const routesRouter = express.Router()
 
-const gmapsUrl = "http://localhost:8080/otp/routers/default/index/graphql"
+const query = gql(fs.readFileSync('queries.graphql', 'utf8'));
+// const otpUrl = "https://dz8b7rmv-8080.asse.devtunnels.ms/otp/routers/default/index/graphql"
+const otpUrl = "http://localhost:8080/otp/routers/default/index/graphql"
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
@@ -34,8 +38,8 @@ routesRouter.post('/', async (req, res) => {
     };
     console.log(variables)
 
-    // Google Maps Directions API
-    const gmapsResponse = await request(otpUrl, query, variables);
+    // Use this query with your GraphQL client
+    const otpResponse = await request(otpUrl, query, variables);
 
     new Route ({
       origin: body.origin,
@@ -44,7 +48,7 @@ routesRouter.post('/', async (req, res) => {
 
     return res.status(201).json({
       message: "Route created successfully",
-      gmapsResponse
+      otpResponse
     })
 
   } catch (error) {
