@@ -20,7 +20,7 @@ const Route = (props) => {
   const [sendEmailPopup, setSendEmailPopup] = useState(null)
   const longestDuration = Math.max(...routesDuration)
 
-  
+
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
@@ -113,11 +113,14 @@ const Route = (props) => {
               </ul>
             </div>
 
-
-            <div className='distance-time' style={{fontSize: 13, marginBottom: 5, marginTop: 5}}>
-              <p>{itinerary.legs[0].departure_time.text}</p>
-              <p>{itinerary.legs[0].arrival_time.text}</p>
-            </div>
+            {itinerary.legs[0].departure_time ? (
+              <div className='distance-time' style={{fontSize: 13, marginBottom: 5, marginTop: 5}}>
+                <p>{itinerary.legs[0].departure_time.text}</p>
+                <p>{itinerary.legs[0].arrival_time.text}</p>
+              </div>
+            ) : (
+              <></>
+            )}
 
 
             <div style={styles.grayBar}>
