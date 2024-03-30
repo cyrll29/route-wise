@@ -4,11 +4,11 @@ import { request } from 'graphql-request'
 import sendRoutesEmail from '../utils/sendRoutesEmail.js'
 import { Client } from '@googlemaps/google-maps-services-js'
 import config from '../utils/config.js'
-
+import axios from 'axios'
 
 const routesRouter = express.Router()
+const client = new Client({});
 
-const gmapsUrl = "http://localhost:8080/otp/routers/default/index/graphql"
 
 routesRouter.post('/', async (req, res) => {
   const body = req.body
@@ -19,23 +19,22 @@ routesRouter.post('/', async (req, res) => {
       })
     }
 
-    const date = new Date()
-    const currentDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
-    const currentTime = `${date.getHours()}:${date.getMinutes()}`
-
-    const variables = {
-      fromLat: body.origin.lat,
-      fromLon: body.origin.lng,
-      toLat: body.destination.lat,
-      toLon: body.destination.lng,
-      date: currentDate,
-      // time: '18:00'
-      time: currentTime
-    };
-    console.log(variables)
+    // const origin = `${body.origin.lat},${body.origin.lng}`
+    // const destination = `${body.destination.lat},${body.destination.lng}`
 
     // Google Maps Directions API
-    const gmapsResponse = await request(otpUrl, query, variables);
+    const response = await client.directions({
+      params: {
+        origin: body.origin,
+        destination: body.destination, 
+        mode: 'transit',
+        transit_routing_preference: 'less_walking',
+        alternatives: true,
+        key: process.env.REACT_APP_API_KEY
+      },
+    });
+
+    const gmapsResponse = response.data
 
     new Route ({
       origin: body.origin,
@@ -44,7 +43,7 @@ routesRouter.post('/', async (req, res) => {
 
     return res.status(201).json({
       message: "Route created successfully",
-      gmapsResponse
+      gmapsResponse,
     })
 
   } catch (error) {

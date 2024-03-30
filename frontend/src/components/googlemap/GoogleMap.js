@@ -312,15 +312,17 @@ const Map = (props) => {
       {renderStartMarker()}
       {renderEndMarker()}
 
-      {renderDestinationMarker()}
+      {/* {renderDestinationMarker()}
       {renderLegStartMarkers()}
-      {renderPolylines()}
+      {renderPolylines()} */}
       
+
       {/* {someCoords ? someCoords.map((coord, index) => (
         <Marker key={index} position={{ lat: coord.lat, lng: coord.lng}}/>
       )):<></>} */}
-      {testPolylineHandler()}
-      {testMarkerHandler()}
+
+      {/* {testPolylineHandler()}
+      {testMarkerHandler()} */}
     </GoogleMap>
   )
 }

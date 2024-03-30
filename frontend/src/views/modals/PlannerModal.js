@@ -16,11 +16,11 @@ import RouteList from '../../components/planner/RouteList.js'
 const RouteModal = (props) => {
 
   const {
-    onItinerarySelect,
-    selectPlannerCenter,
-    selectOriginMarker,
-    selectDestinationMarker,
-    selectRouteDetailCenter
+    onItinerarySelect,       // selected itinerary (array)
+    selectPlannerCenter,     // set center (Lat, Lng, Zoom)
+    selectOriginMarker,      // set origin marker (Lat, Lng)
+    selectDestinationMarker, // set destination marker (Lat, Lng)
+    selectRouteDetailCenter  // set center for route detail (Lat, Lng)
   } = props
 
 
@@ -40,33 +40,28 @@ const RouteModal = (props) => {
 
     if (originInputRef.current.value === '' || destinationInputRef.current.value === '') {
       setRoutes(null)
-      setError("Wrong input")
+      setError("Please enter your origin and destination.")
       return;
     }
 
+    
     const data = {
-      origin: {
-        lat: origin.getPlace().geometry.location.lat(),
-        lng: origin.getPlace().geometry.location.lng()
-      },
-      destination: {
-        lat: destination.getPlace().geometry.location.lat(),
-        lng: destination.getPlace().geometry.location.lng()
-      }
+      origin: `place_id:${origin.getPlace().place_id}`,
+      destination: `place_id:${destination.getPlace().place_id}`
     };
-    console.log(data)
+
 
     routeService
       .create(data)
       .then((response) => {
-        console.log(response.data.otpResponse.plan)
+        console.log(response.data)
         setLoading(false)
-        setRoutes(response.data.otpResponse.plan)
+        setRoutes(response.data.gmapsResponse.routes)
         setError("")
-        onItinerarySelect(response.data.otpResponse.plan.itineraries[0])
+        onItinerarySelect(response.data.gmapsResponse.routes[0])
         selectPlannerCenter({
-          lat: response.data.otpResponse.plan.itineraries[0].legs[0].from.lat,
-          lng: response.data.otpResponse.plan.itineraries[0].legs[0].from.lon
+          lat: response.data.gmapsResponse.routes[0].legs[0].start_location.lat,
+          lng: response.data.gmapsResponse.routes[0].legs[0].start_location.lng
         })
       })
       .catch((error) => {
@@ -100,21 +95,17 @@ const RouteModal = (props) => {
         lat: origin.getPlace().geometry.location.lat(),
         lng: origin.getPlace().geometry.location.lng()
       };
-      console.log(places);
       selectOriginMarker(places)
       selectPlannerCenter({lat: places.lat, lng: places.lng})
     }
     setError("");
   };
-
-
   const onPlaceDestinationChanged = (destination) => {
     if (destination !== null) {
       const places = {
         lat: destination.getPlace().geometry.location.lat(),
         lng: destination.getPlace().geometry.location.lng()
       };
-      console.log(places);
       selectDestinationMarker(places)
       selectPlannerCenter({lat: places.lat, lng: places.lng})
     }
@@ -126,7 +117,7 @@ const RouteModal = (props) => {
     componentRestrictions: { 
       country: "ph" ,
     },  
-    fields: ["geometry"],
+    fields: ["geometry", "place_id"],
   };
 
 

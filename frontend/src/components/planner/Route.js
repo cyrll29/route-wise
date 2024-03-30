@@ -2,7 +2,6 @@ import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 import "../../assets/styles/routelist.css"
 import SendEmailModal from './SendEmailModal'
-import SendSmsModal from './SendSmsModal'
 
 
 const Route = (props) => {
@@ -19,17 +18,16 @@ const Route = (props) => {
 
   const [showDetails, setShowDetails] = useState(null)
   const [sendEmailPopup, setSendEmailPopup] = useState(null)
-  const [sendSmsPopup, setSendSmsPopup] = useState(null)
   const longestDuration = Math.max(...routesDuration)
 
+  
   const handleItineraryClick = () => {
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
-    selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon, zoom: 15})
+    selectPlannerCenter({lat: itinerary.legs[0].start_location.lat, lng: itinerary.legs[0].start_location.lng, zoom: 15})
   }
 
 
-  
   // -------Duration Formatter---------
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
@@ -51,27 +49,12 @@ const Route = (props) => {
     return formattedDuration;
   }
 
-  // -------Time Formatter---------
-  const formatTime = (date) => {
-    const hours = new Date(date).getHours();
-    const minutes = new Date(date).getMinutes();
-    const amPM = hours >= 12 ? 'PM' : 'AM';
 
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-
-    const formattedMinutes = ('0' + minutes).substr(-2);
-    return `${formattedHours}:${formattedMinutes} ${amPM}`;
-  }
-
-  const adjustedWidth = (itinerary.duration/longestDuration * 100) + '%'
-
-
+  const adjustedWidth = (itinerary.legs[0].duration.value/longestDuration * 100) + '%'
   const markerPosition = (distance) => {
-    // const position = (duration/(itinerary.endTime) * 100) + '%'
-    // return position;
     let totalDistance = 0;
-    for(let i = 0; i < itinerary.legs.length; i++) {
-      totalDistance += itinerary.legs[i].distance
+    for(let i = 0; i < itinerary.legs[0].steps.length; i++) {
+      totalDistance += itinerary.legs[0].steps[i].distance.value
     }
     const position = ((distance/totalDistance) * 100) + '%'
     return position;
@@ -79,15 +62,25 @@ const Route = (props) => {
 
 
   const legColors = (leg) => {
-    let legColor = "black"
-    if(leg.mode === "WALK"){
-      legColor = "#FF7F7F"
-    } else if(leg.mode === "BUS") {
-      legColor = "#45B6FE"
-    } else if(leg.mode === "RAIL") {
-      legColor = "#FFA756"
+    if (leg.travel_mode === "WALKING"){
+      return "#FF7F7F"
     }
-    return legColor
+    if (leg.travel_mode === "TRANSIT") {
+      if (leg.transit_details.line.vehicle.type === "BUS") {
+        return "#45B6FE"
+      } else if (leg.transit_details.line.vehicle.type === "TRAM") {
+        return "#FFA756"
+      }
+    }
+  }
+
+  const travelMode = (leg) => {
+    if (leg.travel_mode === "WALKING") {
+      return "WALK"
+    }
+    if (leg.travel_mode === "TRANSIT") {
+      return leg.transit_details.line.vehicle.type
+    }
   }
   
   
@@ -99,9 +92,9 @@ const Route = (props) => {
         <div>
           <div onClick={handleItineraryClick} className='main-grid'>
             <div style={styles.mainGridHeader}>
-              <p style={{fontWeight: 'bold'}}>{formatDuration(itinerary.duration)}</p>
+              <p style={{fontWeight: 'bold'}}>{formatDuration(itinerary.legs[0].duration.value)}</p>
               <ul style={styles.modeOfTranspo}>
-                {itinerary.legs.map((leg, index) => (
+                {itinerary.legs[0].steps.map((leg, index) => (
                   <div key={index} style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -114,15 +107,19 @@ const Route = (props) => {
                     borderRadius: 6,
                     fontWeight: 'bold',
                     color: 'white'}}>
-                    {leg.mode}
+                    {travelMode(leg)}
                   </div>
                 ))}
               </ul>
             </div>
+
+
             <div className='distance-time' style={{fontSize: 13, marginBottom: 5, marginTop: 5}}>
-              <p>{formatTime(itinerary.startTime)}</p>
-              <p>{formatTime(itinerary.endTime)}</p>
+              <p>{itinerary.legs[0].departure_time.text}</p>
+              <p>{itinerary.legs[0].arrival_time.text}</p>
             </div>
+
+
             <div style={styles.grayBar}>
               <div style={{ 
                 width: adjustedWidth, 
@@ -130,8 +127,8 @@ const Route = (props) => {
                 backgroundColor: '#880015', 
                 borderRadius: 10}}>
                   <ul style={{display: 'flex', flexDirection: 'row', width: '100%'}}>
-                    {itinerary.legs.map((leg, index) => (
-                      <div key={index} style={{width: markerPosition(leg.distance), height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    {itinerary.legs[0].steps.map((leg, index) => (
+                      <div key={index} style={{width: markerPosition(leg.distance.value), height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <div key={index} style={{width: 10, height: 10, backgroundColor: '#880015', borderRadius: '50%', top: -2, position: 'relative'}}>
                           &nbsp;
                         </div>
@@ -141,14 +138,15 @@ const Route = (props) => {
               </div>
             </div>
           </div>
+
+
           {showDetails ? (
             <div>
               <div className='send-route-div'>
-                <button onClick={() => setSendSmsPopup(true)} className='send-route-sms'>Send route via SMS</button>
                 <button onClick={() => setSendEmailPopup(true)} className='send-route-email'>Send route via Email</button>
               </div>
               <ul>
-                {itinerary.legs.map((leg, index) => (
+                {itinerary.legs[0].steps.map((leg, index) => (
                   <RouteDetail 
                     key={index} 
                     leg={leg}
@@ -166,15 +164,6 @@ const Route = (props) => {
       {sendEmailPopup && 
         <SendEmailModal 
           onClose={() => setSendEmailPopup(false)}
-          itinerary={itinerary}
-          origin={origin}
-          destination={destination}
-        />
-      }
-
-      {sendSmsPopup && 
-        <SendSmsModal 
-          onClose={() => setSendSmsPopup(false)}
           itinerary={itinerary}
           origin={origin}
           destination={destination}
