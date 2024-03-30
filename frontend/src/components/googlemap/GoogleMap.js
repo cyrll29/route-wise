@@ -43,15 +43,19 @@ const Map = (props) => {
   } = props
   
 
-
-  const modeIcons = {
-    "WALK": `${walkIcon}`,
-    "BUS": `${busIcon}`,
-    "RAIL": `${railIcon}`,
-  };
+  const startMarkerIcon = (leg) => {
+    if (leg.travel_mode === "WALKING"){
+      return `${walkIcon}`
+    }
+    if (leg.travel_mode === "TRANSIT") {
+      if (leg.transit_details.line.vehicle.type === "BUS") {
+        return `${busIcon}`
+      } else if (leg.transit_details.line.vehicle.type === "TRAM") {
+        return `${railIcon}`
+      }
+    }
+  }
   const [reports, setReports] = useState(null)
-  // const [showTrafficLayer, setShowTrafficLayer] = useState(true)
-
 
 
   // Get all the reports from database
@@ -72,15 +76,15 @@ const Map = (props) => {
 
   // PlannerModal - Render markers itinerary's leg start
   const renderLegStartMarkers = () => {
-    if (selectedItinerary && selectedItinerary.legs) {
+    if (selectedItinerary && selectedItinerary.legs[0].steps) {
       selectOriginMarker(null)
       selectDestinationMarker(null)
-      return selectedItinerary.legs.map((leg, index) => (
+      return selectedItinerary.legs[0].steps.map((leg, index) => (
         <Marker
           key={index}
-          position={{ lat: leg.from.lat, lng: leg.from.lon }}
+          position={{ lat: leg.start_location.lat, lng: leg.start_location.lng }}
           icon={{
-            url: modeIcons[leg.mode],
+            url: startMarkerIcon(leg),
             scaledSize: new google.maps.Size(35, 35)
           }}
         />
@@ -154,11 +158,11 @@ const Map = (props) => {
 
   // PlannerModal - Render itinerary destination marker
   const renderDestinationMarker = () => {
-    if (selectedItinerary && selectedItinerary.legs.length > 0) {
-      const lastLeg = selectedItinerary.legs[selectedItinerary.legs.length - 1];
+    if (selectedItinerary && selectedItinerary.legs[0].steps.length > 0) {
+      const lastLeg = selectedItinerary.legs[0].steps[selectedItinerary.legs[0].steps.length - 1];
       return (
         <Marker
-          position={{ lat: lastLeg.to.lat, lng: lastLeg.to.lon }}
+          position={{ lat: lastLeg.end_location.lat, lng: lastLeg.end_location.lng }}
           icon={{
             url: `${destinationIcon}`,
             scaledSize: new google.maps.Size(35, 45)
@@ -171,7 +175,7 @@ const Map = (props) => {
 
 
 
-  // PlannerModal - Render origin marker
+  // PlannerModal - Render ORIGIN INPUT marker
   const renderStartMarker = () => {
     if (originMarker) {
       return (
@@ -187,7 +191,7 @@ const Map = (props) => {
     return null;
   };
 
-  // PlannerModal - Render destination marker
+  // PlannerModal - Render DESTINATION INPUT marker
   const renderEndMarker = () => {
     if (destinationMarker) {
       return (
@@ -315,8 +319,8 @@ const Map = (props) => {
       {renderStartMarker()}
       {renderEndMarker()}
 
-      {/* {renderDestinationMarker()}
-      {renderLegStartMarkers()} */}
+      {renderDestinationMarker()}
+      {renderLegStartMarkers()}
       {renderPolylines()}
       
 
