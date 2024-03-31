@@ -223,7 +223,7 @@
         "elementType": "geometry.fill",
         "stylers": [
             {
-                "color": "#fac9a9"
+                "color": "#fde9dc"
             },
             {
                 "visibility": "simplified"

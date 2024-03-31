@@ -44,7 +44,7 @@ const RouteModal = (props) => {
       return;
     }
 
-    
+
     const data = {
       origin: `place_id:${origin.getPlace().place_id}`,
       destination: `place_id:${destination.getPlace().place_id}`
@@ -56,6 +56,8 @@ const RouteModal = (props) => {
       .then((response) => {
         console.log(response.data)
         setLoading(false)
+        selectOriginMarker(null)
+        selectDestinationMarker(null)
         setRoutes(response.data.gmapsResponse.routes)
         setError("")
         onItinerarySelect(response.data.gmapsResponse.routes[0])

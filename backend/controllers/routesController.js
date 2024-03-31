@@ -19,8 +19,31 @@ routesRouter.post('/', async (req, res) => {
       })
     }
 
-    // const origin = `${body.origin.lat},${body.origin.lng}`
-    // const destination = `${body.destination.lat},${body.destination.lng}`
+    // const reqData = {
+    //   origin: {
+    //     "placeId": "ChIJJfn1VGC2lzMRtNhYkEkNokM",
+    //   },
+    //   destination: {
+    //     "placeId": "ChIJB8roEL-3lzMRZbX34r2dHWU",
+    //   },
+    //   travelMode: 'TRANSIT',
+    //   transitPreferences: {
+    //     "routingPreference": "LESS_WALKING"
+    //   },
+    //   computeAlternativeRoutes: true
+    // };
+
+    // const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes'
+
+    // const responseRoute = await axios.post(apiUrl, reqData, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "X-Goog-FieldMask": "routes.legs,routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline",
+    //     "X-Goog-Api-Key": 'AIzaSyBDu1a3qe9mCzfAePw7qv7B4_LGESs5jIQ'
+    //   },
+    // })
+
+    // const responseRouteData = responseRoute.data
 
     // Google Maps Directions API
     const response = await client.directions({
@@ -28,7 +51,7 @@ routesRouter.post('/', async (req, res) => {
         origin: body.origin,
         destination: body.destination, 
         mode: 'transit',
-        transit_routing_preference: 'less_walking',
+        // transit_routing_preference: 'less_walking',
         alternatives: true,
         key: process.env.REACT_APP_API_KEY
       },
@@ -44,6 +67,7 @@ routesRouter.post('/', async (req, res) => {
     return res.status(201).json({
       message: "Route created successfully",
       gmapsResponse,
+      responseRouteData
     })
 
   } catch (error) {

@@ -77,8 +77,6 @@ const Map = (props) => {
   // PlannerModal - Render markers itinerary's leg start
   const renderLegStartMarkers = () => {
     if (selectedItinerary && selectedItinerary.legs[0].steps) {
-      selectOriginMarker(null)
-      selectDestinationMarker(null)
       return selectedItinerary.legs[0].steps.map((leg, index) => (
         <Marker
           key={index}
@@ -116,7 +114,7 @@ const Map = (props) => {
           options={{
             strokeColor: color,
             strokeWeight: 8,
-            strokeOpacity: 0.8
+            strokeOpacity: 1
           }} 
         />;
       });
