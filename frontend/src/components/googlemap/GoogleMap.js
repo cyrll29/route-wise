@@ -34,11 +34,8 @@ const Map = (props) => {
     selectedItinerary,
     originMarker,
     destinationMarker,
-    selectOriginMarker,
-    selectDestinationMarker,
 
     // For Test
-    staticRoute,
     showTrafficLayer
   } = props
   
@@ -121,37 +118,6 @@ const Map = (props) => {
     }
     return null;
   };
-
-  const testPolylineHandler = () => {
-    if(staticRoute) {
-      return staticRoute.map((encoded, index) => {
-        const decoded = decodePolyline(encoded)
-        return <Polyline
-          key={index}
-          path={decoded}
-          options={{
-            strokeColor: 'blue',
-            strokeWeight: 8
-          }}
-        />
-      })
-    }
-    return null;
-  }
-
-  const testMarkerHandler = () => {
-    if(staticRoute) {
-      return staticRoute.map((encoded, index) => {
-        const decoded = decodePolyline(encoded)
-        return <Marker
-          key={index}
-          position={{ lat: decoded[0].lat, lng: decoded[0].lng }}
-        />
-      })
-    }
-    return null;
-  }
-
 
 
   // PlannerModal - Render itinerary destination marker
@@ -325,9 +291,6 @@ const Map = (props) => {
       {/* {someCoords ? someCoords.map((coord, index) => (
         <Marker key={index} position={{ lat: coord.lat, lng: coord.lng}}/>
       )):<></>} */}
-
-      {/* {testPolylineHandler()}
-      {testMarkerHandler()} */}
     </GoogleMap>
   )
 }

@@ -24,11 +24,8 @@ const GoogleMapApi = (props) => {
     selectedItinerary,
     originMarker,
     destinationMarker,
-    selectOriginMarker,
-    selectDestinationMarker,
 
     // For Test
-    staticRoute,
     showTrafficLayer
   } = props
 
@@ -60,7 +57,6 @@ const GoogleMapApi = (props) => {
   
   return (
     <GoogleMap 
-      staticRoute={staticRoute}
       mapOptions={mapOptions} 
       isMarkLocation={isMarkLocation}
       onMarkLocation={onMarkLocation}
@@ -70,8 +66,6 @@ const GoogleMapApi = (props) => {
       selectedItinerary={selectedItinerary}
       originMarker={originMarker}
       destinationMarker={destinationMarker}
-      selectOriginMarker={selectOriginMarker}
-      selectDestinationMarker={selectDestinationMarker}
 
       showTrafficLayer={showTrafficLayer}
     />

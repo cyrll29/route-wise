@@ -4,12 +4,10 @@ import HomeButtons from '../utils/HomeButtons'
 import HomeModals from '../utils/HomeModals' 
 import reportService from '../services/reportService'
 import '../assets/styles/home.css'
-import decodePolyline from 'decode-google-map-polyline'
 
 
 
 const HomePage = () => {
-
 
   // -----------------FOR SHOW MODAL-------------------
   const [activeModal, setActiveModal] = useState("planner")
@@ -98,7 +96,6 @@ const HomePage = () => {
   }
 
 
-
   // --------------FOR HINDRANCE MODAL--------------------
   const selectHindranceCenter = (latlng) => {
     setCenterLat(latlng.lat)
@@ -108,101 +105,6 @@ const HomePage = () => {
 
 
   const [showTrafficLayer, setShowTrafficLayer] = useState(true)
-
-
-  const [staticRoute, setStaticRoute] = useState([])
-
-  const testHandleClick = (index) => {
-    const mrtLine3Encoded = [
-      "gwlxAucvaV|y@ae@",
-      "i|jxAwiwaVhn@e]",
-      "_mixA}gxaVxPkJloAgd@",
-      "wjfxAqxyaV|gAe`@",
-      "yadxAwyzaVve@oPxL}A`MNrMpCrj@vL"
-    ]
-
-    const lrtLine1Encoded = [
-      "_ymxA_}saVOvEl@tbB",
-      "axmxAqrpaVx@bzBt@tAxNJ"
-    ]
-
-    const proj6SMNorthEDSA = [
-      "ijmxAw~uaVvC_U",
-      "qemxAwtvaVch@}GoFUsELyBVw@sF",
-      "kboxAydwaVyB}ODwBN{Aj@_BbAuAnAiArAw@hB_@[gC",
-      "mznxAkkxaVxRqCb@dDeHvk@"
-    ]
-
-    const SMNorthEDSAMonumento = [
-      "{mmxA_|uaV|@HQfAs@hBEr@Lr@qJfs@S~D?fC",
-      "azmxAktsaVVhu@",
-      "iymxAa~qaV`@nk@",
-      "gxmxAqqpaV?xd@",
-      "gxmxAwkoaVn@ziA"
-    ]
-
-    const SMNorthEDSAFairview = [
-      "{mmxA_|uaV|@HQfAs@hBEr@Lr@qJfs@S~D?fC",
-      "czmxAwtsaVkYqAiB_@oAw@s@aAgQwcA_A_CuHwG",
-      "{yoxAsmvaVoGbEgDdAgDn@}BH}qAvA{E\\eEf@eAV_Bn@gAz@kMpR",
-      "sftxA{fuaVsU_Rgd@{UgEcCcI_GcMoGuHqCwr@oJmEM}c@tD",
-      "yizxAepwaV_A}J]g@QEaDb@cPz@eO}BoM{SeBmQkIyMo@cBwF_W",
-    ]
-
-    const carouselEncoded = [
-      "ovmxA_cmaVg@_iA",
-      "wwmxA_moaVQgi@",
-      "ixmxAgwpaVMwh@",
-      "wxmxA_araVY}q@",
-      "qymxA}ssaV@aBr@uJvIuo@Vo@`@i@`XiO",
-      "grlxAofvaVh|@{f@",
-      "}tjxAknwaVvt@wa@pNgFrM_F",
-      "_ahxAk_yaV|uA{f@",
-      "ajexAggzaVhb@mO",
-      "yadxAwyzaVve@oPxL}A`MNrMpCrj@vL"
-    ]
-
-    if (index === 0) {
-      setStaticRoute(mrtLine3Encoded)
-      const decoded = decodePolyline(mrtLine3Encoded[2])
-      setCenterLat(decoded[0].lat)
-      setCenterLng(decoded[0].lng)
-      setMapZoom(12)
-    } else if (index === 1) {
-      setStaticRoute(lrtLine1Encoded)
-      const decoded = decodePolyline(lrtLine1Encoded[1])
-      setCenterLat(decoded[0].lat)
-      setCenterLng(decoded[0].lng)
-    } else if (index === 2) {
-      // setCenterLat(mrtLine7[2].lat)
-      // setCenterLng(mrtLine7[2].lng)
-    } else if (index === 3) {
-      setStaticRoute(proj6SMNorthEDSA)
-      const decoded = decodePolyline(proj6SMNorthEDSA[1])
-      setCenterLat(decoded[0].lat)
-      setCenterLng(decoded[0].lng)
-      setMapZoom(16)
-    } else if (index === 4) {
-      setStaticRoute(SMNorthEDSAMonumento)
-      const decoded = decodePolyline(SMNorthEDSAMonumento[1])
-      setCenterLat(decoded[0].lat)
-      setCenterLng(decoded[0].lng)
-      setMapZoom(16)
-    } else if (index === 5) {
-      setStaticRoute(SMNorthEDSAFairview)
-      const decoded = decodePolyline(SMNorthEDSAFairview[2])
-      setCenterLat(decoded[0].lat)
-      setCenterLng(decoded[0].lng)
-      setMapZoom(16)
-    }
-    else if (index === 6) {
-      setStaticRoute(carouselEncoded)
-      const decoded = decodePolyline(carouselEncoded[2])
-      setCenterLat(decoded[0].lat)
-      setCenterLng(decoded[0].lng)
-      setMapZoom(16)
-    }
-  }
 
 
     
@@ -233,8 +135,6 @@ const HomePage = () => {
           selectDestinationMarker={selectDestinationMarker}
           selectRouteDetailCenter={selectRouteDetailCenter}
 
-          // Static Route Modal
-          testHandleClick={testHandleClick}
 
           // Hindrance Modal
           selectHindranceCenter={selectHindranceCenter}
@@ -244,7 +144,6 @@ const HomePage = () => {
 
       <GoogleMapApi 
         
-        // someCoords={someCoords}
         mapZoom={mapZoom}
         centerLat={centerLat}
         centerLng={centerLng}      
@@ -262,18 +161,15 @@ const HomePage = () => {
         selectOriginMarker={selectOriginMarker}
         selectDestinationMarker={selectDestinationMarker}
 
-        // List Modal
-        staticRoute={staticRoute}
         showTrafficLayer={showTrafficLayer}
 
       />  
 
-      <div className="home-buttons" onClick={() => setStaticRoute()}>
+      <div className="home-buttons">
         <HomeButtons 
           routeReport = {hasToken}
           routePlanner = {true}
           routeUpdate = {true}
-          routeList = {true}
           routeMenu = {true}
           btnModalClick={btnModalClick}
         />

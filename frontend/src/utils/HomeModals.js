@@ -1,7 +1,6 @@
 import ReportModal from '../views/modals/ReportModal'
 import HindranceModal from '../views/modals/HindranceModal'
 import PlannerModal from '../views/modals/PlannerModal'
-import ListModal from '../views/modals/ListModal'
 import MenuModal from '../views/modals/MenuModal'
 
 
@@ -36,13 +35,6 @@ const HomeModals = (props) => {
       {props.routeUpdateModal 
         ? <HindranceModal 
           selectHindranceCenter={props.selectHindranceCenter}
-        /> 
-        : <></>
-      }
-
-      {props.routeListModal 
-        ? <ListModal 
-        testHandleClick={props.testHandleClick}
         /> 
         : <></>
       }
