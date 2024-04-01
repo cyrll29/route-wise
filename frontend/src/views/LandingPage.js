@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import '../assets/styles/landing.css'
-import logo from '../assets/img/logo.png'
+import logo2 from '../assets/img/LOGO2.svg'
 
 
 
@@ -17,7 +17,7 @@ const LandingPage = () => {
       <div className='landing-container'>
         
         <div className='landing-logo'>
-          <img src= {logo} alt="logo" />
+          <img src= {logo2} alt="logo" />
         </div>
 
         <div className='landing-title'>

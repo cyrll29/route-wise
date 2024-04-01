@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import userService from '../services/userService'
-import logo from '../assets/img/logo.png'
+import logo2 from '../assets/img/LOGO2.svg'
 import '../assets/styles/signup.css'
 
 
@@ -51,7 +51,7 @@ const SignupPage = () => {
     <div className="signup-page">
       <div className='signup-container'>
         <div className='signup-logo'>
-            <img src= {logo} alt="logo" />
+            <img src= {logo2} alt="logo" />
             <h1><span>K</span>yusi<span>T</span>rip</h1>
         </div>
 

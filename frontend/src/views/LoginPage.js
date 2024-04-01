@@ -4,7 +4,7 @@ import { login } from '../services/loginService'
 import reportService from '../services/reportService'
 import CmnPopupModal from '../components/CmnPopupModal'
 import '../assets/styles/login.css'
-import logo from '../assets/img/logo.png'
+import logo2 from '../assets/img/LOGO2.svg'
 
 
 
@@ -46,7 +46,7 @@ const LoginPage = () => {
     <div className="login-page">
       <div className='login-container'>
         <div className='login-logo'>
-            <img src= {logo} alt="logo" />
+            <img src= {logo2} alt="logo" />
             <h1><span>K</span>yusi<span>T</span>rip</h1>
         </div>
 

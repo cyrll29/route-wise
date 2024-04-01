@@ -1,3 +1,5 @@
+import parse from 'html-react-parser'
+
 const routesEmailContent = (email, origin, destination, duration, legs) => {
 
   const formatDuration = (seconds) => {
@@ -32,15 +34,19 @@ const routesEmailContent = (email, origin, destination, duration, legs) => {
   const legDetails = legs.map((leg, index) => {
     return `
       <div>
-        <p>Leg ${index + 1}: ${leg.mode}</p>
-        <p>Start: ${leg.from.name}</p>
-        <p>End: ${leg.to.name}</p>
-        ${leg.mode !== "WALK" ? `
-          <p>Route: ${leg.route.longName}</p>
-        ` : ``
+        <p><span class="bold-text">Step ${index + 1}: ${leg.travel_mode} [${formatDuration(leg.duration.value)}] [${formatDistance(leg.distance.value)}]</span></p>
+        ${leg.travel_mode !== "WALKING" ? `
+          <div>
+            <p>Take ${leg.transit_details.line.vehicle.name} with this route: ${leg.transit_details.line.name}</p>
+            <p>Start: ${leg.transit_details.departure_stop.name}</p>
+            <p>End: ${leg.transit_details.arrival_stop.name}</p>
+          </div>
+        ` : `
+          <div>
+            <p>Instruction: ${parse(leg.html_instructions)}</p>
+          </div>
+        `
         }
-        <p>Duration: ${formatDuration(leg.duration)}</p>
-        <p>Distance: ${formatDistance(leg.distance)}</p>
       </div>
     `;
   }).join('');
@@ -81,14 +87,19 @@ const routesEmailContent = (email, origin, destination, duration, legs) => {
         .anchor:hover {
           opacity: 0.7;
         }
+        .bold-text {
+          font-weight: bold;
+        }
       </style>
     </head>
     <body>
       <div class="container">
-        <h1>Your Public Transit Itinerary Details</h1>
-        <p>Origin: ${origin}</p>
-        <p>Destination: ${destination}</p>
-        <p>Duration: ${formatDuration(duration)}</p>
+        <h1>Your Public Transit Route Details</h1>
+        <p><span class="bold-text">Your Origin</span>: ${origin}</p>
+        <p><span class="bold-text">Your Destination</span>: ${destination}</p>
+        <p><span class="bold-text">Duration of the trip</span>: ${formatDuration(duration)}</p>
+        <br>
+        <p>The instructions for your chosen route are the following:</p>
         ${legDetails}
         <p>Thank you for using KyusiTrip,</p>
         <p>The KyusiTrip team</p>

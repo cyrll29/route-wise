@@ -20,11 +20,12 @@ const SendEmailModal = (props) => {
   
 
   const details = {
-    duration: itinerary.duration,
+    duration: itinerary.legs[0].duration.value,
     origin: origin,
     destination: destination,
-    legs: itinerary.legs
+    legs: itinerary.legs[0].steps
   }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()

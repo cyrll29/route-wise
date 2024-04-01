@@ -19,39 +19,13 @@ routesRouter.post('/', async (req, res) => {
       })
     }
 
-    // const reqData = {
-    //   origin: {
-    //     "placeId": "ChIJJfn1VGC2lzMRtNhYkEkNokM",
-    //   },
-    //   destination: {
-    //     "placeId": "ChIJB8roEL-3lzMRZbX34r2dHWU",
-    //   },
-    //   travelMode: 'TRANSIT',
-    //   transitPreferences: {
-    //     "routingPreference": "LESS_WALKING"
-    //   },
-    //   computeAlternativeRoutes: true
-    // };
-
-    // const apiUrl = 'https://routes.googleapis.com/directions/v2:computeRoutes'
-
-    // const responseRoute = await axios.post(apiUrl, reqData, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-Goog-FieldMask": "routes.legs,routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline",
-    //     "X-Goog-Api-Key": 'AIzaSyBDu1a3qe9mCzfAePw7qv7B4_LGESs5jIQ'
-    //   },
-    // })
-
-    // const responseRouteData = responseRoute.data
-
     // Google Maps Directions API
     const response = await client.directions({
       params: {
         origin: body.origin,
         destination: body.destination, 
         mode: 'transit',
-        // transit_routing_preference: 'less_walking',
+        transit_routing_preference: 'fewer_transfers',
         alternatives: true,
         key: process.env.REACT_APP_API_KEY
       },
@@ -66,8 +40,7 @@ routesRouter.post('/', async (req, res) => {
 
     return res.status(201).json({
       message: "Route created successfully",
-      gmapsResponse,
-      responseRouteData
+      gmapsResponse
     })
 
   } catch (error) {
@@ -107,38 +80,6 @@ routesRouter.post('/sendemail', async (req, res) => {
   }
 })
 
-routesRouter.post('/sendsms', async (req, res) => {
-  const { phoneNumber, details } = req.body
-  console.log(phoneNumber)
-  console.log(typeof phoneNumber)
-  try {
-    client.messages
-      .create({
-        body: "Hey from twilio",
-        messagingServiceSid: "MG529e2428d82333e3ffad801218ea7a38",
-        from: '+16416663715',
-        to: `${phoneNumber}`
-      })
-      .then((message) => {
-        console.log(message)
-        res.status(200).json({
-          message: "Route details sent to your number"
-        })
-      })
-      .catch((error) => {
-        console.log(error)
-        res.status(500).json({
-          message: "Internal server error"
-        })
-      })
-
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({
-      message: "Internal server error"
-    })
-  }
-})
 
 routesRouter.get('/', async (req, res) => {
   try {
