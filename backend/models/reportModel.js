@@ -18,6 +18,10 @@ const reportSchema = new mongoose.Schema(
       type: Object,
       required: true
     },
+    severity: {
+      type: Object,
+      required: true
+    },
     body: {
       type: String,
       required: true

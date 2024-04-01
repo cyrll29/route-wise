@@ -10,12 +10,12 @@ import originIcon from '../../assets/img/map-origin.png'
 import destinationIcon from '../../assets/img/map-destination.png'
 import walkIcon from '../../assets/img/map-walk.png'
 import railIcon from '../../assets/img/map-rail.png'
-import warningIcon from '../../assets/img/map-warning.png'
-import trafficIcon from '../../assets/img/traffic-jam-icon.png'
-import accidentIcon from '../../assets/img/accident-icon.png'
-import repairIcon from '../../assets/img/road-repair-icon.png'
-import floodIcon from '../../assets/img/flood-icon.png'
-import closureIcon from '../../assets/img/closure-icon.png'
+import warningIcon from '../../assets/img/map-warning.svg'
+import trafficIcon from '../../assets/img/traffic-jam-icon.svg'
+import accidentIcon from '../../assets/img/accident-icon.svg'
+import repairIcon from '../../assets/img/road-repair-icon.svg'
+import floodIcon from '../../assets/img/flood-icon.svg'
+import closureIcon from '../../assets/img/closure-icon.svg'
 
 
 
@@ -236,6 +236,7 @@ const Map = (props) => {
                   {/* Content of the InfoWindow */}
                   <h3>{report.title}</h3>
                   <p>{report.body}</p>
+                  <button onClick={() => console.log("clicked")}>click</button>
                 </div>
               </InfoWindow>
             )}

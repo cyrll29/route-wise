@@ -375,7 +375,7 @@ input {
 
 .report-modal-mark {
   display: flex;
-  padding: 20px 0 0 0;
+  padding: 10px 0 0 0;
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
@@ -405,7 +405,7 @@ input {
   /* overflow: hidden; */
 }
 .report-modal-title-div {
-  margin: 0 0 10px 0;
+  margin: 0 0 0px 0;
 }
 .report-modal-title {
   display: flex;
@@ -427,7 +427,7 @@ input {
 
 .report-modal-category-div {
   display: flex;
-  padding: 20px 0 10px 0;
+  padding: 20px 0 0px 0;
   align-items: left;
   flex-direction: column;
   justify-content: space-between;
@@ -457,7 +457,7 @@ input {
   font-weight: 600;
 }
 .report-modal-body-input {
-  height: 100px;
+  height: 70px;
   width: 100%;
   display: flex;
   padding: 10px;

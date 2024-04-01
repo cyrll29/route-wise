@@ -1,7 +1,7 @@
-import ReportIcon from '../assets/img/report-icon.png'
-import RouteIcon from '../assets/img/route-icon.png'
-import HindranceIcon from '../assets/img/hindrance-icon.png'
-import MenuIcon from '../assets/img/menu-icon.png'
+import ReportIcon from '../assets/img/report-icon.svg'
+import RouteIcon from '../assets/img/route-icon.svg'
+import HindranceIcon from '../assets/img/hindrance-icon.svg'
+import MenuIcon from '../assets/img/menu-icon.svg'
 
 
 

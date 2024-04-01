@@ -24,10 +24,17 @@ const ReportModal = (props) => {
     { value: 5, label: "Road Closure" }
   ]
 
+  const severityCategory = [
+    { value: 1, label: "Low (No Effect)" },
+    { value: 2, label: "Medium" },
+    { value: 3, label: "High" }
+  ]
+
 
   const [location, setLocation] = useState('')
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState(null)
+  const [severity, setSeverity] = useState(null)
   const [body, setBody] = useState('')
   const [msg, setMsg] = useState("");
   const [error, setError] = useState('')
@@ -69,6 +76,7 @@ const ReportModal = (props) => {
         latLng,
         title,
         category,
+        severity,
         body
       }
 
@@ -141,7 +149,7 @@ const ReportModal = (props) => {
                   setMsg('')
                   setError('')
                 }} 
-                placeholder="State the specific place..."
+                placeholder="eg. Munoz on Edsa corner Roosevelt"
                 maxLength={50}
               />
             </div>
@@ -158,10 +166,27 @@ const ReportModal = (props) => {
               isSearchable={true}
               value={category}
               onChange={(selectedOption) => setCategory(selectedOption)}
-              placeholder="Select a category"
+              placeholder="Flood, Traffic Jam, Road Block?"
               styles={customStyles}
             />
           </div>
+
+          <div className="report-modal-category-div">
+            <div className="report-modal-category">
+              <p><span className='red-asterisk'>*</span>Severity Level:</p>
+            </div>
+            <Select
+              id="report-category"
+              className="report-modal-select"
+              options={severityCategory}
+              isSearchable={true}
+              value={severity}
+              onChange={(selectedOption) => setSeverity(selectedOption)}
+              placeholder="How intense is the road incident?"
+              styles={customStyles}
+            />
+          </div>
+
           <div className="report-modal-body-div">
             <div className="report-modal-body">
               <p><span className='red-asterisk'>*</span>Short Description:</p>

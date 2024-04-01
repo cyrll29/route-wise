@@ -58,10 +58,10 @@ reportsRouter.get('/:id', async (req, res) => {
 
 
 reportsRouter.post('/', async (req, res) => {
-  const {location, latLng, title, category, body} = req.body
+  const {location, latLng, title, category, severity, body} = req.body
 
   try {
-    if (!location || !latLng || !title || !category || !body) {
+    if (!location || !latLng || !title || !category || !severity || !body) {
       return res.status(400).json({ 
         message: "Please provide values for all required fields: location, title, category, and body." 
       })
@@ -82,6 +82,7 @@ reportsRouter.post('/', async (req, res) => {
       latLng: latLng,
       title: title,
       category: category,
+      severity: severity,
       body: body,
       user: user.id,
     })
