@@ -1,0 +1,474 @@
+import { useState, useRef, useEffect, useMemo } from "react"
+import ModalHeader from "../../components/ModalHeader"
+import routeIcon from "../../assets/img/route-modal-map-icon.png"
+import routePlaceholder from "../../assets/img/placeholder.png"
+import routeService from "../../services/routeService"
+import { library } from "@fortawesome/fontawesome-svg-core"
+import * as Icons from "@fortawesome/free-solid-svg-icons"
+import "../../assets/styles/modals.css"
+import "../../assets/styles/routelist.css"
+import RouteList from '../../components/planner/RouteList.js'
+
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import parse from 'autosuggest-highlight/parse';
+import { debounce } from '@mui/material/utils';
+import { Loader } from "@googlemaps/js-api-loader"
+
+
+
+const RouteModal = (props) => {
+
+// MUI Related Contents
+const loaded = useRef(false);
+useEffect(() => {
+  let active = true;
+
+  const loader = new Loader({
+    apiKey: process.env.REACT_APP_API_KEY, // Replace with your API key
+    version: "weekly", // You can specify the version here
+    // Add any additional options you may need
+  });
+
+  if (!loaded.current) {
+    loader.load().then(() => {
+      if (active) {
+        // Initialize the Places Autocomplete service
+        const autocompleteService = new window.google.maps.places.AutocompleteService();
+        // Save the autocompleteService to useRef if needed
+        // autocompleteServiceRef.current = autocompleteService;
+        // Your code that relies on Places Autocomplete service should be here
+      }
+    });
+
+    loaded.current = true;
+  }
+
+  return () => {
+    active = false;
+  };
+}, []);
+
+
+if (typeof window !== 'undefined' && !loaded.current) {
+  if (!document.querySelector('#google-maps')) {
+    loadScript(
+      `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_API_KEY}&libraries=places`,
+      document.querySelector('head'),
+      'google-maps',
+    );
+  }
+  loaded.current = true;
+}
+
+const fetch = useMemo(
+  () =>
+    debounce((request, callback) => {
+      autocompleteService.current.getPlacePredictions(request, callback);
+    }, 400),
+  [],
+);
+// End of MUI Autocomplete Initialization related codes
+
+
+
+// ---------------ORIGIN MUI---------------
+const [originValue, setOriginValue] = useState(null);
+const [originInputValue, setOriginInputValue] = useState('');
+const [originOptions, setOriginOptions] = useState([]);
+
+useEffect(() => {
+  let originActive = true;
+
+  if (!autocompleteService.current && window.google) {
+    autocompleteService.current =
+      new window.google.maps.places.AutocompleteService();
+  }
+  if (!autocompleteService.current) {
+    return undefined;
+  }
+
+  if (originInputValue === '') {
+    setOriginOptions(originValue ? [originValue] : []);
+    return undefined;
+  }
+
+  fetch({ input: originInputValue }, (results) => {
+    if (originActive) {
+      let newOriginOptions = [];
+
+      if (originValue) {
+        newOriginOptions = [originValue];
+      }
+
+      if (results) {
+        newOriginOptions = [...newOriginOptions, ...results.filter(option =>
+          option.description.toLowerCase().includes('quezon city')
+        )];
+        console.log(newOriginOptions)
+      }
+
+      setOriginOptions(newOriginOptions);
+    }
+  });
+
+  return () => {
+    originActive = false;
+  };
+}, [originValue, originInputValue, fetch]);
+
+// ---------------DESTINATION MUI---------------
+const [destinationValue, setDestinationValue] = useState(null);
+const [destinationInputValue, setDestinationInputValue] = useState('');
+const [destinationOptions, setDestinationOptions] = useState([]);
+
+useEffect(() => {
+  let destinationActive = true;
+
+  if (!autocompleteService.current && window.google) {
+    autocompleteService.current =
+      new window.google.maps.places.AutocompleteService();
+  }
+  if (!autocompleteService.current) {
+    return undefined;
+  }
+
+  if (destinationInputValue === '') {
+    setDestinationOptions(destinationValue ? [destinationValue] : []);
+    return undefined;
+  }
+
+  fetch({ input: destinationInputValue }, (results) => {
+    if (destinationActive) {
+      let newDestinationOptions = [];
+
+      if (destinationValue) {
+        newDestinationOptions = [destinationValue];
+      }
+
+      if (results) {
+        newDestinationOptions = [...newDestinationOptions, ...results.filter(option =>
+          option.description.toLowerCase().includes('quezon city')
+        )];
+        console.log(newDestinationOptions)
+      }
+
+      setDestinationOptions(newDestinationOptions);
+    }
+  });
+
+  return () => {
+    destinationActive = false;
+  };
+}, [destinationValue, destinationInputValue, fetch]);
+
+
+
+
+
+
+  const {
+    onItinerarySelect,       // selected itinerary (array)
+    selectPlannerCenter,     // set center (Lat, Lng, Zoom)
+    selectOriginMarker,      // set origin marker (Lat, Lng)
+    selectDestinationMarker, // set destination marker (Lat, Lng)
+    selectRouteDetailCenter  // set center for route detail (Lat, Lng)
+  } = props
+
+
+  const [loading, setLoading] = useState(false)
+  const [routes, setRoutes] = useState(null)
+  const [error, setError] = useState("")
+
+
+  const getRoutes = () => {
+    setLoading(true)
+    setRoutes(null)
+    onItinerarySelect(null)
+
+    if (originValue === '' || destinationValue === '') {
+      setRoutes(null)
+      setError("Please enter your origin and destination.")
+      return;
+    }
+
+
+    const data = {
+      origin: `place_id:${originValue.place_id}`,
+      destination: `place_id:${destinationValue.place_id}`
+    };
+
+    console.log(data)
+
+
+    routeService
+      .create(data)
+      .then((response) => {
+        console.log(response.data)
+        setLoading(false)
+        selectOriginMarker(null)
+        selectDestinationMarker(null)
+        setRoutes(response.data.gmapsResponse.routes)
+        setError("")
+        onItinerarySelect(response.data.gmapsResponse.routes[0])
+        selectPlannerCenter({
+          lat: response.data.gmapsResponse.routes[0].legs[0].start_location.lat,
+          lng: response.data.gmapsResponse.routes[0].legs[0].start_location.lng
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setRoutes(null);
+          setError(error.response.data.message)
+        }
+      });
+  };
+
+
+
+  // selectDestinationMarker(places)
+  // selectPlannerCenter({lat: places.lat, lng: places.lng})
+  // setError("");
+
+  const handleReset = () => {
+    setRoutes(null)
+    onItinerarySelect(null)
+  }
+
+  return (
+    <>
+      <ModalHeader title="Planner" />
+
+      <div className="route-modal-top">
+        <div className="route-modal-top-title">
+          <h3>Find your Public Transportation Route</h3>
+        </div>
+
+        <div className="route-modal-search">
+          <div className="route-modal-top-left">
+            <img
+              className="route-modal-icon"
+              src={routeIcon}
+              alt="route-icon"
+            />
+
+            <div className="route-modal-search-box">
+              <Autocomplete
+                id="google-map-demo"
+                sx={{ width: 300 }}
+                getOptionLabel={(option) =>
+                  typeof option === 'string' ? option : option.description
+                }
+                filterOptions={(x) => x}
+                options={originOptions}
+                autoComplete
+                includeInputInList
+                filterSelectedOptions
+                value={originValue}
+                noOptionsText="No locations"
+                onChange={(event, newOriginValue) => {
+                  setOriginOptions(newOriginValue ? [newOriginValue, ...originOptions] : originOptions);
+                  setOriginValue(newOriginValue);
+                }}
+                onInputChange={(event, newOriginInputValue) => {
+                  setOriginInputValue(newOriginInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Add a location" fullWidth />
+                )}
+                renderOption={(props, option) => {
+                  const matches =
+                    option.structured_formatting.main_text_matched_substrings || [];
+
+                  const parts = parse(
+                    option.structured_formatting.main_text,
+                    matches.map((match) => [match.offset, match.offset + match.length]),
+                  );
+
+                  return (
+                    <li {...props}>
+                      <Grid container alignItems="center">
+                        <Grid item sx={{ display: 'flex', width: 44 }}>
+                          <LocationOnIcon sx={{ color: 'text.secondary' }} />
+                        </Grid>
+                        <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+                          {parts.map((part, index) => (
+                            <Box
+                              key={index}
+                              component="span"
+                              sx={{ fontWeight: part.highlight ? 'bold' : 'regular' }}
+                            >
+                              {part.text}
+                            </Box>
+                          ))}
+                          <Typography variant="body2" color="text.secondary">
+                            {option.structured_formatting.secondary_text}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </li>
+                  );
+                }}
+              />
+
+              <Autocomplete
+                id="google-map-demo"
+                sx={{ width: 300 }}
+                getOptionLabel={(option) =>
+                  typeof option === 'string' ? option : option.description
+                }
+                filterOptions={(x) => x}
+                options={destinationOptions}
+                autoComplete
+                includeInputInList
+                filterSelectedOptions
+                value={destinationValue}
+                noOptionsText="No locations"
+                onChange={(event, newDestinationValue) => {
+                  setDestinationOptions(newDestinationValue ? [newDestinationValue, ...destinationOptions] : destinationOptions);
+                  setDestinationValue(newDestinationValue);
+                }}
+                onInputChange={(event, newDestinationInputValue) => {
+                  setDestinationInputValue(newDestinationInputValue);
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Add a location" fullWidth />
+                )}
+                renderOption={(props, option) => {
+                  const matches =
+                    option.structured_formatting.main_text_matched_substrings || [];
+
+                  const parts = parse(
+                    option.structured_formatting.main_text,
+                    matches.map((match) => [match.offset, match.offset + match.length]),
+                  );
+
+                  return (
+                    <li {...props}>
+                      <Grid container alignItems="center">
+                        <Grid item sx={{ display: 'flex', width: 44 }}>
+                          <LocationOnIcon sx={{ color: 'text.secondary' }} />
+                        </Grid>
+                        <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+                          {parts.map((part, index) => (
+                            <Box
+                              key={index}
+                              component="span"
+                              sx={{ fontWeight: part.highlight ? 'bold' : 'regular' }}
+                            >
+                              {part.text}
+                            </Box>
+                          ))}
+                          <Typography variant="body2" color="text.secondary">
+                            {option.structured_formatting.secondary_text}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </li>
+                  );
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {error && <div className="error-msg">{error}</div>}
+
+        <div className="route-modal-button">
+          <button className="route-modal-btn" onClick={getRoutes}>
+            Find Route
+          </button>
+        </div>
+
+        <div className="route-modal-bottom">
+          {loading ? (
+            <div className="route-modal-bottom-nonexist">
+              <img
+                className="route-modal-bottom-placeholder"
+                src={routePlaceholder}
+                alt="route"
+              ></img>
+              <p>Calculating your route, just a moment...</p>
+            </div>
+          ) : (
+            <>
+              {!routes ? (
+                <div className="route-modal-bottom-nonexist">
+                  <img
+                    className="route-modal-bottom-placeholder"
+                    src={routePlaceholder}
+                    alt="route"
+                  ></img>
+                  <p>Please enter both origin and destination.</p>
+                </div>
+              ) : (
+                <div className="route-modal-list">
+                  <div>
+                    <h4 className="route-modal-suggestedroutes">
+                      Suggested Routes
+                    </h4>
+                    <div className="route-modal-button-reset">
+                      <button onClick={handleReset} className="route-modal-btn-reset">Reset</button>
+                    </div>
+                  </div>
+                  <div>
+                    <RouteList 
+                      routes={routes} 
+                      origin={originValue.description}
+                      destination={destinationValue.description}
+                      onItinerarySelect={onItinerarySelect}
+                      selectPlannerCenter={selectPlannerCenter}
+                      selectRouteDetailCenter={selectRouteDetailCenter}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default RouteModal;
+
+const iconList = Object.keys(Icons)
+  .filter((key) => key !== "fas" && key !== "prefix")
+  .map((icon) => Icons[icon]);
+library.add(...iconList);
+
+// const customStyles = {
+//   control: (provided) => ({
+//     ...provided,
+//     fontSize: '15px',
+//     border: '2px inset #EBE9ED',
+//     width: '290px',
+//     height: '100px',
+//   }),
+// };
+
+function loadScript(src, position, id) {
+  if (!position) {
+    return;
+  }
+
+  const script = document.createElement('script');
+  script.setAttribute('async', '');
+  script.setAttribute('id', id);
+  script.async = true;
+  script.defer = true;
+  script.src = src;
+
+  position.appendChild(script);
+}
+const autocompleteService = { current: null };
