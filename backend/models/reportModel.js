@@ -26,6 +26,10 @@ const reportSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    ttlDuration: {
+      type: Number,
+      required: true
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
@@ -48,7 +52,5 @@ reportSchema.set('toJSON', {
 })
 
 const Report = mongoose.model('Report', reportSchema)
-
-Report.collection.createIndex( { createdAt: 1}, { expireAfterSeconds: 60 * 60 * 6 } )
 
 export default Report
