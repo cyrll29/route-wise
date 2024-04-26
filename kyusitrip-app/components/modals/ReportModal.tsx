@@ -1,130 +1,305 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native'
+import { View, Text, StyleSheet, TextInput, Pressable, Image, ImageSourcePropType, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const ReportModal = () => {
 
-  const [location, setLocation] = useState("")
-  const [place, setPlace] = useState("")
-  const [category, setCategory] = useState("")
-  const [description, setDescription] = useState("")
+  const [clickedReport, setClickedReport] = useState('')
 
   return (
-    <View>
-      <Text style={styles.headerText}>Submit traffic, hindrance, or road reports</Text>
-
-      <View style={styles.placeSection}>
+    <View style={styles.theContainer}>
+      <View style={{marginBottom: 15, borderBottomColor: '#606060', borderBottomWidth: 0.2, width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{fontSize: 17, color: '#999999', fontWeight: '600', marginBottom: 5, width: '100%', textAlign: 'center'}}>What do you see?</Text>
+      </View>
+      <View style={styles.container}>
         <View>
-          <Pressable
-            style={styles.buttonContainer}
-          >
-            <Text style={styles.buttonText}>Pin Location</Text>
-          </Pressable>
+          <TouchableOpacity style={styles.itemContainer} onPress={() => {setClickedReport('Traffic')}}>
+            <Image
+              source={require("../../assets/traffic-icon.png") as ImageSourcePropType}
+              style={styles.reportIcon}
+            />
+            <Text style={{fontWeight: '500'}}>Traffic</Text>
+          </TouchableOpacity>
         </View>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(location) => setLocation(location)}
-          defaultValue={location}
-          placeholder='location of the road incident'
-        />
-      </View>
 
-      <View style={styles.placeSection}>
         <View>
-          <Text>Places</Text>
+          <TouchableOpacity style={styles.itemContainer} onPress={() => setClickedReport('Hazard')}>
+            <Image
+              source={require("../../assets/hazard-icon.png") as ImageSourcePropType}
+              style={styles.reportIcon}
+            />
+            <Text style={{fontWeight: '600'}}>Hazard</Text>
+          </TouchableOpacity>
         </View>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(place) => setPlace(place)}
-          defaultValue={place}
-          placeholder='specific place'
-        />
-      </View>
 
-      <View style={styles.placeSection}>
         <View>
-          <Text>Category</Text>
+          <TouchableOpacity style={styles.itemContainer} onPress={() => setClickedReport('Accident')}>
+            <Image
+              source={require("../../assets/accident-icon.png") as ImageSourcePropType}
+              style={styles.reportIcon}
+            />
+            <Text style={{fontWeight: '600'}}>Accident</Text>
+          </TouchableOpacity>
         </View>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(category) => setCategory(category)}
-          defaultValue={category}
-          placeholder='category'
-        />
-      </View>
 
-      <View style={styles.placeSection}>
         <View>
-          <Text>Description</Text>
+          <TouchableOpacity style={styles.itemContainer} onPress={() => setClickedReport('Flood')}>
+            <Image
+              source={require("../../assets/flood-icon.png") as ImageSourcePropType}
+              style={styles.reportIcon}
+            />
+            <Text style={{fontWeight: '600'}}>Flood</Text>
+          </TouchableOpacity>
         </View>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(description) => setDescription(description)}
-          defaultValue={description}
-          placeholder='description'
-        />
+
+        <View>
+          <TouchableOpacity style={styles.itemContainer} onPress={() => setClickedReport('Closure')}>
+            <Image
+              source={require("../../assets/closure-icon.png") as ImageSourcePropType}
+              style={styles.reportIcon}
+            />
+            <Text style={{fontWeight: '600'}}>Closure</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <View style ={styles.findButton}>
-        <Pressable
-          style={styles.buttonContainer}
-        >
-          <Text style={styles.buttonText}>Find Route</Text>
-        </Pressable>
-      </View>
+      {clickedReport ? (
+        <View style={styles.reportDetail}>
+          <View style={{marginBottom: 15, borderBottomColor: '#606060', borderBottomWidth: 0.2, width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontSize: 17, color: '#999999', fontWeight: '600', marginBottom: 5, width: '100%', textAlign: 'center'}}>Report your Location</Text>
+          </View>
+
+          <View style={styles.iconSection}>
+
+            <View style={styles.iconContainer}>
+              <View style={[(clickedReport === 'Traffic') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
+                <Image
+                  source={require("../../assets/traffic-small.png") as ImageSourcePropType}
+                  style={(clickedReport === 'Traffic') ? styles.pickedIcon : styles.unpickedIcon}
+                />
+              </View>
+              <Text style={[(clickedReport === 'Traffic') ? styles.iconPickedText : styles.iconUnpickedText]}>Traffic</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <View style={[(clickedReport === 'Hazard') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
+                <Image
+                  source={require("../../assets/hazard-small.png") as ImageSourcePropType}
+                  style={(clickedReport === 'Hazard') ? styles.pickedIcon : styles.unpickedIcon}
+                />
+              </View>
+              <Text style={[(clickedReport === 'Hazard') ? styles.iconPickedText : styles.iconUnpickedText]}>Hazard</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <View style={[(clickedReport === 'Accident') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
+                <Image
+                  source={require("../../assets/accident-small.png") as ImageSourcePropType}
+                  style={(clickedReport === 'Accident') ? styles.pickedIcon : styles.unpickedIcon}
+                />
+              </View>
+              <Text style={[(clickedReport === 'Accident') ? styles.iconPickedText : styles.iconUnpickedText]}>Accident</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <View style={[(clickedReport === 'Flood') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
+                <Image
+                  source={require("../../assets/flood-small.png") as ImageSourcePropType}
+                  style={(clickedReport === 'Flood') ? styles.pickedIcon : styles.unpickedIcon}
+                />
+              </View>
+              <Text style={[(clickedReport === 'Flood') ? styles.iconPickedText : styles.iconUnpickedText]}>Flood</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <View style={[(clickedReport === 'Closure') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
+                <Image
+                  source={require("../../assets/warning-sign.png") as ImageSourcePropType}
+                  style={(clickedReport === 'Closure') ? styles.pickedIcon : styles.unpickedIcon}
+                />
+              </View>
+              <Text style={[(clickedReport === 'Closure') ? styles.iconPickedText : styles.iconUnpickedText]}>Closure</Text>
+            </View>
+          </View>
+
+          <View style={styles.titleInputBox}>
+            <Text style={{fontSize: 16, color: '#999999', fontWeight: '700'}}>Short Details about the Report</Text>
+            <TextInput 
+              style={{borderColor: '#999999', borderBottomWidth: 1,}}
+              placeholder='eg. Road Cosure at FPJ Ave. corner Del Monte'
+            />
+          </View>
+
+          <View style={styles.reportButtonContainer}>
+            <TouchableOpacity
+              style={[styles.reportButton, styles.shadowProp, {backgroundColor: 'white'}]}
+              onPress={() => setClickedReport('')}
+            >
+              <Text>Return</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.reportButton, {flexDirection: 'row', gap: 15, backgroundColor: '#880015'}]}
+            >
+              <Image
+                source={require("../../assets/submit-icon.png") as ImageSourcePropType}
+                style={{width: 20, height: 20, tintColor: 'white'}}
+              />
+              <Text style={{color: 'white'}}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+
+
+
+        </View>
+      ) : (
+        <></>
+      )}
+
 
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  theContainer: {
+    width: '100%',
+    height: '100%',
+    // borderColor: 'black',
+    // borderWidth: 1,
+  },
+
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 20,
+    // borderColor: 'red',
+    // borderWidth: 1,
+    width: '100%',
+    height: '100%'
+  },
+
+  reportDetail: {
+    width: '100%',
+    height: 300,
+    position: 'absolute',
+    backgroundColor: 'white',
+    // justifyContent: 'center',
+    alignItems: 'center'
+    // borderColor: 'black',
+    // borderWidth: 1,
+  },
+
   headerText: {
+    fontSize: 25,
+    marginLeft: 10,
     marginBottom: 10
   },
-  
-  placeSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+
+  reportIcon: {
+    width: 100,
+    height: 100
+  },
+
+  iconSection: {
+    flexDirection: 'row',
     gap: 15,
+    flexWrap: 'wrap',
+    justifyContent: 'center'
   },
 
-  textInput: {
-    padding: 10,
-    borderColor: "#818181",
-
-    borderWidth: 0.7,
-    borderRadius: 7,
-
-    width: "70%",
-    height: 35,
-
-    fontSize: 16,
-    marginTop: 8,
-    marginBottom: 10,
-  },
-
-  findButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10
-  },
-
-  buttonContainer: {
-    borderRadius: 10,
-    backgroundColor: '#880015',
-    
-    alignItems: 'center',
+  iconContainer: {
     justifyContent: 'center',
-    width: 90,
-    height: 40,
+    alignItems: 'center'
   },
 
-  buttonText: {
-    color: '#f8ecc4',
-    fontWeight: 'bold',
-    fontSize: 14,
+  smallPickedIconBox: {
+    width: 55,
+    height: 55,
+    borderColor: '#880015',
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginBottom: 5
   },
+
+  smallUnpickedIconBox: {
+    width: 55,
+    height: 55,
+    borderColor: '#CCCCCC',
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    marginBottom: 5
+  },
+
+  pickedIcon: {
+    width: '50%',
+    height: '50%',
+    tintColor: '#880015'
+  },
+
+  unpickedIcon: {
+    width: '50%',
+    height: '50%',
+    tintColor: '#CCCCCC'
+  },
+
+  iconPickedText: {
+    color: '#880015',
+    fontWeight: '800'
+  },
+
+  iconUnpickedText: {
+    color: '#BBBBBB',
+    fontWeight: '600'
+  },
+
+  titleInputBox: {
+    flexDirection: 'column',
+    gap: 15,
+    backgroundColor: '#fafafa',
+    marginVertical: 15,
+    width: '90%',
+    borderRadius: 7,
+    padding: 20,
+    height: 80,
+  },
+
+  reportButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: '#fafafa',
+    width: '100%',
+    height: 90,
+  },
+
+  reportButton: {
+    width: '48%', 
+    height: 55, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    borderRadius: 20
+  },
+
+  itemContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 5,
+  },
+
+  shadowProp: {
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+
 })
 
 export default ReportModal

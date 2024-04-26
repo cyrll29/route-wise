@@ -93,8 +93,6 @@ reportsRouter.post('/', async (req, res) => {
       latLng: latLng,
       title: title,
       category: category,
-      severity: severity,
-      body: body,
       ttlDuration: ttlDuration, // Include TTL duration in the report
       user: user.id,
     })
