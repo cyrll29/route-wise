@@ -87,11 +87,13 @@ const HomePage = () => {
 
   const [originMarker, setOriginMarker] = useState(null)
   const selectOriginMarker = (origin) => {
+    console.log(origin)
     setOriginMarker(origin)
   }
 
   const [destinationMarker, setDestinationMarker] = useState(null)
   const selectDestinationMarker = (destination) => {
+    console.log(destination)
     setDestinationMarker(destination)
   }
 

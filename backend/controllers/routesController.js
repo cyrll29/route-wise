@@ -19,13 +19,16 @@ routesRouter.post('/', async (req, res) => {
       })
     }
 
+    // const origin = `${body.origin.lat},${body.origin.lng}`
+    // const destination = `${body.destination.lat},${body.destination.lng}`
+
     // Google Maps Directions API
     const response = await client.directions({
       params: {
         origin: body.origin,
         destination: body.destination, 
         mode: 'transit',
-        transit_routing_preference: 'fewer_transfers',
+        transit_routing_preference: 'less_walking',
         alternatives: true,
         key: process.env.REACT_APP_API_KEY
       },
@@ -40,7 +43,7 @@ routesRouter.post('/', async (req, res) => {
 
     return res.status(201).json({
       message: "Route created successfully",
-      gmapsResponse
+      gmapsResponse,
     })
 
   } catch (error) {
