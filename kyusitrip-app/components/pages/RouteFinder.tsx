@@ -37,7 +37,7 @@ const screenWidth = Dimensions.get('window').width;
 const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
   const [completeInfo, setCompleteInfo] = useState(false);
-  const [origin, setOrigin] = useState("");
+  const [origin, setOrigin] = useState("")
   const [destination, setDestination] = useState("")
   const [viewedSheet, setViewedSheet] = useState("")
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -124,7 +124,9 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
             source={require("../../assets/origin-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
           />
-          <Pressable style={styles.placesInput} onPress={() => navigation.navigate("PlaceSearchOrigin")}>
+          <Pressable style={styles.placesInput} onPress={() => {
+            navigation.navigate("PlaceSearchOrigin")
+          }}>
             <Text style={{color: '#606060'}}>
               {origin ? origin : 'Set Origin'}
             </Text>

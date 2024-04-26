@@ -24,9 +24,13 @@ const screenWidth = Dimensions.get('window').width;
 
 const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
 
-  const [origin, setOrigin] = useState()
+  const [origin, setOrigin] = useState({})
   const submitOrigin = () => {
-    navigation.navigate("RouteFinder")
+
+    if (origin) {
+      navigation.navigate("RouteFinder")
+      console.log(origin)
+    }
   }
 
   return(
@@ -41,7 +45,9 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
             placeholder='Set Origin'
             onPress={(data, details = null) => {
               // 'details' is provided when fetchDetails = true
-              console.log(data, details);
+              console.log(data);
+              setOrigin(data)
+            
             }}
             styles={placesApiStyle}
             query={{
@@ -49,28 +55,11 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
               language: 'en',
               components: 'country:PH'
             }}
+      
             onFail={error => console.log(error)}
           />
         </View>
 
-        {/* <View style={[styles.placeSection]}>
-          <Image
-            source={require("../../assets/destination-icon.png") as ImageSourcePropType}
-            style={styles.placeIcon}
-          />
-          <GooglePlacesAutocomplete
-            placeholder='Set Destination'
-            onPress={(data, details = null) => {
-              console.log(data, details);
-            }}
-            styles={placesApiStyle}
-            query={{
-              key: process.env.GOOGLE_API,
-              language: 'en',
-            }}
-            onFail={error => console.log(error)}
-          />
-        </View> */}
         <Pressable
             style={styles.backButton}
             onPress={() => navigation.navigate("RouteFinder")}
@@ -105,7 +94,7 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
       <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', height: 120, position: 'absolute', bottom: 0, backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
         <TouchableOpacity 
           style={{justifyContent: 'center', alignItems: 'center', width: '80%', height: 60, backgroundColor: '#880015', borderRadius: 30,}}
-          onPress={() => navigation.navigate("RouteFinder")}
+          onPress={() => submitOrigin()}
         >
           <Text
             style={{color: 'white', fontSize: 16, fontWeight: '600'}}
