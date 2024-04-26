@@ -17,8 +17,8 @@ const RouteList = (props) => {
   // ---------Duration Bar------------
   let routesDuration = []
 
-  for (let i = 0; i < routes.length; i++) {
-    routesDuration.push(routes[i].legs[0].duration.value)
+  for (let i = 0; i < routes.itineraries.length; i++) {
+    routesDuration.push(routes.itineraries[i].duration)
   }
   // --------------END----------------
 
@@ -26,7 +26,7 @@ const RouteList = (props) => {
     <div style={{padding: 10}}>
       {routes ? (
         <ul>
-          {routes.map((itinerary, index) => (
+          {routes.itineraries.map((itinerary, index) => (
             <div key={index}>
               <Route 
                 itinerary={itinerary} 
