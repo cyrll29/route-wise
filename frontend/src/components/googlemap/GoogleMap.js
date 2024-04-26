@@ -88,21 +88,18 @@ const Map = (props) => {
 
   // PlannerModal - Render itinerary polylines
   const renderPolylines = () => {
-    if (selectedItinerary && selectedItinerary.legs[0].steps) {
-      return selectedItinerary.legs[0].steps.map((leg, index) => {
-        const path = decodePolyline(leg.polyline.points); 
+    if (selectedItinerary && selectedItinerary.legs) {
+      return selectedItinerary.legs.map((leg, index) => {
+        const path = decodePolyline(leg.legGeometry.points); 
         let color = "black"
 
-        if(leg.travel_mode === "WALKING"){
+        if(leg.mode === "WALK"){
           color = "#FF7F7F"
-        } else if (leg.travel_mode === "TRANSIT") {
-          if (leg.transit_details.line.vehicle.type === "BUS") {
-            color = "#45B6FE"
-          } else if (leg.transit_details.line.vehicle.type === "TRAM") {
-            color = "#FFA756"
-          }
-        } 
-
+        } else if (leg.mode === "BUS") {
+          color = "#45B6FE"
+        } else if (leg.mode === "RAIL") {
+          color = "#FFA756"
+        }
         return <Polyline 
           key={index} 
           path={path} 
@@ -283,8 +280,8 @@ const Map = (props) => {
       {renderEndMarker()}
 
       {/* {renderDestinationMarker()}
-      {renderLegStartMarkers()} */}
-      {renderPolylines()}
+      {renderLegStartMarkers()}
+      {renderPolylines()} */}
       
 
       {/* {someCoords ? someCoords.map((coord, index) => (
