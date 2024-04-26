@@ -14,40 +14,44 @@ import {
 } from "react-native";
 import { NavigationProp } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-interface PlaceSearchProps {
+interface PlaceSearchDestinationProps {
   navigation: NavigationProp<any>;
 }
 
 const screenWidth = Dimensions.get('window').width;
 
-const PlaceSearch: FC<PlaceSearchProps> = ({ navigation }) => {
+const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation }) => {
+
+  const [origin, setDestination] = useState()
+  const submitDestination = () => {
+    navigation.navigate("RouteFinder")
+  }
+
   return(
     <View style={styles.container}>
-
       <View style={[styles.planner, styles.shadowProp]}>
-        <View style={[styles.placeSection, {borderBottomWidth: 0.5, borderColor: '#D4B5BA'}]}>
+
+        <View style={[styles.placeSection]}>
           <Image
-            source={require("../../assets/origin-icon.png") as ImageSourcePropType}
+            source={require("../../assets/destination-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
           />
-          <TextInput 
-            style={styles.placesInput} 
-            placeholder="Set Origin"
+          <GooglePlacesAutocomplete
+            placeholder='Set Destination'
+            onPress={(data, details = null) => {
+              console.log(data, details);
+            }}
+            styles={placesApiStyle}
+            query={{
+              key: process.env.GOOGLE_API,
+              language: 'en',
+              components: 'country:PH'
+            }}
+            onFail={error => console.log(error)}
           />
         </View>
-
-        <View style={styles.placeSection}>
-          <Image
-              source={require("../../assets/destination-icon.png") as ImageSourcePropType}
-              style={styles.placeIcon}
-          />  
-          <TextInput 
-            style={styles.placesInput} 
-            placeholder="Set Destination"
-          />
-        </View>
-
         <Pressable
             style={styles.backButton}
             onPress={() => navigation.navigate("RouteFinder")}
@@ -56,19 +60,7 @@ const PlaceSearch: FC<PlaceSearchProps> = ({ navigation }) => {
         </Pressable>
       </View>
 
-      <View style={[styles.currentLoc, {top: '32%'}]} >
-        <Image
-          source={require("../../assets/current-loc.png") as ImageSourcePropType}
-          style={[styles.placeIcon, {margin: 10}]}
-        />
-        <Pressable>
-          <Text style={{color: '#8f8f8f', fontWeight: '600'}}>
-            Use Current Location as Origin
-          </Text>
-        </Pressable>
-      </View>
-
-      <View style={[styles.currentLoc, {top: '40%'}]} >
+      <View style={[styles.currentLoc, {top: '30%'}]} >
         <Image
           source={require("../../assets/current-loc.png") as ImageSourcePropType}
           style={[styles.placeIcon, {margin: 10}]}
@@ -79,7 +71,19 @@ const PlaceSearch: FC<PlaceSearchProps> = ({ navigation }) => {
           </Text>
         </Pressable>
       </View>
-      
+
+      <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', height: 120, position: 'absolute', bottom: 0, backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
+        <TouchableOpacity 
+          style={{justifyContent: 'center', alignItems: 'center', width: '80%', height: 60, backgroundColor: '#880015', borderRadius: 30,}}
+          onPress={() => navigation.navigate("RouteFinder")}
+        >
+          <Text
+            style={{color: 'white', fontSize: 16, fontWeight: '600'}}
+          >
+            Submit Destination
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     left: '50%',
     marginLeft: -0.5 * screenWidth,
     width: "100%",
-    height: 250,
+    height: 230,
     paddingTop: 130,
     borderRadius: 15,
     zIndex: 1,
@@ -108,18 +112,13 @@ const styles = StyleSheet.create({
   placeSection: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 50,
+    borderRadius: 20,
     width: '90%',
     height: 60,
     marginHorizontal: 15,
-    backgroundColor: 'white',
-  },
-
-  placesInput: {
-    marginLeft: 15,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 5,
+    zIndex: -2
   },
 
   placeIcon: {
@@ -165,4 +164,30 @@ const styles = StyleSheet.create({
   },
 })
 
-export default PlaceSearch
+const placesApiStyle = {
+  textInputContainer: {
+    backgroundColor: 'transparent',
+    borderTopWidth: 0,
+    width: '100%',
+    height: 40,
+  },
+  textInput: {
+    backgroundColor: 'transparent',
+    marginLeft: 0,
+    marginRight: 0,
+    height: 40,
+    color: '#5d5d5d',
+    fontSize: 16,
+  },
+  listView: {
+    position: 'absolute',
+    marginTop: 40,
+    backgroundColor: 'white',
+    zIndex: -1
+  },
+  predefinedPlacesDescription: {
+    color: '#1faadb',
+  },
+}
+
+export default PlaceSearchDestination

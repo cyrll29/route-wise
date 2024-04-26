@@ -72,10 +72,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     setSidebarVisible(bool);
   };
 
-  const setPlaceModalPopup = () => {
-    navigation.navigate("PlaceSearch")
-  }
-
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -128,7 +124,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
             source={require("../../assets/origin-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
           />
-          <Pressable style={styles.placesInput} onPress={() => navigation.navigate("PlaceSearch")}>
+          <Pressable style={styles.placesInput} onPress={() => navigation.navigate("PlaceSearchOrigin")}>
             <Text style={{color: '#606060'}}>
               {origin ? origin : 'Set Origin'}
             </Text>
@@ -140,7 +136,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
             source={require("../../assets/destination-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
           />  
-          <Pressable style={styles.placesInput} onPress={setPlaceModalPopup}>
+          <Pressable style={styles.placesInput} onPress={() => navigation.navigate("PlaceSearchDestination")}>
             <Text style={{color: '#606060'}}>
               {destination ? destination : 'Set Destination '}
             </Text>
