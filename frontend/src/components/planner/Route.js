@@ -2,8 +2,6 @@ import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 import "../../assets/styles/routelist.css"
 import SendEmailModal from './SendEmailModal'
-import SendSmsModal from './SendSmsModal'
-
 
 const Route = (props) => {
 
@@ -19,7 +17,6 @@ const Route = (props) => {
 
   const [showDetails, setShowDetails] = useState(null)
   const [sendEmailPopup, setSendEmailPopup] = useState(null)
-  const [sendSmsPopup, setSendSmsPopup] = useState(null)
   const longestDuration = Math.max(...routesDuration)
 
   const handleItineraryClick = () => {
@@ -144,7 +141,6 @@ const Route = (props) => {
           {showDetails ? (
             <div>
               <div className='send-route-div'>
-                <button onClick={() => setSendSmsPopup(true)} className='send-route-sms'>Send route via SMS</button>
                 <button onClick={() => setSendEmailPopup(true)} className='send-route-email'>Send route via Email</button>
               </div>
               <ul>
@@ -171,16 +167,6 @@ const Route = (props) => {
           destination={destination}
         />
       }
-
-      {sendSmsPopup && 
-        <SendSmsModal 
-          onClose={() => setSendSmsPopup(false)}
-          itinerary={itinerary}
-          origin={origin}
-          destination={destination}
-        />
-      }
-      
     </>
   )
 }

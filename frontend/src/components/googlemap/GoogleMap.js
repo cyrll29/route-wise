@@ -70,8 +70,8 @@ const Map = (props) => {
   // PlannerModal - Render markers itinerary's leg start
   const renderLegStartMarkers = () => {
     if (selectedItinerary && selectedItinerary.legs) {
-      selectOriginMarker(null)
-      selectDestinationMarker(null)
+      // selectOriginMarker(null)
+      // selectDestinationMarker(null)
       return selectedItinerary.legs.map((leg, index) => (
         <Marker
           key={index}
@@ -286,8 +286,8 @@ const Map = (props) => {
       {/* {someCoords ? someCoords.map((coord, index) => (
         <Marker key={index} position={{ lat: coord.lat, lng: coord.lng}}/>
       )):<></>} */}
-      {testPolylineHandler()}
-      {testMarkerHandler()}
+      {/* {testPolylineHandler()}
+      {testMarkerHandler()} */}
     </GoogleMap>
   )
 }
