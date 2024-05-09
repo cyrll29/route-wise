@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  ImageSourcePropType
+  ImageSourcePropType,
+  Alert
 } from "react-native";
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker, Callout, Polyline } from "react-native-maps";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -29,6 +30,7 @@ import HindranceModal from "../modals/HindranceModal"
 import ReportModal from "../modals/ReportModal"
 import { useLocalSearchParams } from "expo-router";
 import MapViewDirections from "react-native-maps-directions";
+import routeService from '../services/routeServices'
 
 interface RouteFinderProps {
   navigation: NavigationProp<any>
@@ -54,7 +56,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [snapPoints, setSnapPoints] = useState(['40%']);
   const [markers, setMarkers] = useState([{ latitude: 14.657490088758687, longitude: 121.03294214744254 }])
-  const [showRoutes, setShowRoutes] = useState(false)
+  const [routes, setRoutes] = useState<any | null>(null)
 
   // Bottom Sheet
   useEffect(() => {
@@ -91,21 +93,60 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         ...originGeometry,
         ...originLatLng
       }))
-      setShowRoutes(false)
       console.log("The origin is: " + originValue)
     }
   }, [origin])
 
+  const getRoutes = async () => {
+    if (originValue && destinationValue) {
+      const data = {
+        origin: {
+          lat: originGeometry.latitude,
+          lng: originGeometry.longitude
+        },
+        destination: {
+          lat: destinationGeometry.latitude,
+          lng: destinationGeometry.longitude
+        }
+      }
+      console.log(data)
+      Alert.alert('', 'Finding the best route', [
+        {
+          text: 'OK',
+        }
+      ])
+      await routeService
+        .create(data)
+        .then((response) => {
+          setRoutes(response.data.otpResponse.plan)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+  
+        handlePresentModalPress() 
+        setViewedSheet("Routes")
+
+        console.log(routes)
+    } else if (originValue && !destinationValue) {
+      alert("There is no destination")
+    } else if (!originValue && destinationValue) {
+      alert("There is no origin")
+    } else {
+      alert("Please choose an origin")
+    }
+  }
+
   // Update Destination Value
   useEffect(() => {
     if(!destination) {
-      console.log("There is no destination")
       return
     } else {
       setDestinationValue(destination)
       setDestinationGeometry({latitude: destinationLat, longitude: destinationLng})
-      setShowRoutes(false)
+      console.log(destinationGeometry)
       setCompleteInfo(true)
+      mapRef.current.animateToRegion(destinationGeometry, 2 * 1000)
     }
   }, [destination])
 
@@ -145,22 +186,22 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   // Center Map on Origin
   useEffect(() => {
     if(origin) {
-      mapRef.current.animateToRegion(originLocation, 5 * 1000)
+      mapRef.current.animateToRegion(originLocation, 1 * 1000)
       // setMarkers(markers => [...markers, originLocation])
     } else {
-      mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
+      mapRef.current.animateToRegion(fallBackRegion, 1 * 1000)
     }
   }, [origin])
 
   // Center Map on Destination
-  useEffect(() => {
-    if(destination) {
-      mapRef.current.animateToRegion(destinationLocation, 5 * 1000)
-      // setMarkers(markers => [...markers, originLocation])
-    } else {
-      mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
-    }
-  }, [destination])
+  // useEffect(() => {
+  //   if(destination) {
+  //     mapRef.current.animateToRegion(destinationLocation, 5 * 1000)
+  //     // setMarkers(markers => [...markers, originLocation])
+  //   } else {
+  //     mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
+  //   }
+  // }, [destination])
 
   const originLocation = {
     latitude: originLatitude ? originLatitude : 14.657490088758687,
@@ -199,7 +240,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           keyboardBehavior="interactive"
         >
           <BottomSheetView style={styles.contentContainer}>
-            {(viewedSheet === "Routes") ? <RoutesModal /> : <></>}
+            {(viewedSheet === "Routes") ? <RoutesModal routes={routes}/> : <></>}
             {(viewedSheet === "Hindrances") ? <HindranceModal /> : <></>}
             {(viewedSheet === "Report") ? <ReportModal /> : <></>}
           </BottomSheetView>
@@ -233,7 +274,10 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
       {/* Route Planner */}
       <View style={[styles.planner, styles.shadowProp]}>
-        <View style={[styles.placeSection, {borderBottomWidth: 0.5, borderColor: '#D4B5BA'}]} onTouchStart={() => {console.log(originValue + originGeometry.latitude)}}>
+        <View 
+          style={[styles.placeSection, {borderBottomWidth: 0.5, borderColor: '#D4B5BA'}]}
+          onTouchStart={() => {console.log(routes)}}
+        >
           <Image
             source={require("../../assets/origin-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
@@ -251,7 +295,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
               style={{ paddingLeft: 15}} />
         </View>
 
-        <View style={styles.placeSection} onTouchStart={() => {console.log(destinationValue + destinationGeometry.longitude)}}>
+        <View style={styles.placeSection} onTouchStart={() => {}}>
           <Image
             source={require("../../assets/destination-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
@@ -271,7 +315,14 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
       </View>
 
       <View style={[styles.getRoute, styles.shadowProp]}>
-        <Pressable onPress={() => {setShowRoutes(true);}} style={[styles.getRouteBtn, {backgroundColor: completeInfo ? '#880015' : '#D4B5BA'}]}>
+        <Pressable 
+          onPress={() => {
+            getRoutes()
+          }} 
+          style={[
+            styles.getRouteBtn, {backgroundColor: completeInfo ? '#880015' : '#D4B5BA'}
+          ]}
+        >
           <Text style={styles.getRouteTxt}>
             Navigate
           </Text>
@@ -342,16 +393,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
             }} key={i} />
           )) : null
         }
-        {
-          showRoutes && (
-            <MapViewDirections
-              origin={{ latitude: originGeometry.latitude, longitude: originGeometry.longitude }}
-              destination={{ latitude: destinationGeometry.latitude, longitude: destinationGeometry.longitude }}
-              apikey={GOOGLE_MAPS_API_KEY} 
-            />
-          )
-        }
-        
       </MapView>
     </GestureHandlerRootView>
   );
