@@ -58,6 +58,8 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   const [markers, setMarkers] = useState([{ latitude: 14.657490088758687, longitude: 121.03294214744254 }])
   const [routes, setRoutes] = useState<any | null>(null)
 
+  const mapRef = useRef<any | null>(null)
+
   // Bottom Sheet
   useEffect(() => {
     const calculateSnapPoints = () => {
@@ -81,7 +83,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   // Update Origin Value
   useEffect(() => {
     if(!origin) {
-      console.log("There is no origin")
       return
     } else {
       setOriginValue(origin)
@@ -93,7 +94,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         ...originGeometry,
         ...originLatLng
       }))
-      console.log("The origin is: " + originValue)
     }
   }, [origin])
 
@@ -126,8 +126,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   
         handlePresentModalPress() 
         setViewedSheet("Routes")
-
-        console.log(routes)
     } else if (originValue && !destinationValue) {
       alert("There is no destination")
     } else if (!originValue && destinationValue) {
@@ -137,16 +135,29 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     }
   }
 
+  const altFunction = async (lat, lng) => {
+    const data = {
+      latitude: lat,
+      longitude: lng
+    }
+    await setDestinationGeometry((destinationGeometry) =>({
+      ...destinationGeometry,
+      ...data
+    }))
+  }
+
   // Update Destination Value
   useEffect(() => {
     if(!destination) {
       return
     } else {
       setDestinationValue(destination)
-      setDestinationGeometry({latitude: destinationLat, longitude: destinationLng})
+      altFunction(destinationLat, destinationLng)
+
       console.log(destinationGeometry)
+      console.log("above this is destinationGeometry")
+
       setCompleteInfo(true)
-      mapRef.current.animateToRegion(destinationGeometry, 2 * 1000)
     }
   }, [destination])
 
@@ -181,8 +192,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     console.log(markers)
   } 
 
-  const mapRef = useRef<any | null>(null)
-
   // Center Map on Origin
   useEffect(() => {
     if(origin) {
@@ -194,18 +203,18 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   }, [origin])
 
   // Center Map on Destination
-  // useEffect(() => {
-  //   if(destination) {
-  //     mapRef.current.animateToRegion(destinationLocation, 5 * 1000)
-  //     // setMarkers(markers => [...markers, originLocation])
-  //   } else {
-  //     mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
-  //   }
-  // }, [destination])
+  useEffect(() => {
+    if(destination) {
+      mapRef.current.animateToRegion(destinationLocation, 5 * 1000)
+      // setMarkers(markers => [...markers, originLocation])
+    } else {
+      mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
+    }
+  }, [destination])
 
   const originLocation = {
-    latitude: originLatitude ? originLatitude : 14.657490088758687,
-    longitude: originLongitude ? originLongitude : 121.03294214744254,
+    latitude: originLatitude,
+    longitude: originLongitude,
     latitudeDelta: 0.0122,
     longitudeDelta: 0.0122,
   }
@@ -276,7 +285,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
       <View style={[styles.planner, styles.shadowProp]}>
         <View 
           style={[styles.placeSection, {borderBottomWidth: 0.5, borderColor: '#D4B5BA'}]}
-          onTouchStart={() => {console.log(routes)}}
         >
           <Image
             source={require("../../assets/origin-icon.png") as ImageSourcePropType}
@@ -286,7 +294,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
               showSoftInputOnFocus={false}
               placeholder="Set Origin"
               value={originValue}
-              onChange={(value) => {console.log(value + "Origin")}}
               onPressIn={
                 () => {
                   navigation.navigate("PlaceSearchOrigin")
@@ -304,7 +311,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
               showSoftInputOnFocus={false}
               placeholder="Set Destination"
               value={destinationValue}
-              onChange={(value) => {console.log(value + "Destination")}}
               onPressIn={
                 () => {
                   navigation.navigate("PlaceSearchDestination")
@@ -407,10 +413,10 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     zIndex: 99,
-    paddingBottom: 80
+    paddingBottom: 20
   },
 
   reportSheet: {

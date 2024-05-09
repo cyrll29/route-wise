@@ -1,6 +1,7 @@
-import { View, Text, Image, ImageSourcePropType, TextInput, StyleSheet, Pressable, ScrollView } from 'react-native'
+import { View, Text, Image, ImageSourcePropType, TextInput, StyleSheet, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import IconFA5 from "react-native-vector-icons/FontAwesome5";
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const RoutesModal = (props) => {
@@ -50,30 +51,45 @@ const RoutesModal = (props) => {
     setIndexRow(index)
   }
 
-  const altDetails = () => {
+  const altDetails = (legs) => {
     return (
-      <Text>I am Shown</Text>
+      <View
+      >
+        {legs.map((leg, index) => (
+          <View key={index} style={styles.routeLeg}>
+            <Text>{leg.mode}</Text>
+          </View>
+        ))}
+      </View>
     )
   }
   
   const routeItineraries = () => {
-    return routes.itineraries.map((itinerary, index) => (
-      <View style={styles.routeItineraries} onTouchStart={() => handleClick(index)} key={index}>
-        <Text>{itinerary.legs[0].from.name}</Text>
-        <Text>{formatDuration(itinerary.duration)}</Text>
-        <View>{itinerary.legs.map((leg, index) => (
-          <View key={index}>
-            <Text>{leg.mode}</Text>
-          </View>
-        ))}</View>
-        {shown && index === indexRow ? <View>{altDetails()}</View> : <></>}
-        <Text>{itinerary.legs[itinerary.legs.length - 1].to.name}</Text>
+    return (
+      <View>
+        {routes.itineraries.map((itinerary, index) => (
+          <Pressable style={styles.routeItineraries} onPress={() => handleClick(index)} key={index}>
+            <View>
+              <Text>{itinerary.legs[0].from.name}</Text>
+              <Text>{formatDuration(itinerary.duration)}</Text>
+              <View>{itinerary.legs.map((leg, index) => (
+                <View key={index}>
+                  <Text>{leg.mode}</Text>
+                </View>
+              ))}</View>
+              {shown && index === indexRow ? <View>{altDetails(itinerary.legs)}</View> : <></>}
+              <Text>{formatTime(itinerary.startTime)}</Text>
+              <Text>{formatTime(itinerary.endTime)}</Text>
+              <Text>{itinerary.legs[itinerary.legs.length - 1].to.name}</Text>
+            </View>
+          </Pressable>
+        ))}
       </View>
-    ))
+    )
   }
 
   return (
-    <ScrollView onTouchStart={() => {console.log(routes.itineraries)}} style={styles.container}>
+    <ScrollView style={styles.container} onTouchStart={() => console.log(routes.itineraries)}>
       {routeItineraries()}
     </ScrollView>
   )
@@ -83,9 +99,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderWidth: 1,
-    margin: 10,
-    padding: 10,
-    width: '100%'
+    padding: 20,
+    paddingBottom: 100,
+    width: '90%',
+    overflow: 'scroll'
   },
   headerText: {
     marginBottom: 10
@@ -93,59 +110,14 @@ const styles = StyleSheet.create({
 
   routeItineraries: {
     borderWidth: 1,
-    width: '100%',
+    width: 'auto',
     marginBottom: 10
   },
 
-  placeSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 15,
-  },
-
-  textInput: {
-    padding: 10,
-    borderColor: "#818181",
-
-    borderWidth: 0.7,
-    borderRadius: 7,
-
-    width: "85%",
-    height: 35,
-
-    fontSize: 16,
-    marginTop: 8,
-    marginBottom: 10,
-
-
-    lineHeight: 20,
-
-    backgroundColor: 'rgba(151, 151, 151, 0.25)',
-
-  },
-
-  findButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10
-  },
-
-  buttonContainer: {
-    borderRadius: 10,
-    backgroundColor: '#880015',
-    
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 150,
-    height: 40,
-  },
-
-  buttonText: {
-    color: '#f8ecc4',
-    fontWeight: 'bold',
-    fontSize: 14,
+  routeLeg: {
+    borderWidth: 1,
+    margin: 10,
+    width: 50
   },
 })
 
