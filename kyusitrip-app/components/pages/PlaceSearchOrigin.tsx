@@ -15,6 +15,7 @@ import {
 import { NavigationProp } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import axios from "axios";
 
 interface PlaceSearchOriginProps {
   navigation: NavigationProp<any>;
@@ -28,8 +29,24 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
   const submitOrigin = () => {
 
     if (origin) {
-      navigation.navigate("RouteFinder")
-      console.log(origin)
+      const altOrigin = JSON.stringify(origin);
+      const newAltOrigin = JSON.parse(altOrigin)
+
+      const address = newAltOrigin.description;
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: address,
+          key: 'AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU'
+        }
+      })
+      .then(async function(response){
+        // console.log(response.data.results[0].geometry.location)
+        let location = await response.data.results[0].geometry.location
+        navigation.navigate("RouteFinder", {originLatitude: location.lat, originLongitude: location.lng, origin: newAltOrigin.structured_formatting.main_text, })
+      })
+      .catch(function(error){
+        console.log(error)
+      })
     }
   }
 
@@ -45,13 +62,13 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
             placeholder='Set Origin'
             onPress={(data, details = null) => {
               // 'details' is provided when fetchDetails = true
-              console.log(data);
+              // console.log(data);
               setOrigin(data)
             
             }}
             styles={placesApiStyle}
             query={{
-              key: process.env.GOOGLE_API,
+              key: process.env.GOOGLE_API || "AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU",
               language: 'en',
               components: 'country:PH'
             }}

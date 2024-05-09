@@ -15,6 +15,7 @@ import {
 import { NavigationProp } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import axios from "axios";
 
 interface PlaceSearchDestinationProps {
   navigation: NavigationProp<any>;
@@ -24,9 +25,28 @@ const screenWidth = Dimensions.get('window').width;
 
 const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation }) => {
 
-  const [origin, setDestination] = useState()
+  const [destination, setDestination] = useState<any>()
   const submitDestination = () => {
-    navigation.navigate("RouteFinder")
+    if (destination) {
+      const altDestination = JSON.stringify(destination);
+      const newaltDestination = JSON.parse(altDestination)
+
+      const address = newaltDestination.description;
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: address,
+          key: 'AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU'
+        }
+      })
+      .then(async function(response){
+        // console.log(response.data.results[0].geometry.location)
+        let location = await response.data.results[0].geometry.location
+        navigation.navigate("RouteFinder", { destination: newaltDestination.structured_formatting.main_text, destinationLat: location.lat, destinationLng: location.lng })
+      })
+      .catch(function(error){
+        console.log(error)
+      })
+    }
   }
 
   return(
@@ -41,7 +61,9 @@ const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation })
           <GooglePlacesAutocomplete
             placeholder='Set Destination'
             onPress={(data, details = null) => {
-              console.log(data, details);
+              // 'details' is provided when fetchDetails = true
+              // console.log(data);
+              setDestination(data)
             }}
             styles={placesApiStyle}
             query={{
@@ -75,7 +97,7 @@ const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation })
       <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', height: 120, position: 'absolute', bottom: 0, backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
         <TouchableOpacity 
           style={{justifyContent: 'center', alignItems: 'center', width: '80%', height: 60, backgroundColor: '#880015', borderRadius: 30,}}
-          onPress={() => navigation.navigate("RouteFinder")}
+          onPress={() => submitDestination()}
         >
           <Text
             style={{color: 'white', fontSize: 16, fontWeight: '600'}}

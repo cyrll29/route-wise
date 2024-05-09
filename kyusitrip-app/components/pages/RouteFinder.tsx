@@ -27,6 +27,8 @@ import Sidebar from "../ui/SideBar";
 import RoutesModal from "../modals/RoutesModal"
 import HindranceModal from "../modals/HindranceModal"
 import ReportModal from "../modals/ReportModal"
+import { useLocalSearchParams } from "expo-router";
+import MapViewDirections from "react-native-maps-directions";
 
 interface RouteFinderProps {
   navigation: NavigationProp<any>
@@ -36,12 +38,23 @@ const screenWidth = Dimensions.get('window').width;
 
 const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
+  const { origin, originLatitude, originLongitude, destination, destinationLat, destinationLng } = useLocalSearchParams();
+  // const altOrigin = JSON.parse( origin )
   const [completeInfo, setCompleteInfo] = useState(false);
-  const [origin, setOrigin] = useState("")
-  const [destination, setDestination] = useState("")
+  const [region, setRegion] = useState({longitude: 121.030479, latitude: 14.657027})
+
+  // Data for origin
+  const [originValue, setOriginValue] = useState<any>("")
+  const [originGeometry, setOriginGeometry] = useState<any>()
+
+  // Data for destination
+  const [destinationValue, setDestinationValue] = useState<any>("")
+  const [destinationGeometry, setDestinationGeometry] = useState<any>()
   const [viewedSheet, setViewedSheet] = useState("")
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [snapPoints, setSnapPoints] = useState(['40%']);
+  const [markers, setMarkers] = useState([{ latitude: 14.657490088758687, longitude: 121.03294214744254 }])
+  const [showRoutes, setShowRoutes] = useState(false)
 
   // Bottom Sheet
   useEffect(() => {
@@ -62,16 +75,117 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     };
     calculateSnapPoints();
   }, [viewedSheet]);
+
+  // Update Origin Value
+  useEffect(() => {
+    if(!origin) {
+      console.log("There is no origin")
+      return
+    } else {
+      setOriginValue(origin)
+      const originLatLng = {
+        latitude: originLatitude,
+        longitude: originLongitude
+      }
+      setOriginGeometry((originGeometry) => ({
+        ...originGeometry,
+        ...originLatLng
+      }))
+      setShowRoutes(false)
+      console.log("The origin is: " + originValue)
+    }
+  }, [origin])
+
+  // Update Destination Value
+  useEffect(() => {
+    if(!destination) {
+      console.log("There is no destination")
+      return
+    } else {
+      setDestinationValue(destination)
+      setDestinationGeometry({latitude: destinationLat, longitude: destinationLng})
+      setShowRoutes(false)
+      setCompleteInfo(true)
+    }
+  }, [destination])
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);;
 
-
+  
   const handleSidebar = (bool: boolean) => {
     setSidebarVisible(bool);
   };
 
+  const handleRegionChange = (coordinate) => {
+    setRegion((region) => ({
+      ...region,
+      ...coordinate
+    }))
+  }
+
+  const onLocationPress = (e) => {
+    let updatedValue = e.nativeEvent.coordinate
+    console.log(updatedValue)
+    handleRegionChange(updatedValue)
+
+    console.log(region)
+
+    setMarkers(markers => [...markers, updatedValue])
+    // handlePresentModalPress()
+    // setViewedSheet("Report")
+    console.log(origin)
+    console.log(markers)
+  } 
+
+  const mapRef = useRef<any | null>(null)
+
+  // Center Map on Origin
+  useEffect(() => {
+    if(origin) {
+      mapRef.current.animateToRegion(originLocation, 5 * 1000)
+      // setMarkers(markers => [...markers, originLocation])
+    } else {
+      mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
+    }
+  }, [origin])
+
+  // Center Map on Destination
+  useEffect(() => {
+    if(destination) {
+      mapRef.current.animateToRegion(destinationLocation, 5 * 1000)
+      // setMarkers(markers => [...markers, originLocation])
+    } else {
+      mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
+    }
+  }, [destination])
+
+  const originLocation = {
+    latitude: originLatitude ? originLatitude : 14.657490088758687,
+    longitude: originLongitude ? originLongitude : 121.03294214744254,
+    latitudeDelta: 0.0122,
+    longitudeDelta: 0.0122,
+  }
+
+  const destinationLocation = {
+    latitude: destinationLat ? destinationLat : 14.657490088758687,
+    longitude: destinationLng ? destinationLng : 121.03294214744254,
+    latitudeDelta: 0.0122,
+    longitudeDelta: 0.0122,
+  }
+
+  const fallBackRegion = {
+    latitude: 14.657490088758687,
+    longitude: 121.03294214744254,
+    latitudeDelta: 0.0122,
+    longitudeDelta: 0.0122,
+  }
+
+  // For routes
+
+  const GOOGLE_MAPS_API_KEY = 'AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU'
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -119,35 +233,45 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
       {/* Route Planner */}
       <View style={[styles.planner, styles.shadowProp]}>
-        <View style={[styles.placeSection, {borderBottomWidth: 0.5, borderColor: '#D4B5BA'}]}>
+        <View style={[styles.placeSection, {borderBottomWidth: 0.5, borderColor: '#D4B5BA'}]} onTouchStart={() => {console.log(originValue + originGeometry.latitude)}}>
           <Image
             source={require("../../assets/origin-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
           />
-          <Pressable style={styles.placesInput} onPress={() => {
-            navigation.navigate("PlaceSearchOrigin")
-          }}>
-            <Text style={{color: '#606060'}}>
-              {origin ? origin : 'Set Origin'}
-            </Text>
-          </Pressable>
+            <TextInput 
+              showSoftInputOnFocus={false}
+              placeholder="Set Origin"
+              value={originValue}
+              onChange={(value) => {console.log(value + "Origin")}}
+              onPressIn={
+                () => {
+                  navigation.navigate("PlaceSearchOrigin")
+                }
+              } 
+              style={{ paddingLeft: 15}} />
         </View>
 
-        <View style={styles.placeSection}>
+        <View style={styles.placeSection} onTouchStart={() => {console.log(destinationValue + destinationGeometry.longitude)}}>
           <Image
             source={require("../../assets/destination-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
           />  
-          <Pressable style={styles.placesInput} onPress={() => navigation.navigate("PlaceSearchDestination")}>
-            <Text style={{color: '#606060'}}>
-              {destination ? destination : 'Set Destination '}
-            </Text>
-          </Pressable>
+          <TextInput 
+              showSoftInputOnFocus={false}
+              placeholder="Set Destination"
+              value={destinationValue}
+              onChange={(value) => {console.log(value + "Destination")}}
+              onPressIn={
+                () => {
+                  navigation.navigate("PlaceSearchDestination")
+                }
+              } 
+              style={{ paddingLeft: 15}} />
         </View>
       </View>
 
       <View style={[styles.getRoute, styles.shadowProp]}>
-        <Pressable style={[styles.getRouteBtn, {backgroundColor: completeInfo ? '#880015' : '#D4B5BA'}]}>
+        <Pressable onPress={() => {setShowRoutes(true);}} style={[styles.getRouteBtn, {backgroundColor: completeInfo ? '#880015' : '#D4B5BA'}]}>
           <Text style={styles.getRouteTxt}>
             Navigate
           </Text>
@@ -193,24 +317,41 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
       {/* Map View */}
       <MapView
+        ref={mapRef}
         style={styles.mapView}
         initialRegion={{
-          latitude: 14.657027,
-          longitude: 121.030479,
+          latitude: 14.6568193,
+          longitude: 121.0304657,
+          latitudeDelta: 0.0122,
+          longitudeDelta: 0.0121
+        }}
+        region={{
+          latitude: region.latitude,
+          longitude: region.longitude,
           latitudeDelta: 0.0122,
           longitudeDelta: 0.0121,
         }}
+        onPress={(e) => onLocationPress(e)}
       >
-        <Marker
-          coordinate={{
-            latitude: 14.657027,
-            longitude: 121.030479,
-          }}
-        >
-          <Callout>
-            <Text>SM North EDSA</Text>
-          </Callout>
-        </Marker>
+        {
+          markers.length > 0 ?
+          markers.map((marker, i) =>(
+            <Marker coordinate={{
+              latitude: marker.latitude,
+              longitude: marker.longitude
+            }} key={i} />
+          )) : null
+        }
+        {
+          showRoutes && (
+            <MapViewDirections
+              origin={{ latitude: originGeometry.latitude, longitude: originGeometry.longitude }}
+              destination={{ latitude: destinationGeometry.latitude, longitude: destinationGeometry.longitude }}
+              apikey={GOOGLE_MAPS_API_KEY} 
+            />
+          )
+        }
+        
       </MapView>
     </GestureHandlerRootView>
   );
