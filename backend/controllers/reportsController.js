@@ -56,28 +56,18 @@ reportsRouter.get('/:id', async (req, res) => {
   }
 })
 
-const TTL_DURATIONS = {
-  "Traffic Jam": { "Low": 60 * 1, "Medium": 60 * 2, "High": 60 * 3 },
-  "Flood": { "low": 60 * 60, "medium": 2 * 60 * 60, "high": 4 * 60 * 60 },
-  // Add other categories and durations as needed
-};
 
 reportsRouter.post('/', async (req, res) => {
-  const {location, latLng, title, category, severity, body} = req.body
+  const {latLng, description, category} = req.body
 
   try {
-    if (!location || !latLng || !title || !category || !severity || !body) {
+    if (!latLng || !description || !category) {
       return res.status(400).json({ 
         message: "Please provide values for all required fields: location, title, category, and body." 
       })
     }
-    console.log(category.label)
-    console.log(severity.label)
-    console.log(TTL_DURATIONS)
 
-    const ttlDuration = TTL_DURATIONS[category.label][severity.label];
-    console.log(ttlDuration)
-    console.log("end")
+
     // Token Verification
     const decodedToken = jwt.verify(getTokenFrom(req), config.ACCESS_TOKEN_SECRET)
     if (!decodedToken.id) {
@@ -89,18 +79,13 @@ reportsRouter.post('/', async (req, res) => {
     // Save Report
     const user = await User.findById(decodedToken.id)
     const report = new Report ({
-      location: location,
       latLng: latLng,
-      title: title,
+      description: description,
       category: category,
-      ttlDuration: ttlDuration, // Include TTL duration in the report
       user: user.id,
     })
     const savedReport = await report.save()
 
-    // Create TTL index with dynamic TTL duration
-    await Report.collection.dropIndex("createdAt_1");
-    await Report.collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: ttlDuration });
 
     // Update User document
     user.reports = user.reports.concat(savedReport._id)

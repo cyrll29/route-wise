@@ -2,24 +2,16 @@ import mongoose from 'mongoose'
 
 const reportSchema = new mongoose.Schema(
   {
-    location: {
-      type: String,
-      required: true
-    },
     latLng: {
       type: Object,
       required: true
     },
-    title: {
+    description: {
       type: String,
       required: true
     },
     category: {
       type: Object,
-      required: true
-    },
-    ttlDuration: {
-      type: Number,
       required: true
     },
     user: {

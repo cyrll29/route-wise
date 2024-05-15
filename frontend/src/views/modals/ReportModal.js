@@ -24,27 +24,18 @@ const ReportModal = (props) => {
     { value: 5, label: "Road Closure" }
   ]
 
-  const severityCategory = [
-    { value: 1, label: "Low" },
-    { value: 2, label: "Medium" },
-    { value: 3, label: "High" }
-  ]
-
 
   const [location, setLocation] = useState('')
-  const [title, setTitle] = useState('')
   const [category, setCategory] = useState(null)
-  const [severity, setSeverity] = useState(null)
-  const [body, setBody] = useState('')
+  const [description, setDescription] = useState('')
   const [msg, setMsg] = useState("");
   const [error, setError] = useState('')
 
 
   const clearInputFields = () => {
     setLocation('')
-    setTitle('')
     setCategory(null)
-    setBody('')
+    setDescription('')
     onLocationSelect(null)
     selectReportMarker(null)
     selectMapZoom(14)
@@ -72,12 +63,9 @@ const ReportModal = (props) => {
       const longitude = reportData.lng
       const latLng = { lat: latitude, lng: longitude }
       const data = {
-        location,
         latLng,
-        title,
+        description,
         category,
-        severity,
-        body
       }
 
       reportService
@@ -134,27 +122,6 @@ const ReportModal = (props) => {
             ></textarea>
           </div>
 
-          <div className="report-modal-title-div">
-            <div className="report-modal-title">
-              <p><span className='red-asterisk'>*</span>Place:</p>
-            </div>
-            <div className="report-modal-title-input-div">
-              <input
-                id="report-title"
-                className="report-modal-title-input"
-                type="text"
-                value={title}
-                onChange={e => {
-                  setTitle(e.target.value)
-                  setMsg('')
-                  setError('')
-                }} 
-                placeholder="eg. Munoz on Edsa corner Roosevelt"
-                maxLength={50}
-              />
-            </div>
-          </div>
-
           <div className="report-modal-category-div">
             <div className="report-modal-category">
               <p><span className='red-asterisk'>*</span>Category:</p>
@@ -171,22 +138,6 @@ const ReportModal = (props) => {
             />
           </div>
 
-          <div className="report-modal-category-div">
-            <div className="report-modal-category">
-              <p><span className='red-asterisk'>*</span>Severity Level:</p>
-            </div>
-            <Select
-              id="report-category"
-              className="report-modal-select"
-              options={severityCategory}
-              isSearchable={true}
-              value={severity}
-              onChange={(selectedOption) => setSeverity(selectedOption)}
-              placeholder="How intense is the road incident?"
-              styles={customStyles}
-            />
-          </div>
-
           <div className="report-modal-body-div">
             <div className="report-modal-body">
               <p><span className='red-asterisk'>*</span>Short Description:</p>
@@ -196,9 +147,9 @@ const ReportModal = (props) => {
                 id="report-description"
                 className="report-modal-body-input"
                 type="text"
-                value={body}
+                value={description}
                 onChange={e => {
-                  setBody(e.target.value)
+                  setDescription(e.target.value)
                   setMsg('')
                   setError('')
                 }} 
