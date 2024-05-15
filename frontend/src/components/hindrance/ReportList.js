@@ -10,15 +10,12 @@ const ReportList = (props) =>  {
     searchQuery,
     selectHindranceCenter
   } = props
-  
-  const filteredReports = reports.filter(report =>
-    report.location.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+
 
   return (
     <div className="hindrance-modal-reports">
       <ul>
-        {filteredReports.map((report, index) => (
+        {reports.map((report, index) => (
           <Reports 
             key={index} 
             report={report} 

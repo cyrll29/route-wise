@@ -32,20 +32,17 @@ const ReportDetail = ({ report, onClose }) => {
           <button onClick={onClose}>Close</button>
         </div>
 
-        <div className="report-detail-content-middle">
-          <h4>{report.title}</h4>
-        </div>
 
         <div className="report-detail-content-bottom">
           <div className="report-detail-content-bottom-left">
             <div className="report-detail-content-bottom-left-detail">
               <p className="report-detail-content-category-location">
-                {report.category.label} at {report.location}
+                {report.category.label}
               </p>
               <p className="report-detail-content-timeframe">
                 {report.postedAgo}
               </p>
-              <p className="report-detail-content-body">{report.body}</p>
+              <p className="report-detail-content-body">{report.description}</p>
             </div>
           </div>
 

@@ -33,7 +33,6 @@ const Reports = (props) => {
           </div>
         </div>
         <div className='hindrance-modal-reportlist-bottom'>
-          <h4 className='hindrance-modal-reportlist-bottom-title'>{report.title}</h4>
           <p className='hindrance-modal-reportlist-bottom-category-location'><span style={{fontWeight:'bold'}}>{report.category.label}</span> at {report.location}</p>
           <p className='hindrance-modal-reportlist-bottom-timeframe'>{report.postedAgo}</p>
         </div>
