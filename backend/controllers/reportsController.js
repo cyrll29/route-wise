@@ -57,6 +57,14 @@ reportsRouter.get('/:id', async (req, res) => {
 })
 
 
+const TTL_DURATIONS = {
+  "Traffic": 60 * 60,
+  "Hazard": 60 * 60,
+  "Accident": 60 * 60,
+  "Flood": 60 * 60,
+  "Closure": 60 * 60
+};
+
 reportsRouter.post('/', async (req, res) => {
   const {latLng, description, category} = req.body
 
@@ -67,7 +75,6 @@ reportsRouter.post('/', async (req, res) => {
       })
     }
 
-
     // Token Verification
     const decodedToken = jwt.verify(getTokenFrom(req), config.ACCESS_TOKEN_SECRET)
     if (!decodedToken.id) {
@@ -76,15 +83,21 @@ reportsRouter.post('/', async (req, res) => {
       })
     }
 
+    const ttlDuration = TTL_DURATIONS[category.label]
+
     // Save Report
     const user = await User.findById(decodedToken.id)
     const report = new Report ({
       latLng: latLng,
       description: description,
       category: category,
+      ttlDuration: ttlDuration, // Include TTL Duration in the report
       user: user.id,
     })
     const savedReport = await report.save()
+
+    await Report.collection.dropIndex("createdAt_1");
+    await Report.collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: ttlDuration });
 
 
     // Update User document

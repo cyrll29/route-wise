@@ -14,6 +14,10 @@ const reportSchema = new mongoose.Schema(
       type: Object,
       required: true
     },
+    ttlDuration: {
+      type: Number,
+      required: true
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'

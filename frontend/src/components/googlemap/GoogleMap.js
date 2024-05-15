@@ -212,13 +212,13 @@ const Map = (props) => {
 
         if(report.category.label === 'Accident'){
           marker = accidentIcon
-        } else if (report.category.label === 'Traffic Jam') {
+        } else if (report.category.label === 'Traffic') {
           marker = trafficIcon
-        } else if (report.category.label === 'Road Repair') {
+        } else if (report.category.label === 'Hazard') {
           marker = repairIcon
         } else if (report.category.label === 'Flood') {
           marker = floodIcon
-        } else if (report.category.label === 'Road Closure') {
+        } else if (report.category.label === 'Closure') {
           marker = closureIcon
         }
 

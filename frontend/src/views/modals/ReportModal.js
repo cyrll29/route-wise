@@ -17,11 +17,11 @@ const ReportModal = (props) => {
   } = props
 
   const reportCategory = [
-    { value: 1, label: "Traffic Jam" },
-    { value: 2, label: "Accident" },
-    { value: 3, label: "Road Repair" },
+    { value: 1, label: "Traffic" },
+    { value: 2, label: "Hazard" },
+    { value: 3, label: "Accident" },
     { value: 4, label: "Flood" },
-    { value: 5, label: "Road Closure" }
+    { value: 5, label: "Closure" }
   ]
 
 
