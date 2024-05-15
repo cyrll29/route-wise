@@ -24,6 +24,12 @@ const GoogleMapApi = (props) => {
     selectedItinerary,
     originMarker,
     destinationMarker,
+    onPinOrigin,
+    isPinOrigin,
+    onOriginLocationSelect,
+    onPinDestination,
+    isPinDestination,
+    onDestinationLocationSelect,
 
     // For Test
     showTrafficLayer
@@ -40,7 +46,7 @@ const GoogleMapApi = (props) => {
   const mapOptions = {
     zoom: mapZoom, 
     minZoom: 14,
-    maxZoom: 18,
+    maxZoom: 17,
     center: { lat: centerLat, lng: centerLng }, 
     disableDefaultUI: true, 
     restriction: {  
@@ -51,7 +57,8 @@ const GoogleMapApi = (props) => {
         east: 121.11127512082325
       }
     },
-    styles: mapStyle
+    styles: mapStyle,
+    clickableIcons: false
   };
 
   
@@ -66,6 +73,14 @@ const GoogleMapApi = (props) => {
       selectedItinerary={selectedItinerary}
       originMarker={originMarker}
       destinationMarker={destinationMarker}
+
+      onPinOrigin={onPinOrigin}
+      isPinOrigin={isPinOrigin}
+      onOriginLocationSelect={onOriginLocationSelect}
+
+      onPinDestination={onPinDestination}
+      isPinDestination={isPinDestination}
+      onDestinationLocationSelect={onDestinationLocationSelect}
 
       showTrafficLayer={showTrafficLayer}
     />

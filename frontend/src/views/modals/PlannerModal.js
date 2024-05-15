@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Autocomplete, useLoadScript } from "@react-google-maps/api"
 import ModalHeader from "../../components/ModalHeader"
 import routeIcon from "../../assets/img/route-modal-map-icon.png"
@@ -20,7 +20,14 @@ const RouteModal = (props) => {
     selectPlannerCenter,
     selectOriginMarker,
     selectDestinationMarker,
-    selectRouteDetailCenter
+    selectRouteDetailCenter,
+
+    onPinOrigin,
+    originPinData,
+    isPinOrigin,
+    onPinDestination,
+    destinationPinData,
+    isPinDestination
   } = props
 
 
@@ -31,6 +38,59 @@ const RouteModal = (props) => {
   const [error, setError] = useState("")
   const originInputRef = useRef(null)
   const destinationInputRef = useRef(null)
+
+  const [originCoordinates, setOriginCoordinates] = useState({})
+  const [destinationCoordinates, setDestinationCoordinates] = useState({})
+  let timeoutId = null
+
+  const handleReset = () => {
+    setRoutes(null)
+    onItinerarySelect(null)
+    originInputRef.current.value = null
+    destinationInputRef.current.value = null
+    selectDestinationMarker(null)
+    clearTimer()
+  }
+
+  const clearTimer = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+      timeoutId = null
+    }
+  }
+
+  useEffect(() => {
+    return () => clearTimer(); // Cleanup function to stop timer on unmount
+  }, []);
+
+  useEffect(() => {
+    if (originPinData) {
+      console.log(originPinData)
+      originInputRef.current.value = originPinData.address.results[0].formatted_address
+      setOriginCoordinates({lat: originPinData.lat, lng: originPinData.lng})
+    }
+
+  }, [originPinData])
+
+  useEffect(() => {
+    if (destinationPinData) {
+      console.log(destinationPinData)
+      destinationInputRef.current.value = destinationPinData.address.results[0].formatted_address
+      setDestinationCoordinates({lat: destinationPinData.lat, lng: destinationPinData.lng})
+    }
+
+  }, [destinationPinData])
+
+
+  const handlePinOrigin = () => {
+    setError('')
+    onPinOrigin(true)
+  }
+
+  const handlePinDestination = () => {
+    setError('')
+    onPinDestination(true)
+  }
 
 
   const getRoutes = () => {
@@ -44,14 +104,15 @@ const RouteModal = (props) => {
       return;
     }
 
+
     const data = {
       origin: {
-        lat: origin.getPlace().geometry.location.lat(),
-        lng: origin.getPlace().geometry.location.lng()
+        lat: originCoordinates.lat,
+        lng: originCoordinates.lng
       },
       destination: {
-        lat: destination.getPlace().geometry.location.lat(),
-        lng: destination.getPlace().geometry.location.lng()
+        lat: destinationCoordinates.lat,
+        lng: destinationCoordinates.lng
       }
     };
     console.log(data)
@@ -68,6 +129,9 @@ const RouteModal = (props) => {
           lat: response.data.otpResponse.plan.itineraries[0].legs[0].from.lat,
           lng: response.data.otpResponse.plan.itineraries[0].legs[0].from.lon
         })
+        selectOriginMarker(null)
+        clearTimer()
+        timeoutId = setTimeout(handleReset, 300000)
       })
       .catch((error) => {
         console.log(error);
@@ -103,6 +167,7 @@ const RouteModal = (props) => {
       console.log(places);
       selectOriginMarker(places)
       selectPlannerCenter({lat: places.lat, lng: places.lng})
+      setOriginCoordinates({lat: places.lat, lng: places.lng})
     }
     setError("");
   };
@@ -117,6 +182,7 @@ const RouteModal = (props) => {
       console.log(places);
       selectDestinationMarker(places)
       selectPlannerCenter({lat: places.lat, lng: places.lng})
+      setDestinationCoordinates({lat: places.lat, lng: places.lng})
     }
     setError("");
   };
@@ -130,21 +196,13 @@ const RouteModal = (props) => {
   };
 
 
-  const handleReset = () => {
-    setRoutes(null)
-    onItinerarySelect(null)
-    originInputRef.current.value = null
-    destinationInputRef.current.value = null
-  }
-
-
   return (
     <>
       <ModalHeader title="Planner" />
 
       <div className="route-modal-top">
         <div className="route-modal-top-title">
-          <h3>Find your Public Transportation Route</h3>
+          <h3>Find your Public Transportation Route within Quezon City</h3>
         </div>
 
         <div className="route-modal-search">
@@ -166,6 +224,8 @@ const RouteModal = (props) => {
                   type="text"
                   placeholder="Origin"
                   className="route-modal-combo-box"
+                  onClick={() => onPinOrigin(false)}
+                  onFocus={() => originInputRef.current.select()}
                   ref={originInputRef}
                 />
               </Autocomplete>
@@ -180,9 +240,27 @@ const RouteModal = (props) => {
                   type="text"
                   placeholder="Destination"
                   className="route-modal-combo-box"
+                  onClick={() => onPinDestination(false)}
+                  onFocus={() => destinationInputRef.current.select()}
                   ref={destinationInputRef}
                 />
               </Autocomplete>
+            </div>
+
+            <div className="route-modal-pin-location">
+              <button 
+                className="route-modal-pin-location-buttons"
+                onClick={handlePinOrigin}
+              >
+                {isPinOrigin ? "CLICK ON MAP" : "PIN ORIGIN"}
+              </button>
+
+              <button 
+                className="route-modal-pin-location-buttons"
+                onClick={handlePinDestination}
+              >
+                {isPinDestination ? "CLICK ON MAP" : "PIN DEST."}
+              </button>
             </div>
           </div>
         </div>
@@ -226,6 +304,7 @@ const RouteModal = (props) => {
                       <button onClick={handleReset} className="route-modal-btn-reset">Reset</button>
                     </div>
                   </div>
+                  <div style={{marginLeft: "10px", fontSize: "14px"}}>Note: ETA may vary depending on real-time traffic</div>
                   <div>
                     <RouteList 
                       routes={routes} 

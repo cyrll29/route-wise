@@ -139,6 +139,28 @@ input {
   border-width: 1px;
 }
 
+.route-modal-pin-location {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: 5px;
+  margin-top: 11px;
+}
+
+.route-modal-pin-location-buttons {
+  background-color: #880015;
+  color: #fff;
+  font-size: 12px;
+  height: 40px;
+  width: 80px;
+  border: 0;
+  border-radius: 5px;
+}
+
+.route-modal-pin-location-buttons:active {
+  opacity: 0.7;
+}
+
 .route-modal-reset-icon {
   width: 25px;
   height: 25px;
@@ -172,8 +194,8 @@ input {
   font-size: 12;
 }
 
-.route-modal-btn:hover {
-  opacity: 0.7;
+.route-modal-btn:active {
+  opacity: 0.6;
 }
 
 .route-modal-btn-reset {

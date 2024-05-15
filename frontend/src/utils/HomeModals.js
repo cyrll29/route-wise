@@ -28,6 +28,12 @@ const HomeModals = (props) => {
           selectOriginMarker={props.selectOriginMarker}
           selectDestinationMarker={props.selectDestinationMarker}
           selectRouteDetailCenter={props.selectRouteDetailCenter}
+          onPinOrigin={props.onPinOrigin}
+          originPinData={props.originPinData}
+          isPinOrigin={props.isPinOrigin}
+          onPinDestination={props.onPinDestination}
+          destinationPinData={props.destinationPinData}
+          isPinDestination={props.isPinDestination}
         /> 
         : <></>
       }

@@ -34,6 +34,12 @@ const Map = (props) => {
     selectedItinerary,
     originMarker,
     destinationMarker,
+    isPinOrigin,
+    onPinOrigin,
+    onOriginLocationSelect,
+    onPinDestination,
+    isPinDestination,
+    onDestinationLocationSelect,
 
     // For Test
     showTrafficLayer
@@ -96,7 +102,11 @@ const Map = (props) => {
         if(leg.mode === "WALK"){
           color = "#FF7F7F"
         } else if (leg.mode === "BUS") {
-          color = "#45B6FE"
+          if(leg.route.gtfsId.includes("PUJ")) {
+            color = "#397822"
+          } else {
+            color = "#45B6FE"
+          }    
         } else if (leg.mode === "RAIL") {
           color = "#FFA756"
         }
@@ -105,8 +115,8 @@ const Map = (props) => {
           path={path} 
           options={{
             strokeColor: color,
-            strokeWeight: 8,
-            strokeOpacity: 0.8
+            strokeWeight: 7,
+            strokeOpacity: 0.95
           }} 
         />;
       });
@@ -259,8 +269,40 @@ const Map = (props) => {
       onLocationSelect({ lat, lng, address });
       onMarkLocation(false)
     }
+
+    else if (isPinOrigin){
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+
+      const address = await geocode(
+        RequestType.LATLNG,
+        `${lat},${lng}`,
+        { language: "en", region: "es", key: process.env.REACT_APP_API_KEY }
+      )
+      
+      onOriginLocationSelect({ lat, lng, address });
+      onPinOrigin(false)
+    }
+
+    else if (isPinDestination){
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+
+      const address = await geocode(
+        RequestType.LATLNG,
+        `${lat},${lng}`,
+        { language: "en", region: "es", key: process.env.REACT_APP_API_KEY }
+      )
+      
+      onDestinationLocationSelect({ lat, lng, address });
+      onPinDestination(false)
+    }
+
   };
+
   
+
+
   return (
     <GoogleMap 
       options={mapOptions}

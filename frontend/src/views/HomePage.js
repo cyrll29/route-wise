@@ -43,6 +43,7 @@ const HomePage = () => {
   const [isMarkLocation, setIsMarkLocation] = useState(false)
   const onMarkLocation = (isMarking) => {
     setIsMarkLocation(isMarking)
+    console.log("clicked")
   };
 
   const [reportData, setReportData] = useState(null)
@@ -55,6 +56,7 @@ const HomePage = () => {
     setReportMarker(isMarking)
   }
 
+
   useEffect(() => {
     if (reportData) {
       setMapZoom(16)
@@ -65,6 +67,46 @@ const HomePage = () => {
     } 
   }, [reportData])
 
+
+
+  // ----FOR PLANNER MODAL PIN ORIGIN AND DESTINATION----
+  const [isPinOrigin, setIsPinOrigin] = useState(false)
+  const onPinOrigin = (isPin) => {
+    setIsPinOrigin(isPin)
+  }
+
+  const [originPinData, setOriginPinData] = useState(null)
+  const onOriginLocationSelect = (location) => {
+    setOriginPinData(location)
+  }
+
+  const [isPinDestination, setIsPinDestination] = useState(false)
+  const onPinDestination = (isPin) => {
+    setIsPinDestination(isPin)
+  }
+
+  const [destinationPinData, setDestinationPinData] = useState(null)
+  const onDestinationLocationSelect = (location) => {
+    setDestinationPinData(location)
+  }
+
+  useEffect(() => {
+    if (originPinData) {
+      setMapZoom(16)
+      setCenterLat(originPinData.lat)
+      setCenterLng(originPinData.lng)
+      setOriginMarker({lat: originPinData.lat, lng: originPinData.lng})
+    }
+  }, [originPinData])
+
+  useEffect(() => {
+    if (destinationPinData) {
+      setMapZoom(16)
+      setCenterLat(destinationPinData.lat)
+      setCenterLng(destinationPinData.lng)
+      setDestinationMarker({lat: destinationPinData.lat, lng: destinationPinData.lng})
+    }
+  }, [destinationPinData])
 
 
   // --------------FOR PLANNER MODAL--------------------
@@ -106,7 +148,7 @@ const HomePage = () => {
   }
 
 
-  const [showTrafficLayer, setShowTrafficLayer] = useState(true)
+  const [showTrafficLayer, setShowTrafficLayer] = useState(false)
 
 
     
@@ -136,6 +178,12 @@ const HomePage = () => {
           selectOriginMarker={selectOriginMarker}
           selectDestinationMarker={selectDestinationMarker}
           selectRouteDetailCenter={selectRouteDetailCenter}
+          onPinOrigin={onPinOrigin}
+          originPinData={originPinData}
+          isPinOrigin={isPinOrigin}
+          onPinDestination={onPinDestination}
+          destinationPinData={destinationPinData}
+          isPinDestination={isPinDestination}
 
 
           // Hindrance Modal
@@ -162,6 +210,14 @@ const HomePage = () => {
         destinationMarker={destinationMarker}
         selectOriginMarker={selectOriginMarker}
         selectDestinationMarker={selectDestinationMarker}
+        isPinOrigin={isPinOrigin}
+        onPinOrigin={onPinOrigin}
+        onOriginLocationSelect={onOriginLocationSelect}
+        isPinDestination={isPinDestination}
+        onPinDestination={onPinDestination}
+        onDestinationLocationSelect={onDestinationLocationSelect}
+
+
 
         showTrafficLayer={showTrafficLayer}
 
@@ -178,8 +234,7 @@ const HomePage = () => {
       </div>
 
       <div className='home-page-layers'>
-        <button className='gmap-layer-button' onClick={() => setShowTrafficLayer(true)}>Traffic</button>
-        <button className='gmap-layer-button' onClick={() => setShowTrafficLayer(null)}>Terrain</button>
+        <button className='gmap-layer-button' onClick={() => setShowTrafficLayer(!showTrafficLayer)}>{showTrafficLayer ? "Hide Traffic" : "Show Traffic"}</button>
       </div>
     </>
   )

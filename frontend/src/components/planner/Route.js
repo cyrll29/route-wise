@@ -20,6 +20,7 @@ const Route = (props) => {
   const longestDuration = Math.max(...routesDuration)
 
   const handleItineraryClick = () => {
+    console.log(itinerary)
     onItinerarySelect(itinerary)
     setShowDetails(!showDetails)
     selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon, zoom: 15})
@@ -80,7 +81,11 @@ const Route = (props) => {
     if(leg.mode === "WALK"){
       legColor = "#FF7F7F"
     } else if(leg.mode === "BUS") {
-      legColor = "#45B6FE"
+      if(leg.route.gtfsId.includes("PUJ")) {
+        legColor = "#397822"
+      } else {
+        legColor = "#45B6FE"
+      }     
     } else if(leg.mode === "RAIL") {
       legColor = "#FFA756"
     }
@@ -96,24 +101,27 @@ const Route = (props) => {
         <div>
           <div onClick={handleItineraryClick} className='main-grid'>
             <div style={styles.mainGridHeader}>
-              <p style={{fontWeight: 'bold'}}>{formatDuration(itinerary.duration)}</p>
+              <p style={{fontWeight: 'bold'}}>ETA: {formatDuration(itinerary.duration)}</p>
               <ul style={styles.modeOfTranspo}>
-                {itinerary.legs.map((leg, index) => (
-                  <div key={index} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 30,
-                    width: 60,
-                    backgroundColor: legColors(leg),
-                    margin: 2,
-                    padding: 2,
-                    borderRadius: 6,
-                    fontWeight: 'bold',
-                    color: 'white'}}>
-                    {leg.mode}
-                  </div>
-                ))}
+                {itinerary.legs
+                  .filter(leg => leg.mode !== "WALK")
+                  .map((leg, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 30,
+                      width: 60,
+                      backgroundColor: legColors(leg),
+                      margin: 2,
+                      padding: 2,
+                      borderRadius: 6,
+                      fontWeight: 'bold',
+                      color: 'white'}}>
+                      {(leg.route.gtfsId.includes("PUJ")) ? "JEEP" : leg.mode}
+                    </div>
+                  ))
+                }
               </ul>
             </div>
             <div className='distance-time' style={{fontSize: 13, marginBottom: 5, marginTop: 5}}>

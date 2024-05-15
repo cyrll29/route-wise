@@ -9,7 +9,11 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
     if(leg.mode === 'WALK') {
       color = '#FF7F7F'
     } else if (leg.mode === 'BUS') {
-      color = '#45B6FE'
+      if(leg.route.gtfsId.includes("PUJ")) {
+        color = "#397822"
+      } else {
+        color = "#45B6FE"
+      }   
     } else if (leg.mode === 'RAIL') {
       color = '#FFA756'
     }
@@ -87,7 +91,7 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
               alignItems: 'center',
               borderRadius: 5
             }}>
-              {leg.mode}
+              {(leg.mode === "BUS" && leg.route && leg.route.gtfsId && leg.route.gtfsId.includes("PUJ")) ? "JEEP" : leg.mode}
             </p>
           </div>
           <div>
