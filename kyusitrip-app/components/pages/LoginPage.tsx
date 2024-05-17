@@ -13,6 +13,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { NavigationProp } from '@react-navigation/native';
 import axios from 'axios';
 import config from '../../utils/config'
+import reportService from '../services/reportServices'
 
 interface LoginPageProps {
   navigation: NavigationProp<any>;
@@ -43,6 +44,8 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
       setError("")
       setModalOpen(true)
       setWait(false)
+      reportService.setToken(response.data.token)
+      console.log(response.data.token)
     } catch (error: any) {
       console.log("catch running")
       console.log(error)

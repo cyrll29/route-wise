@@ -2,7 +2,12 @@ import { View, Text, StyleSheet, TextInput, Pressable, Image, ImageSourcePropTyp
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const ReportModal = () => {
+const ReportModal = (props) => {
+
+  const {
+    onClickLatLng,
+    setMarkers
+  } = props
 
   const [clickedReport, setClickedReport] = useState('')
 
@@ -69,9 +74,15 @@ const ReportModal = () => {
             <Text style={{fontSize: 17, color: '#999999', fontWeight: '600', marginBottom: 5, width: '100%', textAlign: 'center'}}>Report your Location</Text>
           </View>
 
+          <View>
+            <Text>
+              {onClickLatLng.latitude} {onClickLatLng.longitude}
+            </Text>
+          </View>
+
           <View style={styles.iconSection}>
 
-            <View style={styles.iconContainer}>
+            <View style={styles.iconContainer} onTouchStart={() => setClickedReport('Traffic')}>
               <View style={[(clickedReport === 'Traffic') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
                 <Image
                   source={require("../../assets/traffic-small.png") as ImageSourcePropType}
@@ -81,7 +92,7 @@ const ReportModal = () => {
               <Text style={[(clickedReport === 'Traffic') ? styles.iconPickedText : styles.iconUnpickedText]}>Traffic</Text>
             </View>
 
-            <View style={styles.iconContainer}>
+            <View style={styles.iconContainer} onTouchStart={() => setClickedReport('Hazard')}>
               <View style={[(clickedReport === 'Hazard') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
                 <Image
                   source={require("../../assets/hazard-small.png") as ImageSourcePropType}
@@ -91,7 +102,7 @@ const ReportModal = () => {
               <Text style={[(clickedReport === 'Hazard') ? styles.iconPickedText : styles.iconUnpickedText]}>Hazard</Text>
             </View>
 
-            <View style={styles.iconContainer}>
+            <View style={styles.iconContainer} onTouchStart={() => setClickedReport('Accident')}>
               <View style={[(clickedReport === 'Accident') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
                 <Image
                   source={require("../../assets/accident-small.png") as ImageSourcePropType}
@@ -101,7 +112,7 @@ const ReportModal = () => {
               <Text style={[(clickedReport === 'Accident') ? styles.iconPickedText : styles.iconUnpickedText]}>Accident</Text>
             </View>
 
-            <View style={styles.iconContainer}>
+            <View style={styles.iconContainer} onTouchStart={() => setClickedReport('Flood')}>
               <View style={[(clickedReport === 'Flood') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
                 <Image
                   source={require("../../assets/flood-small.png") as ImageSourcePropType}
@@ -111,7 +122,7 @@ const ReportModal = () => {
               <Text style={[(clickedReport === 'Flood') ? styles.iconPickedText : styles.iconUnpickedText]}>Flood</Text>
             </View>
 
-            <View style={styles.iconContainer}>
+            <View style={styles.iconContainer} onTouchStart={() => setClickedReport('Closure')}>
               <View style={[(clickedReport === 'Closure') ? styles.smallPickedIconBox : styles.smallUnpickedIconBox]}>
                 <Image
                   source={require("../../assets/warning-sign.png") as ImageSourcePropType}
@@ -140,6 +151,9 @@ const ReportModal = () => {
 
             <TouchableOpacity
               style={[styles.reportButton, {flexDirection: 'row', gap: 15, backgroundColor: '#880015'}]}
+              onPress={() =>
+                setMarkers(markers => [...markers, onClickLatLng])
+              }
             >
               <Image
                 source={require("../../assets/submit-icon.png") as ImageSourcePropType}

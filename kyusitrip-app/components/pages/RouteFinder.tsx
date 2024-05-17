@@ -55,8 +55,14 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   const [viewedSheet, setViewedSheet] = useState("")
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [snapPoints, setSnapPoints] = useState(['40%']);
+
   const [markers, setMarkers] = useState([{ latitude: 14.657490088758687, longitude: 121.03294214744254 }])
+  const [showMarkers, setShowMarkers] = useState(true)
+
   const [routes, setRoutes] = useState<any | null>(null)
+
+
+  const [onClickLatLng, setOnClickLatLng] = useState<any>()
 
   const mapRef = useRef<any | null>(null)
 
@@ -71,7 +77,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           setSnapPoints(['50%']);
           break;
         case "Report":
-          setSnapPoints(['40%']);
+          setSnapPoints(['42%']);
           break;
         default:
           setSnapPoints(['0%']); // Default snap points
@@ -96,6 +102,39 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
       }))
     }
   }, [origin])
+
+  const renderMarkers = () => {
+    if(showMarkers) {
+      if(markers.length > 0) {
+        return markers.map((marker, i) =>(
+          <Marker coordinate={{
+            latitude: marker.latitude,
+            longitude: marker.longitude
+          }} key={i}>
+            <Callout style={styles.calloutContainer}>
+              <View style={styles.calloutView}>
+                <TouchableOpacity onPress={() => console.log("I am pressed")}>
+                  <Text>AHHA</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.calloutView}>
+                <Text>{marker.latitude}</Text>
+              </View>
+              <View style={styles.calloutView}>
+                <Text>{marker.longitude}</Text>
+              </View>
+            </Callout>
+          </Marker>
+        ))
+      } 
+      else {
+        <></>
+      }
+    } 
+    else {
+      return <></>
+    }
+  }
 
   const getRoutes = async () => {
     if (originValue && destinationValue) {
@@ -182,12 +221,12 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     let updatedValue = e.nativeEvent.coordinate
     console.log(updatedValue)
     handleRegionChange(updatedValue)
+    setOnClickLatLng(updatedValue)
 
     console.log(region)
 
-    setMarkers(markers => [...markers, updatedValue])
-    // handlePresentModalPress()
-    // setViewedSheet("Report")
+    handlePresentModalPress()
+    setViewedSheet("Report")
     console.log(origin)
     console.log(markers)
   } 
@@ -249,9 +288,9 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           keyboardBehavior="interactive"
         >
           <BottomSheetView style={styles.contentContainer}>
-            {(viewedSheet === "Routes") ? <RoutesModal routes={routes}/> : <></>}
+            {(viewedSheet === "Routes") ? <RoutesModal routes={routes} /> : <></>}
             {(viewedSheet === "Hindrances") ? <HindranceModal /> : <></>}
-            {(viewedSheet === "Report") ? <ReportModal /> : <></>}
+            {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} /> : <></>}
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
@@ -370,6 +409,19 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
+      <View style={[styles.toggleReportIcon, styles.shadowProp2]}>
+        <TouchableOpacity 
+          style={{height:'100%', width:'100%', justifyContent: 'center', alignItems: 'center'}}
+          onPress={() => {
+            setShowMarkers(!showMarkers)
+          }}
+        >
+          <Text style={{fontSize: 11, color: '#3b3b3b'}}>
+            Toggle Reports
+          </Text>
+        </TouchableOpacity>
+      </View>
+
 
 
       {/* Map View */}
@@ -391,13 +443,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         onPress={(e) => onLocationPress(e)}
       >
         {
-          markers.length > 0 ?
-          markers.map((marker, i) =>(
-            <Marker coordinate={{
-              latitude: marker.latitude,
-              longitude: marker.longitude
-            }} key={i} />
-          )) : null
+          renderMarkers()
         }
       </MapView>
     </GestureHandlerRootView>
@@ -410,6 +456,23 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "flex-start",
     position: "relative",
+  },
+
+  calloutContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    width: Dimensions.get('window').width * 0.75
+  },
+
+  calloutView: {
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    marginBottom: 10,
+    position: 'relative'
   },
 
   contentContainer: {
@@ -501,6 +564,20 @@ const styles = StyleSheet.create({
   showReportIcon: {
     position: "absolute",
     left: 0,
+    bottom: "27%",
+    marginLeft: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+    width: 100,
+    height: 30,
+    borderRadius: 15,
+    zIndex: -1
+  },
+
+  toggleReportIcon: {
+    position: "absolute",
+    left: 105,
     bottom: "27%",
     marginLeft: 5,
     alignItems: "center",
