@@ -26,19 +26,25 @@ const ReportModal = (props) => {
   const [value, setValue] = useState(0)
 
   const handleSubmit = () => {
+    let labelValue = 0
     switch(clickedReport) {
       case "Traffic": 
-        setValue(1)
+        labelValue = 1;
+        break;
       case "Hazard":
-        setValue(2)
+        labelValue = 2
+        break;
       case "Accident": 
-        setValue(3)
+        labelValue = 3
+        break;
       case "Flood" :
-        setValue(4)
+        labelValue = 4
+        break;
       case "Closure": 
-        setValue(5)
+        labelValue = 5
+        break;
     }
-    const category = {value: value, label: clickedReport};
+    const category = {value: labelValue, label: clickedReport};
     console.log(category)
     if (onClickLatLng) {
       const latitude = onClickLatLng.latitude

@@ -29,9 +29,10 @@ import RoutesModal from "../modals/RoutesModal"
 import HindranceModal from "../modals/HindranceModal"
 import ReportModal from "../modals/ReportModal"
 import { useLocalSearchParams } from "expo-router";
-import MapViewDirections from "react-native-maps-directions";
 import routeService from '../services/routeServices'
 import reportService from "../services/reportServices";
+// import trafficIcon from "../../assets/traffic-icon.png"
+
 
 interface RouteFinderProps {
   navigation: NavigationProp<any>
@@ -107,11 +108,15 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   const renderMarkers = () => {
     if(showMarkers) {
       if(reports) {
-        return reports.map((report: any, i) =>(
+        return reports.map((report: any, i) => {
+        return (
           <Marker coordinate={{
-            latitude: report.latLng.lat,
-            longitude: report.latLng.lng
-          }} key={i}>
+              latitude: report.latLng.lat,
+              longitude: report.latLng.lng
+            }} 
+            key={i}
+            icon={require('../../assets/traffic-icon.png')}
+          >
             <Callout style={styles.calloutContainer}>
               <View style={styles.calloutView}>
                 <TouchableOpacity onPress={() => console.log("I am pressed")}>
@@ -120,7 +125,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
               </View>
             </Callout>
           </Marker>
-        ))
+        )})
       } 
       else {
         <></>

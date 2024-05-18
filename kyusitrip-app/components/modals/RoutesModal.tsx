@@ -8,8 +8,6 @@ const RoutesModal = (props) => {
 
   const {routes} = props
 
-  const [origin, setOrigin] = useState("")
-  const [destination, setDestination] = useState("")
   const [shown, setShown] = useState(false)
   const [indexRow, setIndexRow] = useState()
   
