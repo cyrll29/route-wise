@@ -31,6 +31,7 @@ import ReportModal from "../modals/ReportModal"
 import { useLocalSearchParams } from "expo-router";
 import MapViewDirections from "react-native-maps-directions";
 import routeService from '../services/routeServices'
+import reportService from "../services/reportServices";
 
 interface RouteFinderProps {
   navigation: NavigationProp<any>
@@ -105,23 +106,17 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
   const renderMarkers = () => {
     if(showMarkers) {
-      if(markers.length > 0) {
-        return markers.map((marker, i) =>(
+      if(reports) {
+        return reports.map((report: any, i) =>(
           <Marker coordinate={{
-            latitude: marker.latitude,
-            longitude: marker.longitude
+            latitude: report.latLng.lat,
+            longitude: report.latLng.lng
           }} key={i}>
             <Callout style={styles.calloutContainer}>
               <View style={styles.calloutView}>
                 <TouchableOpacity onPress={() => console.log("I am pressed")}>
                   <Text>AHHA</Text>
                 </TouchableOpacity>
-              </View>
-              <View style={styles.calloutView}>
-                <Text>{marker.latitude}</Text>
-              </View>
-              <View style={styles.calloutView}>
-                <Text>{marker.longitude}</Text>
               </View>
             </Callout>
           </Marker>
@@ -272,9 +267,71 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     longitudeDelta: 0.0122,
   }
 
-  // For routes
+  // For Hindrance
+  const [reports, setReports] = useState([])
+  const [count, setCount] = useState(0)
 
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU'
+  const timeComparison = (dateCreated) => {
+    const now = new Date().valueOf()
+    const createdAt = new Date(dateCreated).valueOf()
+    const diffInMilliseconds = now - createdAt
+    const diffInMinutes = Math.round(diffInMilliseconds / (60 * 1000))
+    if (diffInMinutes < 1) {
+      return 'Just now';
+    } else if (diffInMinutes === 1) {
+      return '1 minute ago';
+    } else if (diffInMinutes <= 60){
+      return `${diffInMinutes} minutes ago`;
+    } else if (diffInMinutes > 60 && diffInMinutes < 120) {
+      return '1 hour ago'
+    } else {
+      return `${Math.round(diffInMinutes/60)} hours ago`
+    }
+  }
+
+  useEffect(() => {
+    let timer = setInterval(() => {
+      setCount((count) => count + 1);
+    }, 10000);
+
+    return () => clearTimeout(timer)
+  }, []);
+
+  useEffect(() => {
+    reportService
+    .getAll()
+    .then((response) => {
+      const updatedReports = response.data.map((report) => ({
+        ...report,
+        postedAgo: timeComparison(report.createdAt),
+      }));
+      console.log("on Route Finder")
+      console.log(updatedReports)
+      console.log("--------")
+      setReports(updatedReports.reverse())
+    })
+    .catch ((error) => {
+      console.log(error)
+    })
+  }, [count]);
+
+  // For rendering purposes (Report Markers, Route Markers)
+
+  const renderReportMarkers = () => {
+    if (reports.length > 0) {
+      return reports.map((report: any, i) => {
+        <Marker 
+          coordinate={{
+            latitude: report.latLng.lat,
+            longitude: report.latLng.lng
+          }}
+          key={i}
+        /> 
+      })
+    } else {
+      return <></>
+    }
+  }
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -289,7 +346,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         >
           <BottomSheetView style={styles.contentContainer}>
             {(viewedSheet === "Routes") ? <RoutesModal routes={routes} /> : <></>}
-            {(viewedSheet === "Hindrances") ? <HindranceModal /> : <></>}
+            {(viewedSheet === "Hindrances") ? <HindranceModal reports={reports} /> : <></>}
             {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} /> : <></>}
           </BottomSheetView>
         </BottomSheetModal>
@@ -442,9 +499,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         }}
         onPress={(e) => onLocationPress(e)}
       >
-        {
-          renderMarkers()
-        }
+        {renderMarkers()}
       </MapView>
     </GestureHandlerRootView>
   );

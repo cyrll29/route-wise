@@ -12,6 +12,7 @@ import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import reportService from '../services/reportServices';
 
 const ReportModal = (props) => {
 
@@ -22,9 +23,22 @@ const ReportModal = (props) => {
 
   const [clickedReport, setClickedReport] = useState('')
   const [description, setDescription] = useState('')
+  const [value, setValue] = useState(0)
 
   const handleSubmit = () => {
-    const category = clickedReport;
+    switch(clickedReport) {
+      case "Traffic": 
+        setValue(1)
+      case "Hazard":
+        setValue(2)
+      case "Accident": 
+        setValue(3)
+      case "Flood" :
+        setValue(4)
+      case "Closure": 
+        setValue(5)
+    }
+    const category = {value: value, label: clickedReport};
     console.log(category)
     if (onClickLatLng) {
       const latitude = onClickLatLng.latitude
@@ -36,6 +50,23 @@ const ReportModal = (props) => {
         description
       }
       console.log(data)
+
+      reportService
+        .create(data)
+        .then((response) => {
+          console.log(response.message)
+        })
+        .catch((error) => {
+          if(
+            error.response &&
+            error.response.status >= 400 &&
+            error.response.status <= 500
+          ) {
+            console.log(error.response.data.message)
+          }
+        })
+    } else {
+      alert("Pick a location by clicking anywhere on the map")
     }
   }
 
@@ -104,7 +135,7 @@ const ReportModal = (props) => {
 
           <View>
             <Text>
-              {onClickLatLng.latitude} {onClickLatLng.longitude}
+              {onClickLatLng ? "Write a brief details below" : "Kindly pick a location"}
             </Text>
           </View>
 
