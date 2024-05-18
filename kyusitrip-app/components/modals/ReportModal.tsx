@@ -1,6 +1,17 @@
-import { View, Text, StyleSheet, TextInput, Pressable, Image, ImageSourcePropType, TouchableOpacity } from 'react-native'
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  Pressable, 
+  Image, 
+  ImageSourcePropType, 
+  TouchableOpacity, 
+} from 'react-native'
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
+import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 const ReportModal = (props) => {
 
@@ -10,6 +21,23 @@ const ReportModal = (props) => {
   } = props
 
   const [clickedReport, setClickedReport] = useState('')
+  const [description, setDescription] = useState('')
+
+  const handleSubmit = () => {
+    const category = clickedReport;
+    console.log(category)
+    if (onClickLatLng) {
+      const latitude = onClickLatLng.latitude
+      const longitude = onClickLatLng.longitude
+      const latLng = {lat: latitude, lng: longitude}
+      const data = {
+        latLng,
+        category,
+        description
+      }
+      console.log(data)
+    }
+  }
 
   return (
     <View style={styles.theContainer}>
@@ -135,10 +163,16 @@ const ReportModal = (props) => {
 
           <View style={styles.titleInputBox}>
             <Text style={{fontSize: 16, color: '#999999', fontWeight: '700'}}>Short Details about the Report</Text>
-            <TextInput 
+            <BottomSheetTextInput
+              style={{borderColor: '#999999', borderBottomWidth: 1,}}
+              placeholder='eg. Road Cosure at FPJ Ave. corner Del Monte' 
+              value={description}
+              onChangeText={text => setDescription(text)}
+            />
+            {/* <TextInput 
               style={{borderColor: '#999999', borderBottomWidth: 1,}}
               placeholder='eg. Road Cosure at FPJ Ave. corner Del Monte'
-            />
+            /> */}
           </View>
 
           <View style={styles.reportButtonContainer}>
@@ -152,7 +186,7 @@ const ReportModal = (props) => {
             <TouchableOpacity
               style={[styles.reportButton, {flexDirection: 'row', gap: 15, backgroundColor: '#880015'}]}
               onPress={() =>
-                setMarkers(markers => [...markers, onClickLatLng])
+                handleSubmit()
               }
             >
               <Image
