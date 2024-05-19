@@ -11,10 +11,6 @@ query PlanTrip(
         to: { lat: $toLat, lon: $toLon }
         date: $date
         time: $time
-        numItineraries: 3
-        maxWalkDistance: 500
-        waitAtBeginningFactor: 0.9
-        walkReluctance: 2
         ) {
         itineraries {
             startTime

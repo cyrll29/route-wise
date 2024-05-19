@@ -41,7 +41,7 @@ const RouteModal = (props) => {
 
   const [originCoordinates, setOriginCoordinates] = useState({})
   const [destinationCoordinates, setDestinationCoordinates] = useState({})
-  let timeoutId = null
+  // let timeoutId = null
 
   const handleReset = () => {
     setRoutes(null)
@@ -49,19 +49,19 @@ const RouteModal = (props) => {
     originInputRef.current.value = null
     destinationInputRef.current.value = null
     selectDestinationMarker(null)
-    clearTimer()
+    // clearTimer()
   }
 
-  const clearTimer = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-      timeoutId = null
-    }
-  }
+  // const clearTimer = () => {
+  //   if (timeoutId) {
+  //     clearTimeout(timeoutId)
+  //     timeoutId = null
+  //   }
+  // }
 
-  useEffect(() => {
-    return () => clearTimer(); // Cleanup function to stop timer on unmount
-  }, []);
+  // useEffect(() => {
+  //   return () => clearTimer(); // Cleanup function to stop timer on unmount
+  // }, []);
 
   useEffect(() => {
     if (originPinData) {
@@ -130,8 +130,8 @@ const RouteModal = (props) => {
           lng: response.data.otpResponse.plan.itineraries[0].legs[0].from.lon
         })
         selectOriginMarker(null)
-        clearTimer()
-        timeoutId = setTimeout(handleReset, 300000)
+        // clearTimer()
+        // timeoutId = setTimeout(handleReset, 300000)
       })
       .catch((error) => {
         console.log(error);
