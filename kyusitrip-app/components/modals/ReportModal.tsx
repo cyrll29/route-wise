@@ -6,7 +6,8 @@ import {
   Pressable, 
   Image, 
   ImageSourcePropType, 
-  TouchableOpacity, 
+  TouchableOpacity,
+  Alert, 
 } from 'react-native'
 import React, { useState } from 'react'
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -15,7 +16,6 @@ import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import reportService from '../services/reportServices';
 
 const ReportModal = (props) => {
-
   const {
     onClickLatLng,
     setMarkers
@@ -24,6 +24,13 @@ const ReportModal = (props) => {
   const [clickedReport, setClickedReport] = useState('')
   const [description, setDescription] = useState('')
   const [value, setValue] = useState(0)
+
+  const reportAlert = (message) =>
+    Alert.alert('Report', message, [
+      {
+        text: 'Ok',
+      }
+    ]);
 
   const handleSubmit = () => {
     let labelValue = 0
@@ -61,6 +68,8 @@ const ReportModal = (props) => {
         .create(data)
         .then((response) => {
           console.log(response.message)
+          reportAlert(response.message)
+          setDescription('')
         })
         .catch((error) => {
           if(

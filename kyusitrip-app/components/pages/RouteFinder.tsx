@@ -28,10 +28,11 @@ import Sidebar from "../ui/SideBar";
 import RoutesModal from "../modals/RoutesModal"
 import HindranceModal from "../modals/HindranceModal"
 import ReportModal from "../modals/ReportModal"
+import HindranceDetailModal from "../modals/HindranceDetailModal";
 import { useLocalSearchParams } from "expo-router";
 import routeService from '../services/routeServices'
 import reportService from "../services/reportServices";
-// import trafficIcon from "../../assets/traffic-icon.png"
+import decodePolyline from "decode-google-map-polyline"
 
 
 interface RouteFinderProps {
@@ -54,6 +55,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   // Data for destination
   const [destinationValue, setDestinationValue] = useState<any>("")
   const [destinationGeometry, setDestinationGeometry] = useState<any>()
+
   const [viewedSheet, setViewedSheet] = useState("")
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [snapPoints, setSnapPoints] = useState(['40%']);
@@ -63,10 +65,9 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
   const [routes, setRoutes] = useState<any | null>(null)
 
-
   const [onClickLatLng, setOnClickLatLng] = useState<any>()
 
-  const mapRef = useRef<any | null>(null)
+  const mapRef = React.createRef<any>();
 
   // Bottom Sheet
   useEffect(() => {
@@ -76,7 +77,10 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           setSnapPoints(['50%', '95%']);
           break;
         case "Hindrances":
-          setSnapPoints(['50%']);
+          setSnapPoints(['35%']);
+          break;
+        case "HindranceDetail":
+          setSnapPoints(['35%']);
           break;
         case "Report":
           setSnapPoints(['42%']);
@@ -88,16 +92,19 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     calculateSnapPoints();
   }, [viewedSheet]);
 
-  // Update Origin Value
+  // ------------------------------------------------------- For Origin -------------------------------------------------------------------------
   useEffect(() => {
     if(!origin) {
+      console.log("No origin")
       return
     } else {
       setOriginValue(origin)
+      centerChosenLocation(originLatitude, originLongitude)
       const originLatLng = {
         latitude: originLatitude,
         longitude: originLongitude
       }
+      setRoutes(null)
       setOriginGeometry((originGeometry) => ({
         ...originGeometry,
         ...originLatLng
@@ -105,37 +112,79 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     }
   }, [origin])
 
-  const renderMarkers = () => {
-    if(showMarkers) {
-      if(reports) {
-        return reports.map((report: any, i) => {
-        return (
-          <Marker coordinate={{
-              latitude: report.latLng.lat,
-              longitude: report.latLng.lng
-            }} 
-            key={i}
-            icon={require('../../assets/traffic-icon.png')}
-          >
-            <Callout style={styles.calloutContainer}>
-              <View style={styles.calloutView}>
-                <TouchableOpacity onPress={() => console.log("I am pressed")}>
-                  <Text>AHHA</Text>
-                </TouchableOpacity>
-              </View>
-            </Callout>
-          </Marker>
-        )})
-      } 
-      else {
-        <></>
+  const centerChosenLocation = (lat:any, lng:any) => {
+    const latitude = parseFloat(lat)
+    const longitude = parseFloat(lng)
+    const region = {
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: 0.009,
+      longitudeDelta: 0.009
+    }
+    console.log(region.latitude + typeof(region.latitude))
+    mapRef.current.animateToRegion(region, 1000)
+  }
+
+  const renderOriginMarker = () => {
+    const icon = require("../../assets/map-origin-1.png")
+    if(originGeometry) {
+      let data = {
+        lat: parseFloat(originGeometry.latitude),
+        lng: parseFloat(originGeometry.longitude),
       }
-    } 
-    else {
+      return (
+        <Marker 
+          coordinate={{
+            latitude: data.lat,
+            longitude: data.lng
+          }}
+          image={icon}
+        />
+      )
+    } else {
       return <></>
     }
   }
 
+   // ------------------------------------------------------- For Destination ----------------------------------------------------------
+  useEffect(() => {
+    if(!destination) {
+      return
+    } else {
+      setDestinationValue(destination)
+      centerChosenLocation(destinationLat, destinationLng)
+      const data = {
+        latitude: destinationLat,
+        longitude: destinationLng
+      }
+      setDestinationGeometry((destinationGeometry) =>({
+        ...destinationGeometry,
+        ...data
+      }))
+      setCompleteInfo(true)
+    }
+  }, [destination])
+
+  const renderDestinationMarker = () => {
+    const icon = require("../../assets/map-destination-1.png")
+    if(destinationGeometry) {
+      let data = {
+        lat: parseFloat(destinationGeometry.latitude),
+        lng: parseFloat(destinationGeometry.longitude),
+      }
+      return (
+        <Marker 
+          coordinate={{
+            latitude: data.lat,
+            longitude: data.lng
+          }}
+          image={icon}
+        />
+      )
+    }
+  }
+
+  // ------------------------------------------------------- For Route Navigation ------------------------------------------------------
   const getRoutes = async () => {
     if (originValue && destinationValue) {
       const data = {
@@ -148,7 +197,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           lng: destinationGeometry.longitude
         }
       }
-      console.log(data)
+      centerChosenLocation(data.origin.lat, data.origin.lng)
       Alert.alert('', 'Finding the best route', [
         {
           text: 'OK',
@@ -174,32 +223,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     }
   }
 
-  const altFunction = async (lat, lng) => {
-    const data = {
-      latitude: lat,
-      longitude: lng
-    }
-    await setDestinationGeometry((destinationGeometry) =>({
-      ...destinationGeometry,
-      ...data
-    }))
-  }
-
-  // Update Destination Value
-  useEffect(() => {
-    if(!destination) {
-      return
-    } else {
-      setDestinationValue(destination)
-      altFunction(destinationLat, destinationLng)
-
-      console.log(destinationGeometry)
-      console.log("above this is destinationGeometry")
-
-      setCompleteInfo(true)
-    }
-  }, [destination])
-
+  // ------------------------------------------------------- For General Modal ----------------------------------------------------------------
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -210,70 +234,25 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     setSidebarVisible(bool);
   };
 
-  const handleRegionChange = (coordinate) => {
-    setRegion((region) => ({
-      ...region,
-      ...coordinate
-    }))
-  }
-
+  // -------------------------------------------------- For Report Modal -------------------------------------------------------------------
   const onLocationPress = (e) => {
     let updatedValue = e.nativeEvent.coordinate
-    console.log(updatedValue)
-    handleRegionChange(updatedValue)
+    console.log(e.nativeEvent.coordinate.latitude)
+    const pseudoData = {
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+      latitudeDelta: 0.009,
+      longitudeDelta: 0.009
+    }
+    mapRef.current.animateToRegion(pseudoData, 1000)
     setOnClickLatLng(updatedValue)
-
-    console.log(region)
 
     handlePresentModalPress()
     setViewedSheet("Report")
-    console.log(origin)
-    console.log(markers)
   } 
 
-  // Center Map on Origin
-  useEffect(() => {
-    if(origin) {
-      mapRef.current.animateToRegion(originLocation, 1 * 1000)
-      // setMarkers(markers => [...markers, originLocation])
-    } else {
-      mapRef.current.animateToRegion(fallBackRegion, 1 * 1000)
-    }
-  }, [origin])
-
-  // Center Map on Destination
-  useEffect(() => {
-    if(destination) {
-      mapRef.current.animateToRegion(destinationLocation, 5 * 1000)
-      // setMarkers(markers => [...markers, originLocation])
-    } else {
-      mapRef.current.animateToRegion(fallBackRegion, 5 * 1000)
-    }
-  }, [destination])
-
-  const originLocation = {
-    latitude: originLatitude,
-    longitude: originLongitude,
-    latitudeDelta: 0.0122,
-    longitudeDelta: 0.0122,
-  }
-
-  const destinationLocation = {
-    latitude: destinationLat ? destinationLat : 14.657490088758687,
-    longitude: destinationLng ? destinationLng : 121.03294214744254,
-    latitudeDelta: 0.0122,
-    longitudeDelta: 0.0122,
-  }
-
-  const fallBackRegion = {
-    latitude: 14.657490088758687,
-    longitude: 121.03294214744254,
-    latitudeDelta: 0.0122,
-    longitudeDelta: 0.0122,
-  }
-
-  // For Hindrance
-  const [reports, setReports] = useState([])
+  // ------------------------------------- For Hindrance Modal ---------------------------------------------------------------
+  const [reports, setReports] = useState<any>([])
   const [count, setCount] = useState(0)
 
   const timeComparison = (dateCreated) => {
@@ -310,9 +289,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         ...report,
         postedAgo: timeComparison(report.createdAt),
       }));
-      console.log("on Route Finder")
-      console.log(updatedReports)
-      console.log("--------")
       setReports(updatedReports.reverse())
     })
     .catch ((error) => {
@@ -320,22 +296,95 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     })
   }, [count]);
 
-  // For rendering purposes (Report Markers, Route Markers)
+  // ----------------------------------------- For Hindrance Markers -----------------------------------------------------------------------
+  const [hindranceIndex, setHindranceIndex] = useState(0)
+  const renderMarkers = () => {
+    let icon = {
+      accidentIcon: require("../../assets/accident-icon-1.png"),
+      trafficIcon: require("../../assets/traffic-jam-icon-1.png"),
+      hazardIcon: require("../../assets/road-repair-icon-1.png"),
+      floodIcon: require("../../assets/flood-icon-1.png"),
+      closureIcon: require("../../assets/closure-icon-1.png"),
+      warningIcon : require("../../assets/map-warning-1.png")
+    }
+    if(showMarkers) {
+      if(reports) {
+        return reports.map((report: any, i) => {
+          let marker = icon.warningIcon;
 
-  const renderReportMarkers = () => {
-    if (reports.length > 0) {
-      return reports.map((report: any, i) => {
-        <Marker 
-          coordinate={{
-            latitude: report.latLng.lat,
-            longitude: report.latLng.lng
-          }}
-          key={i}
-        /> 
-      })
-    } else {
+          if(report.category.label === 'Accident'){
+            marker = icon.accidentIcon
+          } else if (report.category.label === 'Traffic') {
+            marker = icon.trafficIcon
+          } else if (report.category.label === 'Hazard') {
+            marker = icon.hazardIcon
+          } else if (report.category.label === 'Flood') {
+            marker = icon.floodIcon
+          } else if (report.category.label === 'Closure') {
+            marker = icon.closureIcon
+          }
+          return (
+            <Marker coordinate={{
+                latitude: report.latLng.lat,
+                longitude: report.latLng.lng
+              }} 
+              key={i}
+              icon={marker}
+              onPress={() => {
+                handlePresentModalPress()
+                setViewedSheet("HindranceDetail")
+                setHindranceIndex(i)
+              }}
+            />
+
+          )})
+      } 
+      else {
+        <></>
+      }
+    } 
+    else {
       return <></>
     }
+  }
+
+  // --------------------------------------- For Rendering Polyline ------------------------------------------------
+  const [itinerary, setItinerary] = useState(0)
+  const renderPolylines = () => {
+    if(routes) {
+      return routes.itineraries[itinerary].legs.map((leg, index) => {
+        const path = decodePolyline(leg.legGeometry.points);
+        let coords = path.map((point) => {
+          return {
+            latitude: point.lat,
+            longitude: point.lng
+          }
+        })
+        let color = "black"
+
+        if(leg.mode === "WALK"){
+          color = "#FF7F7F"
+        } else if (leg.mode === "BUS") {
+          if(leg.route.gtfsId.includes("PUJ")) {
+            color = "#397822"
+          } else {
+            color = "#45B6FE"
+          }    
+        } else if (leg.mode === "RAIL") {
+          color = "#FFA756"
+        }
+        
+        return (
+          <Polyline 
+            key={index}
+            coordinates={coords}
+            strokeColor={color}
+            strokeWidth={7}
+          />
+        )
+      })
+    }
+    return null;
   }
 
   return (
@@ -350,8 +399,9 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           keyboardBehavior="interactive"
         >
           <BottomSheetView style={styles.contentContainer}>
-            {(viewedSheet === "Routes") ? <RoutesModal routes={routes} /> : <></>}
-            {(viewedSheet === "Hindrances") ? <HindranceModal reports={reports} /> : <></>}
+            {(viewedSheet === "HindranceDetail") ? <HindranceDetailModal reports={reports} hindranceIndex={hindranceIndex} /> : <></>}
+            {(viewedSheet === "Routes") ? <RoutesModal routes={routes} setItinerary={setItinerary} /> : <></>}
+            {(viewedSheet === "Hindrances") ? <HindranceModal reports={reports} centerChosenLocation={centerChosenLocation}/> : <></>}
             {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} /> : <></>}
           </BottomSheetView>
         </BottomSheetModal>
@@ -403,7 +453,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
               style={{ paddingLeft: 15}} />
         </View>
 
-        <View style={styles.placeSection} onTouchStart={() => {}}>
+        <View style={styles.placeSection}>
           <Image
             source={require("../../assets/destination-icon.png") as ImageSourcePropType}
             style={styles.placeIcon}
@@ -471,14 +521,14 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.toggleReportIcon, styles.shadowProp2]}>
+      <View style={[styles.toggleReportIcon, styles.shadowProp2]} onTouchStart={() => console.log(originGeometry)}>
         <TouchableOpacity 
-          style={{height:'100%', width:'100%', justifyContent: 'center', alignItems: 'center'}}
+          style={{height:'100%', width:'100%', justifyContent: 'center', alignItems: 'center', borderRadius: 15, backgroundColor: showMarkers ? "#880015" : "white" }}
           onPress={() => {
             setShowMarkers(!showMarkers)
           }}
         >
-          <Text style={{fontSize: 11, color: '#3b3b3b'}}>
+          <Text style={{fontSize: 11, color: showMarkers ? "white" : '#3b3b3b'}}>
             Toggle Reports
           </Text>
         </TouchableOpacity>
@@ -496,15 +546,12 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           latitudeDelta: 0.0122,
           longitudeDelta: 0.0121
         }}
-        region={{
-          latitude: region.latitude,
-          longitude: region.longitude,
-          latitudeDelta: 0.0122,
-          longitudeDelta: 0.0121,
-        }}
         onPress={(e) => onLocationPress(e)}
       >
         {renderMarkers()}
+        {renderOriginMarker()}
+        {renderDestinationMarker()}
+        {renderPolylines()}
       </MapView>
     </GestureHandlerRootView>
   );
@@ -521,7 +568,7 @@ const styles = StyleSheet.create({
   calloutContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    flexDirection: 'row',
     width: Dimensions.get('window').width * 0.75
   },
 
