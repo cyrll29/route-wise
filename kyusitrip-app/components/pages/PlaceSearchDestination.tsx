@@ -7,15 +7,18 @@ import {
   Pressable,
   SafeAreaView,
   TouchableOpacity,
-  Modal,
   Dimensions,
   Image,
-  ImageSourcePropType
+  ImageSourcePropType,
+  Platform,
+  ActivityIndicator
 } from "react-native";
+import Modal from "react-native-modal";
 import { NavigationProp } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from "axios";
+import * as Location from 'expo-location';
 
 interface PlaceSearchDestinationProps {
   navigation: NavigationProp<any>;
@@ -26,6 +29,8 @@ const screenWidth = Dimensions.get('window').width;
 const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation }) => {
 
   const [destination, setDestination] = useState<any>()
+  const [isLoading, setIsLoading] = useState(false)
+
   const submitDestination = () => {
     if (destination) {
       const altDestination = JSON.stringify(destination);
@@ -49,8 +54,34 @@ const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation })
     }
   }
 
+  const getPermissions = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if(status !== 'granted') {
+      console.log("Please grant location permission");
+      return;
+    }
+
+    if(Platform.OS === 'ios') {
+      setIsLoading(true)
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setIsLoading(false)
+      navigation.navigate("RouteFinder", { destinationLat: currentLocation.coords.latitude, destinationLng: currentLocation.coords.longitude, destination: "Current Location" })
+    }
+    else {
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      navigation.navigate("RouteFinder", { destinationLat: currentLocation.coords.latitude, destinationLng: currentLocation.coords.longitude, destination: "Current Location" })
+    }
+  }
+
   return(
     <View style={styles.container}>
+      <Modal isVisible={isLoading} backdropOpacity={0.5}>
+        <View style={{ flex: 1, width: 'auto', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{ width: '80%', height: '10%', backgroundColor: 'white', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <ActivityIndicator size={"large"} />
+            </View>
+        </View>
+      </Modal>
       <View style={[styles.planner, styles.shadowProp]}>
 
         <View style={[styles.placeSection]}>
@@ -82,17 +113,17 @@ const PlaceSearchDestination: FC<PlaceSearchDestinationProps> = ({ navigation })
         </Pressable>
       </View>
 
-      <View style={[styles.currentLoc, {top: '30%'}]} >
+      <TouchableOpacity style={[styles.currentLoc, {top: '30%'}]} onPress={getPermissions}>
         <Image
           source={require("../../assets/current-loc.png") as ImageSourcePropType}
           style={[styles.placeIcon, {margin: 10}]}
         />
-        <Pressable>
+        <View>
           <Text style={{color: '#8f8f8f', fontWeight: '600'}}>
             Use Current Location as Destination
           </Text>
-        </Pressable>
-      </View>
+        </View>
+      </TouchableOpacity>
 
       <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', height: 120, position: 'absolute', bottom: 0, backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
         <TouchableOpacity 
