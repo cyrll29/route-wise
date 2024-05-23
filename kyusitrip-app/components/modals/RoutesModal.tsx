@@ -6,7 +6,9 @@ const RoutesModal = (props) => {
 
   const {
     routes, 
-    setItinerary
+    setItinerary,
+    centerChosenLocation,
+    snapToIndex
   } = props
 
   const [shown, setShown] = useState(false)
@@ -63,137 +65,181 @@ const RoutesModal = (props) => {
 
   // --------------------------------------------------------- For Leg Detail/s -------------------------------------------------------------
   const altDetails = (legs) => {
-    return (
-      <View
-      >
-        {legs.map((leg, index) => {
-          if(leg.mode === "WALK") {
-            return (
-              <View 
-                style={{     
-                  flexDirection: 'row',
-                  margin: 10,
-                  width: 'auto',
-                  borderRadius: 10,
-                  columnGap: 5,
-                  alignItems: 'center',
-                  backgroundColor: '#F8ECC4',
-                  justifyContent: 'space-between'
-                }} 
-                key={index}
-              >
-                <View 
-                  style={{ 
-                    backgroundColor: "#880015",
-                    padding: 7,
+    const icon = {
+      busIcon: require('../../assets/map-bus-1.png'),
+      walkIcon: require('../../assets/map-walk-1.png'),
+      railIcon: require('../../assets/map-rail-1.png'),
+      jeepICon: require('../../assets/map-jeep-1.png')
+    }
+    if(routes) {
+      return (
+        <View
+        >
+          {legs.map((leg, index) => {
+            let legIcon = icon.walkIcon
+            if(leg.mode === 'BUS') {
+              if(leg.route.gtfsId.includes("PUJ")) {
+                legIcon = icon.jeepICon
+              } else {
+                legIcon = icon.busIcon
+              }    
+            } 
+            else if(leg.mode === 'RAIL') {
+              legIcon = icon.railIcon
+            }
+            if(leg.mode === "WALK") {
+              return (
+                <TouchableOpacity 
+                  style={{     
+                    flexDirection: 'row',
+                    margin: 10,
+                    width: 'auto',
                     borderRadius: 10,
-                    width: '20%',
-                    alignItems: 'center'
+                    columnGap: 5,
+                    alignItems: 'center',
+                    backgroundColor: '#F8ECC4',
+                    justifyContent: 'space-between'
+                  }} 
+                  key={index}
+                  onPress={() => {
+                    centerChosenLocation(leg.from.lat, leg.from.lon)
+                    snapToIndex(0)
                   }}
                 >
-                  <Text style={{ color: 'white' }}>{leg.mode}</Text>
-                </View>
-                <View>
-                  <Text style={{ fontSize: 11 }}><Text style={{ fontWeight:'bold' }}>{leg.steps[0].relativeDirection}</Text> from <Text style={{ fontWeight:'bold' }}>{leg.steps[0].streetName}</Text></Text>
-                </View>
-                <View style={{ marginRight: 8 }}>
-                  <Text style={{ fontSize: 11, fontWeight: '900' }}>{formatDuration(leg.duration)}</Text>
-                </View>
-              </View>
-            )
-          }
-          else {
-            return(
-              <View 
-                style={{   
-                  backgroundColor: '#F8ECC4',  
-                  flexDirection: 'row',
-                  margin: 10,
-                  width: 'auto',
-                  borderRadius: 10,
-                  alignItems: 'center',
-                  columnGap: 5
-                }} 
-                key={index}
-              >
-                <View style={{ 
-                    backgroundColor: "#880015",
-                    padding: 7,
+                  <View 
+                    style={{ 
+                      backgroundColor: "#5B0625",
+                      padding: 7,
+                      borderRadius: 10,
+                      width: '20%',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image source={legIcon} style={{ width: 35, height: 35 }} />
+                  </View>
+                  <View>
+                    <Text style={{ fontSize: 11 }}><Text style={{ fontWeight:'bold' }}>{leg.steps[0].relativeDirection}</Text> from <Text style={{ fontWeight:'bold' }}>{leg.steps[0].streetName}</Text></Text>
+                  </View>
+                  <View style={{ marginRight: 8 }}>
+                    <Text style={{ fontSize: 11, fontWeight: '900' }}>{formatDuration(leg.duration)}</Text>
+                  </View>
+                </TouchableOpacity>
+              )
+            }
+            else {
+              return(
+                <TouchableOpacity 
+                  style={{   
+                    backgroundColor: '#F8ECC4',  
+                    flexDirection: 'row',
+                    margin: 10,
+                    width: 'auto',
                     borderRadius: 10,
-                    height: '100%',
-                    width: '20%',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    columnGap: 5
+                  }} 
+                  key={index}
+                  onPress={() => {
+                    centerChosenLocation(leg.from.lat, leg.from.lon)
+                    snapToIndex(0)
                   }}
                 >
-                  <Text style={{ color: 'white'}}>{leg.route.gtfsId.includes("PUJ") ? "JEEP" : leg.mode}</Text>
-                </View>
-                <View style={{ flexDirection: 'column', width: '75%' }}>
-                  <View style={{ width: 'auto', flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 5, marginTop: 5 }}>
-                    <Text style={{ fontSize: 15 }}>{formatDuration(leg.duration)}</Text>
+                  <View style={{ 
+                      backgroundColor: "#5B0625",
+                      padding: 7,
+                      borderRadius: 10,
+                      height: '100%',
+                      width: '20%',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <Image source={legIcon} style={{ width: 35, height: 35 }} />
                   </View>
-                  <View style={{ flexDirection: 'column', rowGap: 5 }}>
-                    <View style={{ flexDirection: 'row', columnGap: 55 }}>
-                      <View>
-                        <Text style={{ fontSize: 10, fontWeight: '900' }}><Text style={{ fontWeight: '900' }}>|</Text>    ROUTE   </Text>
-                      </View>
-                      <View style={{ width: '40%' }}>
-                        <Text style={{ fontSize: 10 }}>{leg.route.longName}</Text>
-                      </View>
+                  <View style={{ flexDirection: 'column', width: '75%' }}>
+                    <View style={{ width: 'auto', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5, marginTop: 5 }}>
+                      <Text style={{ fontSize: 15 }}>{leg.route.gtfsId.includes("PUJ") ? "JEEP" : leg.mode }</Text>
+                      <Text style={{ fontSize: 15 }}>{formatDuration(leg.duration)}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', columnGap: 55 }}>
-                      <View>
-                        <Text style={{ fontSize: 10, fontWeight: '900' }}><Text style={{ fontWeight: '900' }}>|</Text>    GET ON  </Text>
+                    <View style={{ flexDirection: 'column', rowGap: 5 }}>
+                      <View style={{ flexDirection: 'row', columnGap: 55 }}>
+                        <View>
+                          <Text style={{ fontSize: 10, fontWeight: '900' }}><Text style={{ fontWeight: '900' }}>|</Text>    ROUTE   </Text>
+                        </View>
+                        <View style={{ width: '40%' }}>
+                          <Text style={{ fontSize: 10 }}>{leg.route.longName}</Text>
+                        </View>
                       </View>
-                      <View style={{ width: '40%' }}>
-                        <Text style={{ fontSize: 10 }}>{leg.from.name}</Text>
+                      <View style={{ flexDirection: 'row', columnGap: 55 }}>
+                        <View>
+                          <Text style={{ fontSize: 10, fontWeight: '900' }}><Text style={{ fontWeight: '900' }}>|</Text>    GET ON  </Text>
+                        </View>
+                        <View style={{ width: '40%' }}>
+                          <Text style={{ fontSize: 10 }}>{leg.from.name}</Text>
+                        </View>
                       </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', columnGap: 55, marginBottom: 10 }}>
-                      <View>
-                        <Text style={{ fontSize: 10, fontWeight: '900' }}><Text style={{ fontWeight: '900' }}>|</Text>    GET OFF</Text>
-                      </View>
-                      <View style={{ width: '40%' }}>
-                        <Text style={{ fontSize: 10 }}>{leg.to.name}</Text>
+                      <View style={{ flexDirection: 'row', columnGap: 55, marginBottom: 10 }}>
+                        <View>
+                          <Text style={{ fontSize: 10, fontWeight: '900' }}><Text style={{ fontWeight: '900' }}>|</Text>    GET OFF</Text>
+                        </View>
+                        <View style={{ width: '40%' }}>
+                          <Text style={{ fontSize: 10 }}>{leg.to.name}</Text>
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </View>
-            )
-          }
-        })}
-      </View>
-    )
+                </TouchableOpacity>
+              )
+            }
+          })}
+        </View>
+      )
+    }
+    else {
+      return (
+        <View>
+          <Text>NO ROUTES AVAILABLE</Text>
+        </View>
+      )
+    }
   }
 
   const renderDistanceBar = (itinerary) => {
-    return itinerary.legs.map((leg) => {
-      let legPercent = Math.round(330 * leg.duration / itinerary.duration)
-      let modeColor = 'lightgray'
-        if(leg.mode === "WALK"){
-          modeColor = "#FF7F7F"
-        } else if(leg.mode === "BUS") {
-          if(leg.route.gtfsId.includes("PUJ")) {
-            modeColor = "#397822"
-          } else {
-            modeColor = "#45B6FE"
-          }     
-        } else if(leg.mode === "RAIL") {
-          modeColor = "#FFA756"
-        }
+    if(routes) {
+      return itinerary.legs.map((leg) => {
+        let legPercent = Math.round(330 * leg.duration / itinerary.duration)
+        let modeColor = 'lightgray'
+          if(leg.mode === "WALK"){
+            modeColor = "#FF7F7F"
+          } else if(leg.mode === "BUS") {
+            if(leg.route.gtfsId.includes("PUJ")) {
+              modeColor = "#397822"
+            } else {
+              modeColor = "#45B6FE"
+            }     
+          } else if(leg.mode === "RAIL") {
+            modeColor = "#FFA756"
+          }
+        return (
+          <View 
+            style={{
+              width: legPercent,
+              height: 'auto',
+              backgroundColor: modeColor,
+              borderLeftWidth: 2,
+              borderColor: 'white'
+            }}
+          >
+          </View>
+        )
+      })
+    }
+    else {
       return (
-        <View 
-          style={{
-            width: legPercent,
-            height: 'auto',
-            backgroundColor: modeColor,
-            borderLeftWidth: 2,
-            borderColor: 'white'
-          }}
-        >
+        <View>
+          <Text>NO ROUTES AVAILABLE</Text>
         </View>
       )
-    })
+    }
   }
 
   const renderModes = (itinerary:any) => {
@@ -221,6 +267,13 @@ const RoutesModal = (props) => {
           </View> 
         )
       })
+    }
+    else {
+      return (
+        <View>
+          <Text>NO ROUTES AVAILABLE</Text>
+        </View>
+      )
     }
   }
   

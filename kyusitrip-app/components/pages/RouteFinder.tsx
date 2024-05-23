@@ -75,7 +75,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     const calculateSnapPoints = () => {
       switch (viewedSheet) {
         case "Routes":
-          setSnapPoints(['50%', '95%']);
+          setSnapPoints(['40%', '95%']);
           break;
         case "Hindrances":
           setSnapPoints(['35%']);
@@ -233,6 +233,10 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     setSidebarVisible(bool);
   };
 
+  const snapToIndex = (index) => {
+    bottomSheetModalRef.current?.snapToIndex(index)
+  }
+
   // -------------------------------------------------- For Report Modal -------------------------------------------------------------------
   const onLocationPress = (e) => {
     let updatedValue = e.nativeEvent.coordinate
@@ -348,7 +352,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   }
 
   // --------------------------------------- For Rendering Polyline ------------------------------------------------
-  const [itinerary, setItinerary] = useState(0)
+  const [itinerary, setItinerary] = useState<any>()
   const renderPolylines = () => {
     if(routes) {
       return routes.itineraries[itinerary].legs.map((leg, index) => {
@@ -382,8 +386,49 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           />
         )
       })
+    } 
+    else {
+      return <></>;
     }
-    return null;
+  }
+
+  // ------------------------------------------------------------------ For Rendering Leg Start Markers ---------------------------------------------------------------------------------
+  const renderLegStartMarkers = () => {
+    const icon = {
+      busIcon: require('../../assets/map-bus-1.png'),
+      walkIcon: require('../../assets/map-walk-1.png'),
+      railIcon: require('../../assets/map-rail-1.png'),
+      jeepICon: require('../../assets/map-jeep-1.png')
+    }
+    if(routes) {
+      return routes.itineraries[itinerary].legs.map((leg, i) => {
+        let markerIcon = icon.walkIcon
+        if(leg.mode === 'BUS') {
+          if(leg.route.gtfsId.includes("PUJ")) {
+            markerIcon = icon.jeepICon
+          } else {
+            markerIcon = icon.busIcon
+          }    
+        } 
+        else if(leg.mode === 'RAIL') {
+          markerIcon = icon.railIcon
+        }
+
+        return (
+          <Marker 
+            coordinate={{
+              latitude: leg.from.lat,
+              longitude: leg.from.lon
+            }}
+            image={markerIcon}
+            key={i}
+          />
+        )
+      })
+    }
+    else {
+      return
+    }
   }
 
   return (
@@ -399,7 +444,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         >
           <BottomSheetView style={styles.contentContainer}>
             {(viewedSheet === "HindranceDetail") ? <HindranceDetailModal reports={reports} hindranceIndex={hindranceIndex} /> : <></>}
-            {(viewedSheet === "Routes") ? <RoutesModal routes={routes} setItinerary={setItinerary} /> : <></>}
+            {(viewedSheet === "Routes") ? <RoutesModal routes={routes} setItinerary={setItinerary} centerChosenLocation={centerChosenLocation} snapToIndex={snapToIndex} /> : <></>}
             {(viewedSheet === "Hindrances") ? <HindranceModal reports={reports} centerChosenLocation={centerChosenLocation}/> : <></>}
             {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} /> : <></>}
           </BottomSheetView>
@@ -529,7 +574,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.toggleReportIcon, styles.shadowProp2]} onTouchStart={() => console.log(originGeometry)}>
+      <View style={[styles.toggleReportIcon, styles.shadowProp2]}>
         <TouchableOpacity 
           style={{height:'100%', width:'100%', justifyContent: 'center', alignItems: 'center', borderRadius: 15, backgroundColor: showMarkers ? "#880015" : "white" }}
           onPress={() => {
@@ -560,6 +605,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         {renderOriginMarker()}
         {renderDestinationMarker()}
         {renderPolylines()}
+        {renderLegStartMarkers()}
       </MapView>
     </GestureHandlerRootView>
   );
