@@ -187,7 +187,8 @@ const RoutesModal = (props) => {
             width: legPercent,
             height: 'auto',
             backgroundColor: modeColor,
-            borderLeftWidth: 2
+            borderLeftWidth: 2,
+            borderColor: 'white'
           }}
         >
         </View>
