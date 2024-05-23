@@ -10,7 +10,8 @@ import {
   Dimensions,
   Image,
   ImageSourcePropType,
-  Alert
+  Alert,
+  ActivityIndicator
 } from "react-native";
 import MapView, { Marker, Callout, Polyline } from "react-native-maps";
 import Modal from "react-native-modal";
@@ -185,6 +186,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   }
 
   // ------------------------------------------------------- For Route Navigation ------------------------------------------------------
+  const [isLoading, setIsLoading] = useState(false)
   const getRoutes = async () => {
     if (originValue && destinationValue) {
       const data = {
@@ -198,11 +200,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         }
       }
       centerChosenLocation(data.origin.lat, data.origin.lng)
-      Alert.alert('', 'Finding the best route', [
-        {
-          text: 'OK',
-        }
-      ])
+      setIsLoading(true)
       await routeService
         .create(data)
         .then((response) => {
@@ -211,6 +209,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         .catch((error) => {
           console.error(error)
         })
+        setIsLoading(false)
   
         handlePresentModalPress() 
         setViewedSheet("Routes")
@@ -430,7 +429,16 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         <Icon name="bars" size={20} color="#880015"></Icon>
       </TouchableOpacity>
 
-
+      <Modal isVisible={isLoading} backdropOpacity={0.5}>
+        <View style={{ flex: 1, width: 'auto', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{ width: '80%', height: '10%', backgroundColor: 'white', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', rowGap: 5, borderRadius: 10 }}>
+              <View>
+                <Text>Calculating the best route for you</Text>
+              </View>
+              <ActivityIndicator size={"large"} />
+            </View>
+        </View>
+      </Modal>
 
       {/* Route Planner */}
       <View style={[styles.planner, styles.shadowProp]}>
