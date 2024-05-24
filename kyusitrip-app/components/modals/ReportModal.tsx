@@ -18,7 +18,8 @@ import reportService from '../services/reportServices';
 const ReportModal = (props) => {
   const {
     onClickLatLng,
-    setMarkers
+    setMarkers,
+    snapToIndex
   } = props
 
   const [clickedReport, setClickedReport] = useState('')
@@ -70,6 +71,7 @@ const ReportModal = (props) => {
           console.log(response.message)
           reportAlert(response.message)
           setDescription('')
+          snapToIndex(0)
         })
         .catch((error) => {
           if(

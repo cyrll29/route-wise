@@ -13,7 +13,7 @@ import {
   Alert,
   ActivityIndicator
 } from "react-native";
-import MapView, { Marker, Callout, Polyline } from "react-native-maps";
+import MapView, { Marker, Callout, Polyline, Circle } from "react-native-maps";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -34,6 +34,7 @@ import { useLocalSearchParams } from "expo-router";
 import routeService from '../services/routeServices'
 import reportService from "../services/reportServices";
 import decodePolyline from "decode-google-map-polyline"
+import * as Location from 'expo-location';
 
 
 interface RouteFinderProps {
@@ -279,7 +280,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   useEffect(() => {
     let timer = setInterval(() => {
       setCount((count) => count + 1);
-    }, 10000);
+    }, 4000);
 
     return () => clearTimeout(timer)
   }, []);
@@ -352,7 +353,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   }
 
   // --------------------------------------- For Rendering Polyline ------------------------------------------------
-  const [itinerary, setItinerary] = useState<any>()
+  const [itinerary, setItinerary] = useState<any>(0)
   const renderPolylines = () => {
     if(routes) {
       return routes.itineraries[itinerary].legs.map((leg, index) => {
@@ -431,6 +432,44 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     }
   }
 
+  // For Rendering Current Location Marker
+  const [currentLocation, setcurrentLocation] = useState<any>()
+  useEffect(() => {
+    const getPermissions = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if(status !== 'granted') {
+        console.log("Please grant location permission");
+        return;
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      console.log(currentLocation);
+      setcurrentLocation(currentLocation);
+    }
+    getPermissions();
+  }, [count])
+
+  const renderCurrentLocationMarker = () => {
+    if(currentLocation){
+      return (
+        <Circle 
+          center={{
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude
+          }}
+          radius={30}
+          strokeColor="#FFF"
+          strokeWidth={2.5}
+          fillColor="#4285F4"
+          zIndex={99}
+        />
+      )
+    }
+    else {
+      return;
+    }
+  }
+
   return (
     <GestureHandlerRootView style={styles.container}>
 
@@ -446,7 +485,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
             {(viewedSheet === "HindranceDetail") ? <HindranceDetailModal reports={reports} hindranceIndex={hindranceIndex} /> : <></>}
             {(viewedSheet === "Routes") ? <RoutesModal routes={routes} setItinerary={setItinerary} centerChosenLocation={centerChosenLocation} snapToIndex={snapToIndex} /> : <></>}
             {(viewedSheet === "Hindrances") ? <HindranceModal reports={reports} centerChosenLocation={centerChosenLocation}/> : <></>}
-            {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} /> : <></>}
+            {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} snapToIndex={snapToIndex} /> : <></>}
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
@@ -606,6 +645,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         {renderDestinationMarker()}
         {renderPolylines()}
         {renderLegStartMarkers()}
+        {renderCurrentLocationMarker()}
       </MapView>
     </GestureHandlerRootView>
   );

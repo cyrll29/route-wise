@@ -2,7 +2,8 @@ import React from 'react'
 import { 
     View,
     StyleSheet,
-    Text
+    Text,
+    Image
 } from 'react-native'
 
 const HindranceDetailModal = (props) => {
@@ -22,25 +23,49 @@ const HindranceDetailModal = (props) => {
       >
         <Text style={{fontSize: 17, color: '#999999', fontWeight: '600', marginBottom: 5, width: '100%', textAlign: 'center'}}>{reports[hindranceIndex].category.label}</Text>
       </View>
-      <View>
-        <Text>
-            {reports[hindranceIndex].postedAgo}
-        </Text>
+
+      <View style={{ width: '80%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', columnGap: 40 }}>
+        <View>
+          <Image source={require('../../assets/info-time.png')} style={styles.image} />
+        </View>
+        <View>
+          <Text>
+              {reports[hindranceIndex].postedAgo ? reports[hindranceIndex].postedAgo : "THIS DON'T EXIST"}
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text>
-            {reports[hindranceIndex].category.label} 
-        </Text>
+
+      <View style={{ width: '80%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', columnGap: 40 }}>
+        <View>
+          <Image source={require('../../assets/info-description.png')} style={styles.image} />
+        </View>
+        <View>
+          <Text>
+            {reports[hindranceIndex].category.label ? reports[hindranceIndex].category.label : "THIS DON'T EXIST"} 
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text>
-            {reports[hindranceIndex].address}  
-        </Text>
+
+      <View style={{ width: '80%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', columnGap: 40 }}>
+        <View>
+          <Image source={require('../../assets/info-address.png')} style={styles.image} />
+        </View>
+        <View style={{ width: '80%' }}>
+          <Text>
+            {reports[hindranceIndex].address ? reports[hindranceIndex].address : "THIS DON'T EXIST"}          
+          </Text>
+        </View>
       </View>
-      <View>
-        <Text>
-            {reports[hindranceIndex].user.name}    
-        </Text>
+
+      <View style={{ width: '80%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start', columnGap: 40 }}>
+        <View>
+          <Image source={require('../../assets/info-user.png')} style={styles.image} />
+        </View>
+        <View style={{ width: '80%' }}>
+          <Text>
+            {reports[hindranceIndex].user.name ? reports[hindranceIndex].user.name : "THIS DON'T EXIST"}    
+          </Text>
+        </View>
       </View>
     </View>
   )
@@ -48,6 +73,8 @@ const HindranceDetailModal = (props) => {
 
 const styles = StyleSheet.create({
     hindranceContainer: {
+      flexDirection: 'column',
+      rowGap: 15,
       flex: 1,
       width: '100%',
       height: '100%',
@@ -64,6 +91,11 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.3,
       shadowRadius: 3,
     },
+
+    image: {
+      width: 25,
+      height: 25
+    }
   })
 
 export default HindranceDetailModal
