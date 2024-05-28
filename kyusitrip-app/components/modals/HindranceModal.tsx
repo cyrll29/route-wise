@@ -14,7 +14,10 @@ import reportService from '../services/reportServices'
 const HindranceModal = (props) => {
   const {
     reports,
-    centerChosenLocation
+    centerChosenLocation,
+    handlePresentModalPress,
+    setViewedSheet,
+    setHindranceIndex
   } = props
 
   const renderReports = () => {
@@ -39,6 +42,14 @@ const HindranceModal = (props) => {
         } else if (report.category.label === 'Closure') {
           image = icon.closureIcon
         }
+
+        const handleClick = () => {
+          centerChosenLocation(report.latLng.lat, report.latLng.lng)
+          handlePresentModalPress()
+          setViewedSheet("HindranceDetail")
+          setHindranceIndex(i)
+        }
+        
         return (
         <TouchableOpacity 
           style={[
@@ -54,7 +65,7 @@ const HindranceModal = (props) => {
             }
           ]} 
           key={i}
-          onPress={() => {centerChosenLocation(report.latLng.lat, report.latLng.lng); console.log(report)}}
+          onPress={() => {handleClick()}}
         >
           <View style={[{flexDirection: 'row', alignItems: 'center', gap: 15}]}>
             <Image 

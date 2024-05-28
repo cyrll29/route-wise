@@ -120,11 +120,11 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
           source={require("../../assets/current-loc.png") as ImageSourcePropType}
           style={[styles.placeIcon, {margin: 10}]}
         />
-        <Pressable>
+        <View>
           <Text style={{color: '#8f8f8f', fontWeight: '600'}}>
             Use Current Location as Origin
           </Text>
-        </Pressable>
+        </View>
       </TouchableOpacity>
           
       <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', height: 120, position: 'absolute', bottom: 0, backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>

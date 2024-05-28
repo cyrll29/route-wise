@@ -205,8 +205,8 @@ const RoutesModal = (props) => {
 
   const renderDistanceBar = (itinerary) => {
     if(routes) {
-      return itinerary.legs.map((leg) => {
-        let legPercent = Math.round(330 * leg.duration / itinerary.duration)
+      return itinerary.legs.map((leg, i) => {
+        let legPercent = 370 * (leg.duration / itinerary.duration)
         let modeColor = 'lightgray'
           if(leg.mode === "WALK"){
             modeColor = "#FF7F7F"
@@ -228,6 +228,7 @@ const RoutesModal = (props) => {
               borderLeftWidth: 2,
               borderColor: 'white'
             }}
+            key={i}
           >
           </View>
         )

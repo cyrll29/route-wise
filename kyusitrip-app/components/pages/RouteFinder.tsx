@@ -159,6 +159,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         latitude: destinationLat,
         longitude: destinationLng
       }
+      setRoutes(null)
       setDestinationGeometry((destinationGeometry) =>({
         ...destinationGeometry,
         ...data
@@ -432,7 +433,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     }
   }
 
-  // For Rendering Current Location Marker
+  // ------------------------------------------ For Rendering Current Location Marker -----------------------------------------------------------------------
   const [currentLocation, setcurrentLocation] = useState<any>()
   useEffect(() => {
     const getPermissions = async () => {
@@ -484,7 +485,17 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           <BottomSheetView style={styles.contentContainer}>
             {(viewedSheet === "HindranceDetail") ? <HindranceDetailModal reports={reports} hindranceIndex={hindranceIndex} /> : <></>}
             {(viewedSheet === "Routes") ? <RoutesModal routes={routes} setItinerary={setItinerary} centerChosenLocation={centerChosenLocation} snapToIndex={snapToIndex} /> : <></>}
-            {(viewedSheet === "Hindrances") ? <HindranceModal reports={reports} centerChosenLocation={centerChosenLocation}/> : <></>}
+            {
+              (viewedSheet === "Hindrances") ? 
+              <HindranceModal 
+                reports={reports} 
+                centerChosenLocation={centerChosenLocation}
+                handlePresentModalPress={handlePresentModalPress}
+                setViewedSheet={setViewedSheet}
+                setHindranceIndex={setHindranceIndex}
+              /> : 
+              <></>
+            }
             {(viewedSheet === "Report") ? <ReportModal onClickLatLng={onClickLatLng} setMarkers={setMarkers} snapToIndex={snapToIndex} /> : <></>}
           </BottomSheetView>
         </BottomSheetModal>

@@ -19,18 +19,6 @@ const SideBar: React.FC<SideBarProps> = ({ handleSideBar, navigation }) => {
                     <Text style={styles.textStyle}>Profile Name</Text>
                 </View>
                 <TouchableOpacity style={styles.sidebarItems}>
-                    <Text style={styles.textStyle}>Account Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sidebarItems}>
-                    <Text style={styles.textStyle}>Search History</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sidebarItems}>
-                    <Text style={styles.textStyle}>Activity Log</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sidebarItems}>
-                    <Text style={styles.textStyle}>Preferences</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sidebarItems}>
                     <Text onPress={() => handleSideBar(false)} style={styles.textStyle}>Close</Text>
                 </TouchableOpacity>
             </View>
