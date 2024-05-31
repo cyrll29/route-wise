@@ -98,7 +98,7 @@ const PlaceSearchOrigin: FC<PlaceSearchOriginProps> = ({ navigation }) => {
             }}
             styles={placesApiStyle}
             query={{
-              key: process.env.GOOGLE_API || "AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU",
+              key: "AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU",
               language: 'en',
               components: 'country:PH'
             }}
