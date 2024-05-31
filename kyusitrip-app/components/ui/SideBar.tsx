@@ -7,16 +7,17 @@ import { NavigationProp } from '@react-navigation/native';
 
 interface SideBarProps {
   handleSideBar: (bool: boolean) => void,
-  navigation: NavigationProp<any>
+  navigation: NavigationProp<any>,
+  username: any
 }
 
-const SideBar: React.FC<SideBarProps> = ({ handleSideBar, navigation }) => {
+const SideBar: React.FC<SideBarProps> = ({ handleSideBar, navigation, username }) => {
     return (
         <View style={styles.sidebar}>
             <View style={{height: '80%', width: '100%'}}>
                 <View style={styles.sidebarHeader}>
                     <Icon name="user-circle-o" size={50} color='#F8C107'></Icon>
-                    <Text style={styles.textStyle}>Profile Name</Text>
+                    <Text style={styles.textStyle}>{username}</Text>
                 </View>
                 <TouchableOpacity style={styles.sidebarItems}>
                     <Text onPress={() => handleSideBar(false)} style={styles.textStyle}>Close</Text>

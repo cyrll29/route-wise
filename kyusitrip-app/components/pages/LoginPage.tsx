@@ -33,6 +33,7 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState('Guest')
 
   const handleLoginClick = async() => {
     const user: UserObject = {email, password}
@@ -45,7 +46,8 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
       setModalOpen(true)
       setWait(false)
       reportService.setToken(response.data.token)
-      console.log(response.data.token)
+      setUserName(response.data.name)
+      console.log(response.data)
     } catch (error: any) {
       console.log("catch running")
       console.log(error)
@@ -75,7 +77,7 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
           onPress={() => {
             if (msg) {
               setModalOpen(false)
-              navigation.navigate("RouteFinder")
+              navigation.navigate("RouteFinder", {userName: userName})
             } else {
               setModalOpen(false)
             }

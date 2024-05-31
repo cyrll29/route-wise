@@ -46,7 +46,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
-  const { origin, originLatitude, originLongitude, destination, destinationLat, destinationLng } = useLocalSearchParams();
+  const { userName, origin, originLatitude, originLongitude, destination, destinationLat, destinationLng } = useLocalSearchParams();
   // const altOrigin = JSON.parse( origin )
   const [completeInfo, setCompleteInfo] = useState(false);
   const [region, setRegion] = useState({longitude: 121.030479, latitude: 14.657027})
@@ -373,7 +373,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     }
   }
 
-  // --------------------------------------- For Rendering Polyline ------------------------------------------------
+  // ---------------------------------------------------------- For Rendering Polyline --------------------------------------------------------------
   const [itinerary, setItinerary] = useState<any>(0)
   const renderPolylines = () => {
     if(routes) {
@@ -464,7 +464,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
       }
 
       let currentLocation = await Location.getCurrentPositionAsync({});
-      console.log(currentLocation);
       setcurrentLocation(currentLocation);
     }
     getPermissions();
@@ -534,7 +533,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         onBackdropPress={() => setSidebarVisible(false)}
         style={styles.modal}
       >
-        <Sidebar handleSideBar={handleSidebar} navigation={navigation}/>
+        <Sidebar handleSideBar={handleSidebar} navigation={navigation} username={userName} />
       </Modal>
 
       <TouchableOpacity
