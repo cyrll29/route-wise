@@ -33,7 +33,7 @@ const StartingPage: FC<StartingPageProps> = ({ navigation }) => {
 
         <Pressable
           style={styles.buttonContainerTwo}
-          onPress={() => navigation.navigate('RouteFinder')}
+          onPress={() => navigation.navigate('SignupPage')}
         >
           <Text style={styles.buttonTextTwo}>Create an Account</Text>
         </Pressable>

@@ -212,7 +212,7 @@ const RoutesModal = (props) => {
             modeColor = "#FF7F7F"
           } else if(leg.mode === "BUS") {
             if(leg.route.gtfsId.includes("PUJ")) {
-              modeColor = "#397822"
+              modeColor = "#89D36F"
             } else {
               modeColor = "#45B6FE"
             }     
@@ -252,7 +252,7 @@ const RoutesModal = (props) => {
           modeColor = "#FF7F7F"
         } else if(leg.mode === "BUS") {
           if(leg.route.gtfsId.includes("PUJ")) {
-            modeColor = "#397822"
+            modeColor = "#89D36F"
           } else {
             modeColor = "#45B6FE"
           }     
@@ -263,8 +263,8 @@ const RoutesModal = (props) => {
         return (
           leg.mode === "WALK" ? 
           <></> : 
-          <View key={index} style={{ backgroundColor: modeColor, height: "100%", padding: 5,  borderRadius: 7, alignItems: 'center', flexDirection: 'row' }}>
-            <Text style={{ color: 'white' }}>{leg.route.gtfsId.includes("PUJ") ? "JEEP" : leg.mode}</Text>
+          <View key={index} style={{ backgroundColor: modeColor, height: "100%", padding: 5,  borderRadius: 7, alignItems: 'center', flexDirection: 'row'}}>
+            <Text style={{ color: 'white', fontWeight: "700" }}>{leg.route.gtfsId.includes("PUJ") ? "JEEP" : leg.mode}</Text>
           </View> 
         )
       })

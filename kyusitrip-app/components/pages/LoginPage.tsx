@@ -175,14 +175,6 @@ const LoginPage: FC<LoginPageProps> = ({ navigation }) => {
               </View>
             </View>
 
-            <View style={{width: "100%", marginBottom: 10}}>
-              <Pressable onPress={() => navigation.navigate("ForgetPassword")}>
-                <Text style={{textAlign: "right"}}>
-                  Forget Password?
-                </Text>
-              </Pressable>
-            </View>
-
             <TouchableOpacity style={styles.loginButton} onPress={handleLoginClick}>
               <Text style={styles.defText}>Login</Text>
             </TouchableOpacity>

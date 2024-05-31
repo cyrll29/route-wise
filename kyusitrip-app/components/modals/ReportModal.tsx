@@ -14,8 +14,12 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import reportService from '../services/reportServices';
+import { io } from "socket.io-client";
 
 const ReportModal = (props) => {
+  const socket = io.connect("https://kyusitrip-backend.azurewebsites.net");
+
+
   const {
     onClickLatLng,
     setMarkers,
@@ -68,6 +72,7 @@ const ReportModal = (props) => {
       reportService
         .create(data)
         .then((response) => {
+          socket.emit("send_report", {message: "A user reported an incident"})
           console.log(response.message)
           reportAlert(response.message)
           setDescription('')

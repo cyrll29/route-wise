@@ -16,6 +16,7 @@ import {
 import MapView, { Marker, Callout, Polyline, Circle } from "react-native-maps";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { io } from "socket.io-client";
 
 import { NavigationProp } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -70,6 +71,8 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   const [onClickLatLng, setOnClickLatLng] = useState<any>()
 
   const mapRef = React.createRef<any>();
+
+  const socket = io.connect("https://kyusitrip-backend.azurewebsites.net");
 
   // Bottom Sheet
   useEffect(() => {
@@ -299,7 +302,24 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
     .catch ((error) => {
       console.log(error)
     })
-  }, [count]);
+  }, []);
+
+  useEffect(() => {
+    socket.on("receive_message", () => {
+      reportService
+      .getAll()
+      .then((response) => {
+        const updatedReports = response.data.map((report) => ({
+          ...report,
+          postedAgo: timeComparison(report.createdAt),
+        }));
+        setReports(updatedReports.reverse())
+      })
+      .catch ((error) => {
+        console.log(error)
+      })
+    }, [socket]);
+    })
 
   // ----------------------------------------- For Hindrance Markers -----------------------------------------------------------------------
   const [hindranceIndex, setHindranceIndex] = useState(0)
@@ -371,7 +391,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
           color = "#FF7F7F"
         } else if (leg.mode === "BUS") {
           if(leg.route.gtfsId.includes("PUJ")) {
-            color = "#397822"
+            color = "#89D36F"
           } else {
             color = "#45B6FE"
           }    
