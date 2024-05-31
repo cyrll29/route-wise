@@ -23,7 +23,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#f8ecc4"
       },
-      "package": "com.cyrll052902.kyusitripapp"
+      "package": "com.cyrll052902.kyusitripapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDpqXEh61RzUqXcoy-FvUfcKSR0GX_qIzU"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
