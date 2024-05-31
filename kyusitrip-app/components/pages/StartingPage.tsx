@@ -1,12 +1,24 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View, Image, ImageSourcePropType } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import * as Location from 'expo-location';
 
 interface StartingPageProps {
   navigation: NavigationProp<any>;
 }
 
 const StartingPage: FC<StartingPageProps> = ({ navigation }) => {
+  useEffect(() => {
+    const getPermissions = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if(status !== 'granted') {
+        console.log("Please grant location permission");
+        return;
+      }
+      return;
+    }
+    getPermissions();
+  }, [])
   return (
     <View style={styles.container}>
       <View>

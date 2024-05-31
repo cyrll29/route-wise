@@ -16,7 +16,7 @@ import {
 import MapView, { Marker, Callout, Polyline, Circle } from "react-native-maps";
 import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 import { NavigationProp } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -72,7 +72,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
 
   const mapRef = React.createRef<any>();
 
-  const socket = io.connect("https://kyusitrip-backend.azurewebsites.net");
+  // const socket = io.connect("https://kyusitrip-backend.azurewebsites.net");
 
   // Bottom Sheet
   useEffect(() => {
@@ -305,21 +305,19 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("receive_message", () => {
-      reportService
-      .getAll()
-      .then((response) => {
-        const updatedReports = response.data.map((report) => ({
-          ...report,
-          postedAgo: timeComparison(report.createdAt),
-        }));
-        setReports(updatedReports.reverse())
-      })
-      .catch ((error) => {
-        console.log(error)
-      })
-    }, [socket]);
+    reportService
+    .getAll()
+    .then((response) => {
+      const updatedReports = response.data.map((report) => ({
+        ...report,
+        postedAgo: timeComparison(report.createdAt),
+      }));
+      setReports(updatedReports.reverse())
     })
+    .catch ((error) => {
+      console.log(error)
+    }), [count];
+  })
 
   // ----------------------------------------- For Hindrance Markers -----------------------------------------------------------------------
   const [hindranceIndex, setHindranceIndex] = useState(0)

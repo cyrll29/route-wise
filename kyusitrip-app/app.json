@@ -19,15 +19,24 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/LOGO2.png",
+        "backgroundColor": "#f8ecc4"
+      },
+      "package": "com.cyrll052902.kyusitripapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ba779918-8e74-4493-82c2-9139d292c267"
+      }
+    }
   }
 }
