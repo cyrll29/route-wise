@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "kyusitrip-app",
+    "name": "KyusiTrip",
     "slug": "kyusitrip-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/LOGO2.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -15,11 +15,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cyrll052902.kyusitripapp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/LOGO2.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#f8ecc4"
       },
       "package": "com.cyrll052902.kyusitripapp"

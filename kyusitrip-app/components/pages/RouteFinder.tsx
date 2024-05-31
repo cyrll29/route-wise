@@ -100,7 +100,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   // ------------------------------------------------------- For Origin -------------------------------------------------------------------------
   useEffect(() => {
     if(!origin) {
-      console.log("No origin")
       return
     } else {
       setOriginValue(origin)
@@ -126,7 +125,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
       latitudeDelta: 0.009,
       longitudeDelta: 0.009
     }
-    console.log(region.latitude + typeof(region.latitude))
     mapRef.current.animateToRegion(region, 1000)
   }
 
@@ -245,7 +243,6 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   // -------------------------------------------------- For Report Modal -------------------------------------------------------------------
   const onLocationPress = (e) => {
     let updatedValue = e.nativeEvent.coordinate
-    console.log(e.nativeEvent.coordinate.latitude)
     const pseudoData = {
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude,
@@ -452,41 +449,40 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
   }
 
   // ------------------------------------------ For Rendering Current Location Marker -----------------------------------------------------------------------
-  const [currentLocation, setcurrentLocation] = useState<any>()
-  useEffect(() => {
-    const getPermissions = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if(status !== 'granted') {
-        console.log("Please grant location permission");
-        return;
-      }
+  // const [currentLocation, setcurrentLocation] = useState<any>()
+  // useEffect(() => {
+  //   const getPermissions = async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if(status !== 'granted') {
+  //       return;
+  //     }
 
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setcurrentLocation(currentLocation);
-    }
-    getPermissions();
-  }, [count])
+  //     let currentLocation = await Location.getCurrentPositionAsync({});
+  //     setcurrentLocation(currentLocation);
+  //   }
+  //   getPermissions();
+  // }, [count])
 
-  const renderCurrentLocationMarker = () => {
-    if(currentLocation){
-      return (
-        <Circle 
-          center={{
-            latitude: currentLocation.coords.latitude,
-            longitude: currentLocation.coords.longitude
-          }}
-          radius={30}
-          strokeColor="#FFF"
-          strokeWidth={2.5}
-          fillColor="#4285F4"
-          zIndex={99}
-        />
-      )
-    }
-    else {
-      return;
-    }
-  }
+  // const renderCurrentLocationMarker = () => {
+  //   if(currentLocation){
+  //     return (
+  //       <Circle 
+  //         center={{
+  //           latitude: currentLocation.coords.latitude,
+  //           longitude: currentLocation.coords.longitude
+  //         }}
+  //         radius={30}
+  //         strokeColor="#FFF"
+  //         strokeWidth={2.5}
+  //         fillColor="#4285F4"
+  //         zIndex={99}
+  //       />
+  //     )
+  //   }
+  //   else {
+  //     return;
+  //   }
+  // }
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -673,7 +669,7 @@ const RouteFinder: FC<RouteFinderProps> = ({ navigation }) => {
         {renderDestinationMarker()}
         {renderPolylines()}
         {renderLegStartMarkers()}
-        {renderCurrentLocationMarker()}
+        {/* {renderCurrentLocationMarker()} */}
       </MapView>
     </GestureHandlerRootView>
   );
